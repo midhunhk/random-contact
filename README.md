@@ -1,4 +1,4 @@
-RandomContact
-=============
+Random Contact
+==============
 
-App that shows a Random Contact details.
+Android app that shows Random Contact details. A fun personal project made opensource.
