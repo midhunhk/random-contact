@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Random Contact</string>
-    <string name="app_version">Version 2.0.45 (Nov 2013)</string>
+    <string name="app_version">Version 2.0.50 (Nov 2013)</string>
     <string name="app_desc">Random Contact displays a Random Contact from your list of contacts. Its fun!</string>
     <string name="app_developed">Designed and developed at ae labs</string>
     <string name="action_settings">Settings</string>

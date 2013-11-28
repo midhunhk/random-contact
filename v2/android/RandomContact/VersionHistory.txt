@@ -33,3 +33,6 @@ RandomContact 2.0.45[Nov 2013]
  
 RandomContact 2.0.46[Nov 2013]
  -	Phone type correctly read with change in library
+ 
+RandomContact 2.0.50[Nov 2013]
+ -	Better layout for landscape layout
