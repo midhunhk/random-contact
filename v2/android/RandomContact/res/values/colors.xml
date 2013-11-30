@@ -4,6 +4,7 @@
     <color name="bright_orange">#FF9900</color>
     <color name="dark_gray">#333333</color>
     <color name="light_gray">#9a9a9a</color>
+    <color name="almost_white">#f4f4f4</color>
     <color name="red">#ff0000</color>
 
 </resources>

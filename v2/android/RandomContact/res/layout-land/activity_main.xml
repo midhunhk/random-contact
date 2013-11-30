@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="90dp"
-        android:background="@drawable/blurred_sky"
+        android:background="@drawable/blurred_mountain"
         android:orientation="horizontal"
         android:paddingLeft="@dimen/card_margin" >
 
@@ -31,7 +31,7 @@
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/card_margin"
             android:text="@string/hello_world"
-            android:textColor="@color/dark_gray" />
+            android:textColor="@color/almost_white" />
     </LinearLayout>
 
     <LinearLayout

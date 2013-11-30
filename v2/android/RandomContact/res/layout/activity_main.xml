@@ -11,7 +11,7 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="100dp"
-        android:background="@drawable/blurred_sky"
+        android:background="@drawable/blurred_mountain"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/card_padding"
         android:paddingTop="@dimen/card_padding" >
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/hello_world"
-            android:textColor="@color/dark_gray" />
+            android:textColor="@color/almost_white" />
     </LinearLayout>
 
     <!-- Contacted Count -->

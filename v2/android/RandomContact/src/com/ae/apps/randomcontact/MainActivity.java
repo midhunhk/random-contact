@@ -39,6 +39,7 @@ import com.ae.apps.randomcontact.managers.RandomContactManager;
 
 public class MainActivity extends ListActivity {
 
+	private static final String	SAVED_CONTACT_ID	= "savedContactId";
 	private TextView			mUserName;
 	private TextView			mUserContactedCount;
 	private TextView			mLastContactedTime;
@@ -75,7 +76,13 @@ public class MainActivity extends ListActivity {
 		}
 
 		// Lets start with showing a random contact
-		showRandomContact();
+		String savedContactId = savedInstanceState.getString(SAVED_CONTACT_ID);
+		mCurrentContact = contactManager.getContactInfo(savedContactId);
+		if (null != mCurrentContact) {
+			displayContact(mCurrentContact);
+		} else {
+			showRandomContact();
+		}
 	}
 
 	@Override
@@ -115,6 +122,14 @@ public class MainActivity extends ListActivity {
 			displayContact(contactVo);
 		} else {
 			Toast.makeText(this, getResources().getString(R.string.str_empty_contact_list), Toast.LENGTH_LONG).show();
+		}
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		if (null != mCurrentContact) {
+			outState.putString(SAVED_CONTACT_ID, mCurrentContact.getId());
 		}
 	}
 
