@@ -42,7 +42,7 @@ public class ContactListAdapter extends BaseAdapter {
 
 	private Context						context;
 	private LayoutInflater				inflater;
-	private static List<PhoneNumberVo>	arrayList;
+	private List<PhoneNumberVo>	arrayList;
 
 	public ContactListAdapter(Context context) {
 		arrayList = new ArrayList<PhoneNumberVo>();
@@ -53,7 +53,7 @@ public class ContactListAdapter extends BaseAdapter {
 	/**
 	 * @return the arrayList
 	 */
-	public static List<PhoneNumberVo> getArrayList() {
+	public List<PhoneNumberVo> getArrayList() {
 		return arrayList;
 	}
 
@@ -61,8 +61,8 @@ public class ContactListAdapter extends BaseAdapter {
 	 * @param arrayList
 	 *            the arrayList to set
 	 */
-	public static void setArrayList(List<PhoneNumberVo> arrayList) {
-		ContactListAdapter.arrayList = arrayList;
+	public void setArrayList(List<PhoneNumberVo> arrayList) {
+		this.arrayList = arrayList;
 	}
 
 	@Override

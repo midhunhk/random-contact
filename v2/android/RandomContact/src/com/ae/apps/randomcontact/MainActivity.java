@@ -76,10 +76,12 @@ public class MainActivity extends ListActivity {
 		}
 
 		// Lets start with showing a random contact
-		String savedContactId = savedInstanceState.getString(SAVED_CONTACT_ID);
-		mCurrentContact = contactManager.getContactInfo(savedContactId);
-		if (null != mCurrentContact) {
-			displayContact(mCurrentContact);
+		if (null != savedInstanceState) {
+			String savedContactId = savedInstanceState.getString(SAVED_CONTACT_ID);
+			mCurrentContact = contactManager.getContactWithPhoneDetails(savedContactId);
+			if (null != mCurrentContact) {
+				displayContact(mCurrentContact);
+			}
 		} else {
 			showRandomContact();
 		}
@@ -155,7 +157,7 @@ public class MainActivity extends ListActivity {
 			mUserImage.setImageBitmap(bitmap);
 
 			// Update the List Adapter with the phonenumbers
-			ContactListAdapter.setArrayList(contactVo.getPhoneNumbersList());
+			mListAdapter.setArrayList(contactVo.getPhoneNumbersList());
 			mListAdapter.notifyDataSetChanged();
 
 			// Track the previous and Current Contct objects
