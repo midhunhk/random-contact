@@ -46,10 +46,11 @@ public class RandomContactManager extends ContactManager {
 	 */
 	@Override
 	public ContactVo getRandomContact() {
-		if (contactsList.size() > 0) {
+		if ( !contactsList.isEmpty() ) {
+			// Increment the index - we will wrap around when we reach the end
 			index = (index + 1) % contactsList.size();
+			// Make sure the phone details are present
 			ContactVo contactVo = getContactPhoneDetails(contactsList.get(index));
-
 			// Update the contacts list with the updated contact item
 			contactsList.set(index, contactVo);
 			return contactVo;
