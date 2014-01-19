@@ -34,7 +34,14 @@ RandomContact 2.0.45[Nov 2013]
 RandomContact 2.0.46[Nov 2013]
  -	Phone type correctly read with change in library
  
-RandomContact 2.0.50[Nov 2013]
+//------------------------------
+// Version 2.1
+//------------------------------
+
+RandomContact 2.1.10[Jan 2014]
  -	Better layout for landscape layout
  -	Improved graphics
  -	Retain contact info on screen rotation
+ - 	Redesigned About screen
+ -	Simple Animations
+ -	Optimizations

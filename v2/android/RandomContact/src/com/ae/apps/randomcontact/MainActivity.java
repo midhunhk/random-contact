@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Midhun Harikumar
+ * Copyright 2014 Midhun Harikumar
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +42,7 @@ import com.ae.apps.randomcontact.managers.RandomContactManager;
 public class MainActivity extends ListActivity {
 
 	private static final String	SAVED_CONTACT_ID	= "savedContactId";
+	
 	private TextView			mUserName;
 	private TextView			mUserContactedCount;
 	private TextView			mLastContactedTime;
@@ -49,6 +52,10 @@ public class MainActivity extends ListActivity {
 	private ContactVo			mCurrentContact;
 	private LinearLayout		mLastContactedLayout;
 	private RoundedImageView	mUserImage;
+	private View				mListContainer;
+	private Animation			mFadeInAnimation;
+	private Animation			mSlideInAnimation;
+	private Bitmap				mDefaultUserImage;
 
 	@TargetApi(11)
 	@Override
@@ -56,16 +63,21 @@ public class MainActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		// Create Contact Manager insatnce from RandomContactManager
+		// Create a Contact Manager instance. Lets use RandomContactManager since we need a random contact
 		contactManager = new RandomContactManager(getContentResolver(), getResources());
 		mListAdapter = new ContactListAdapter(this);
 		setListAdapter(mListAdapter);
 
+		// Find some UI controls
 		mUserName = (TextView) findViewById(R.id.userDisplayName);
 		mUserImage = (RoundedImageView) findViewById(R.id.userProfileImage);
 		mUserContactedCount = (TextView) findViewById(R.id.userContactedCount);
 		mLastContactedTime = (TextView) findViewById(R.id.lastContactedTime);
 		mLastContactedLayout = (LinearLayout) findViewById(R.id.lastContactedLayout);
+		mListContainer = (View) findViewById(R.id.listContainer);
+
+		// Decode the default image only once
+		mDefaultUserImage = BitmapFactory.decodeResource(getResources(), R.drawable.ic_user_default);
 
 		// Hide the last contacted time initially
 		mLastContactedLayout.setVisibility(View.INVISIBLE);
@@ -74,6 +86,11 @@ public class MainActivity extends ListActivity {
 		if (android.os.Build.VERSION.SDK_INT > 11) {
 			getActionBar().setDisplayShowHomeEnabled(false);
 		}
+
+		// Configure some animations
+		mFadeInAnimation = AnimationUtils.loadAnimation(this, R.animator.fade_in);
+		mSlideInAnimation = AnimationUtils.loadAnimation(this, R.animator.slide_in_top);
+		mFadeInAnimation.setStartOffset(250);
 
 		// Lets start with showing a random contact
 		if (null != savedInstanceState) {
@@ -145,14 +162,15 @@ public class MainActivity extends ListActivity {
 			if (null != lastContacted && lastContacted.trim().length() > 0) {
 				mLastContactedTime.setText(lastContacted);
 				mLastContactedLayout.setVisibility(View.VISIBLE);
+				mLastContactedLayout.startAnimation(mFadeInAnimation);
 			} else {
 				mLastContactedLayout.setVisibility(View.INVISIBLE);
 			}
 
-			// Show the user image
+			// User has the right for a image. if they do not, one will be provided.
 			Bitmap bitmap = contactManager.getContactPhoto(contactVo.getId());
 			if (null == bitmap) {
-				bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_user_default);
+				bitmap = mDefaultUserImage;
 			}
 			mUserImage.setImageBitmap(bitmap);
 
@@ -160,7 +178,12 @@ public class MainActivity extends ListActivity {
 			mListAdapter.setArrayList(contactVo.getPhoneNumbersList());
 			mListAdapter.notifyDataSetChanged();
 
+			// Do Animations
+			mUserName.startAnimation(mSlideInAnimation);
+			mListContainer.startAnimation(mFadeInAnimation);
+
 			// Track the previous and Current Contct objects
+			// Future implementation?
 			mPreviousContact = mCurrentContact;
 			mCurrentContact = contactVo;
 			if (null != mPreviousContact) {
@@ -171,5 +194,4 @@ public class MainActivity extends ListActivity {
 			}
 		}
 	}
-
 }

@@ -2,13 +2,15 @@
 <resources>
 
     <string name="app_name">Random Contact</string>
-    <string name="app_version">Version 2.0.50 (Nov 2013)</string>
-    <string name="app_desc">Random Contact displays a Random Contact from your list of contacts. Its fun!</string>
-    <string name="app_developed">Designed and developed at ae labs</string>
-    <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="app_version">Version 2.1.10 (Jan 2014)</string>
+    <string name="app_desc">This app displays a Random Contact from your contacts list. Contact a long lost friend of your friends today. Its fun!</string>
+    <string name="app_developer_info">Designed and developed at ae labs</string>
+    
     <string name="empty_text"></string>
     <string name="empty_set">This contact does not have any phone numbers.</string>
+
+    <!-- menu options -->
+    <string name="action_settings">Settings</string>
 
     <!-- Actions -->
     <string name="action_refresh">Refresh</string>
@@ -18,7 +20,7 @@
     <string name="action_license">License</string>
     <string name="action_message">Text</string>
     <string name="str_times_contacted">Times Contacted</string>
-    <string name="str_contact_count">7</string>
+    <string name="str_contact_count">0</string>
     <string name="str_empty_contact_list">Contacts list is empty</string>
     <string name="str_last_contcted_on">Last contacted on</string>
     <string name="str_license">Licensed under the Apache License, Version 2.0 (the "License");

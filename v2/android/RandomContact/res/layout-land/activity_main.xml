@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/card_margin"
-            android:text="@string/hello_world"
+            android:text="@string/empty_text"
             android:textColor="@color/almost_white" />
     </LinearLayout>
 
@@ -98,6 +98,7 @@
         <!-- List View Container -->
 
         <LinearLayout
+            android:id="@+id/listContainer"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="65"
