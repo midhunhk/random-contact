@@ -17,11 +17,15 @@
 package com.ae.apps.randomcontact;
 
 import android.annotation.TargetApi;
-import android.app.ListActivity;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,26 +40,26 @@ import com.ae.apps.common.utils.DialogUtils;
 import com.ae.apps.common.views.RoundedImageView;
 import com.ae.apps.common.vo.ContactVo;
 import com.ae.apps.randomcontact.activities.AboutActivity;
-import com.ae.apps.randomcontact.adapters.ContactListAdapter;
+import com.ae.apps.randomcontact.adapters.ContactRecyclerAdapter;
 import com.ae.apps.randomcontact.managers.RandomContactManager;
 
-public class MainActivity extends ListActivity {
+public class MainActivity extends Activity {
 
-	private static final String	SAVED_CONTACT_ID	= "savedContactId";
-	
-	private TextView			mUserName;
-	private TextView			mUserContactedCount;
-	private TextView			mLastContactedTime;
-	private ContactManager		contactManager;
-	private ContactListAdapter	mListAdapter;
-	private ContactVo			mPreviousContact;
-	private ContactVo			mCurrentContact;
-	private LinearLayout		mLastContactedLayout;
-	private RoundedImageView	mUserImage;
-	private View				mListContainer;
-	private Animation			mFadeInAnimation;
-	private Animation			mSlideInAnimation;
-	private Bitmap				mDefaultUserImage;
+	private static final String		SAVED_CONTACT_ID	= "savedContactId";
+
+	private TextView				mUserName;
+	private TextView				mUserContactedCount;
+	private TextView				mLastContactedTime;
+	private ContactManager			mContactManager;
+	private ContactRecyclerAdapter	mRecyclerAdapter;
+	private ContactVo				mPreviousContact;
+	private ContactVo				mCurrentContact;
+	private LinearLayout			mLastContactedLayout;
+	private RoundedImageView		mUserImage;
+	private View					mListContainer;
+	private Animation				mFadeInAnimation;
+	private Animation				mSlideInAnimation;
+	private Bitmap					mDefaultUserImage;
 
 	@TargetApi(11)
 	@Override
@@ -64,9 +68,7 @@ public class MainActivity extends ListActivity {
 		setContentView(R.layout.activity_main);
 
 		// Create a Contact Manager instance. Lets use RandomContactManager since we need a random contact
-		contactManager = new RandomContactManager(getContentResolver(), getResources());
-		mListAdapter = new ContactListAdapter(this);
-		setListAdapter(mListAdapter);
+		mContactManager = new RandomContactManager(getContentResolver(), getResources());
 
 		// Find some UI controls
 		mUserName = (TextView) findViewById(R.id.userDisplayName);
@@ -74,19 +76,32 @@ public class MainActivity extends ListActivity {
 		mUserContactedCount = (TextView) findViewById(R.id.userContactedCount);
 		mLastContactedTime = (TextView) findViewById(R.id.lastContactedTime);
 		mLastContactedLayout = (LinearLayout) findViewById(R.id.lastContactedLayout);
-		mListContainer = (View) findViewById(R.id.listContainer);
+		mListContainer = findViewById(R.id.listContainer);
 
 		// Decode the default image only once
 		mDefaultUserImage = BitmapFactory.decodeResource(getResources(), R.drawable.ic_user_default);
 
 		// Hide the last contacted time initially
-		mLastContactedLayout.setVisibility(View.INVISIBLE);
+		mLastContactedLayout.setVisibility(View.GONE);
 
 		// Access the Actionbar only if its available
 		if (android.os.Build.VERSION.SDK_INT > 11) {
+			// hide the app icon from the actionbar
 			getActionBar().setDisplayShowHomeEnabled(false);
+			// style the background color for the actionbar
+			getActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.dark_blue)));
 		}
+		
+		// Create the Recycler Adapter
+		mRecyclerAdapter = new ContactRecyclerAdapter(null, R.layout.contact_info_row, this);
 
+		// Find the RecyclerView and set some properties
+		RecyclerView recyclerView = (RecyclerView) findViewById(android.R.id.list);
+		recyclerView.setHasFixedSize(true);
+		recyclerView.setAdapter(mRecyclerAdapter);
+		recyclerView.setLayoutManager(new LinearLayoutManager(this));
+		recyclerView.setItemAnimator(new DefaultItemAnimator());
+		
 		// Configure some animations
 		mFadeInAnimation = AnimationUtils.loadAnimation(this, R.animator.fade_in);
 		mSlideInAnimation = AnimationUtils.loadAnimation(this, R.animator.slide_in_top);
@@ -95,7 +110,7 @@ public class MainActivity extends ListActivity {
 		// Lets start with showing a random contact
 		if (null != savedInstanceState) {
 			String savedContactId = savedInstanceState.getString(SAVED_CONTACT_ID);
-			mCurrentContact = contactManager.getContactWithPhoneDetails(savedContactId);
+			mCurrentContact = mContactManager.getContactWithPhoneDetails(savedContactId);
 			if (null != mCurrentContact) {
 				displayContact(mCurrentContact);
 			}
@@ -116,7 +131,7 @@ public class MainActivity extends ListActivity {
 			startActivity(new Intent(getBaseContext(), AboutActivity.class));
 			return true;
 		case R.id.action_license:
-			// show license - Remember to pass "this" instead of getBaseContext90 etc...
+			// show license - Remember to pass "this" instead of getBaseContext() etc...
 			DialogUtils.showWithMessageAndOkButton(this, R.string.action_license, R.string.str_license,
 					android.R.string.ok);
 			return true;
@@ -136,7 +151,7 @@ public class MainActivity extends ListActivity {
 	 */
 	private void showRandomContact() {
 		// generate a random number less than contactsList.size();
-		ContactVo contactVo = contactManager.getRandomContact();
+		ContactVo contactVo = mContactManager.getRandomContact();
 		if (null != contactVo) {
 			displayContact(contactVo);
 		} else {
@@ -164,19 +179,22 @@ public class MainActivity extends ListActivity {
 				mLastContactedLayout.setVisibility(View.VISIBLE);
 				mLastContactedLayout.startAnimation(mFadeInAnimation);
 			} else {
-				mLastContactedLayout.setVisibility(View.INVISIBLE);
+				mLastContactedLayout.setVisibility(View.GONE);
 			}
 
 			// User has the right for a image. if they do not, one will be provided.
-			Bitmap bitmap = contactManager.getContactPhoto(contactVo.getId());
+			Bitmap bitmap = mContactManager.getContactPhoto(contactVo.getId());
 			if (null == bitmap) {
 				bitmap = mDefaultUserImage;
 			}
 			mUserImage.setImageBitmap(bitmap);
 
 			// Update the List Adapter with the phonenumbers
-			mListAdapter.setArrayList(contactVo.getPhoneNumbersList());
-			mListAdapter.notifyDataSetChanged();
+			// mListAdapter.setArrayList(contactVo.getPhoneNumbersList());
+			// mListAdapter.notifyDataSetChanged();
+			
+			// Change the data for the RecyclerView
+			mRecyclerAdapter.setList(contactVo.getPhoneNumbersList());
 
 			// Do Animations
 			mUserName.startAnimation(mSlideInAnimation);

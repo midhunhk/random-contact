@@ -37,6 +37,8 @@ public class RandomContactManager extends ContactManager {
 
 	public RandomContactManager(ContentResolver contentResolver, Resources res) {
 		super(contentResolver, res);
+		// In order to avoid repetition of contacts, we simply start from a random point in the list of contacts
+		// Hopefully the user has a very large number of contacts with phone numbers and may not notice :)
 		index = new Random().nextInt(getTotalContactCount());
 	}
 

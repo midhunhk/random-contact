@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Random Contact</string>
-    <string name="app_version">Version 2.1.10 (Jan 2014)</string>
+    <string name="app_version">Version 2.2.0 (Nov 2014)</string>
     <string name="app_desc">This app displays a Random Contact from your contacts list. Contact a long lost friend of your friends today. Its fun!</string>
     <string name="app_developer_info">Designed and developed at ae labs</string>
     
@@ -23,6 +23,7 @@
     <string name="str_contact_count">0</string>
     <string name="str_empty_contact_list">Contacts list is empty</string>
     <string name="str_last_contcted_on">Last contacted on</string>
+    <string name="str_contact_now">CONTACT NOW</string>
     <string name="str_license">Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at\n\n
