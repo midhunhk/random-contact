@@ -66,7 +66,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		
 		// Create a Contact Manager instance. Lets use RandomContactManager since we need a random contact
 		mContactManager = new RandomContactManager(getContentResolver(), getResources());
 

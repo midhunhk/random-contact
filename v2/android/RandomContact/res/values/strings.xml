@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Random Contact</string>
-    <string name="app_version">Version 2.2.0 (Nov 2014)</string>
+    <string name="app_version">Version 2.2.10 (Nov 2014)</string>
     <string name="app_desc">This app displays a Random Contact from your contacts list. Contact a long lost friend of your friends today. Its fun!</string>
     <string name="app_developer_info">Designed and developed at ae labs</string>
     
