@@ -103,8 +103,8 @@ public class MainActivity extends Activity {
 		recyclerView.setItemAnimator(new DefaultItemAnimator());
 		
 		// Configure some animations
-		mFadeInAnimation = AnimationUtils.loadAnimation(this, R.animator.fade_in);
-		mSlideInAnimation = AnimationUtils.loadAnimation(this, R.animator.slide_in_top);
+		// mFadeInAnimation = AnimationUtils.loadAnimation(this, R.animator.fade_in);
+		// mSlideInAnimation = AnimationUtils.loadAnimation(this, R.animator.slide_in_top);
 		mFadeInAnimation.setStartOffset(250);
 
 		// Lets start with showing a random contact
