@@ -6,6 +6,12 @@
     android:paddingBottom="@dimen/card_margin"
     tools:context=".MainActivity" >
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/the_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize" />
+ 	
     <!-- User profile pic and name -->
 
     <LinearLayout
@@ -27,10 +33,10 @@
 
         <TextView
             android:id="@+id/userDisplayName"
-            style="@style/MediumSizedText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:textSize="24sp"
             android:text="@string/empty_text"
             android:textColor="@color/almost_white" />
     </LinearLayout>
@@ -63,14 +69,14 @@
 
             <TextView
                 android:id="@+id/userContactedCount"
-                style="@style/EmphasisedText"
+                android:textSize="48sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/card_padding"
                 android:text="@string/str_contact_count"
-                android:textColor="@color/red" />
+                android:textColor="@color/bright_orange" />
         </RelativeLayout>
         <!-- last contacted count -->
     </android.support.v7.widget.CardView>
@@ -100,15 +106,6 @@
                 android:paddingLeft="@dimen/card_margin"
                 android:paddingRight="@dimen/card_margin" >
 
-                <!--
-             <ImageView
-            android:id="@+id/calendarIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/empty_text"
-            android:src="@drawable/ic_action_go_to_today" />
-                -->
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -128,11 +125,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/card_padding"
                 android:layout_marginBottom="@dimen/card_margin"
+                android:padding="@dimen/card_padding"
                 android:text="@string/str_contact_now"
-                android:textSize="16sp"
                 android:textColor="@color/bright_orange"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <android.support.v7.widget.RecyclerView
