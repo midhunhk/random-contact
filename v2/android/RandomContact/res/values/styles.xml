@@ -1,23 +1,19 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!--
-        Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
-    -->
-    <style name="AppBaseTheme" parent="android:Theme.Light">
-        <!--
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        -->
+    <!-- Base application theme. -->
+    <style name="RandomContactTheme" parent="AppTheme.Base">
+        <!-- Customize your theme here. -->
     </style>
 
-    <!-- Application theme. -->
-    <style name="AppTheme" parent="AppBaseTheme">
-        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
-
+    <style name="AppTheme.Base" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+        <item name="windowActionBar">false</item>
+        <item name="colorPrimary">@color/material_blue_grey_800</item>
+        <item name="colorPrimaryDark">@color/material_blue_grey_950</item>
+        <item name="colorAccent">@color/bright_orange</item>
     </style>
-
+    
+<!-- 
     <style name="MediumSizedText">
         <item name="android:textStyle">italic</item>
         <item name="android:padding">2dp</item>
@@ -28,20 +24,5 @@
         <item name="android:padding">4dp</item>
         <item name="android:textSize">48sp</item>
     </style>
-    
-    <!-- <style name="CardView">
-        <item name="cardBackgroundColor">@color/cardview_light_background</item>
-        <item name="cardCornerRadius">@dimen/cardview_default_radius</item>
-        <item name="cardElevation">@dimen/cardview_default_elevation</item>
-        <item name="cardMaxElevation">@dimen/cardview_default_elevation</item>
-        <item name="cardUseCompatPadding">false</item>
-        <item name="cardPreventCornerOverlap">true</item>
-    </style>
-    <style name="CardView.Light">
-        <item name="cardBackgroundColor">@color/cardview_light_background</item>
-    </style>
-    <style name="CardView.Dark">
-        <item name="cardBackgroundColor">@color/cardview_dark_background</item>
-    </style> -->
-
+ -->
 </resources>

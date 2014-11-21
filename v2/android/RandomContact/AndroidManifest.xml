@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ae.apps.randomcontact"
-    android:versionCode="80"
+    android:versionCode="98"
     android:versionName="2.2" >
 
     <uses-sdk
@@ -16,7 +16,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/RandomContactTheme" >
         <activity
             android:name="com.ae.apps.randomcontact.MainActivity"
             android:label="@string/app_name" >

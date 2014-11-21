@@ -16,16 +16,16 @@
 
 package com.ae.apps.randomcontact;
 
-import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar.OnMenuItemClickListener;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,10 +40,11 @@ import com.ae.apps.common.utils.DialogUtils;
 import com.ae.apps.common.views.RoundedImageView;
 import com.ae.apps.common.vo.ContactVo;
 import com.ae.apps.randomcontact.activities.AboutActivity;
+import com.ae.apps.randomcontact.activities.ToolBarBaseActivity;
 import com.ae.apps.randomcontact.adapters.ContactRecyclerAdapter;
 import com.ae.apps.randomcontact.managers.RandomContactManager;
 
-public class MainActivity extends Activity {
+public class MainActivity extends ToolBarBaseActivity implements OnMenuItemClickListener {
 
 	private static final String		SAVED_CONTACT_ID	= "savedContactId";
 
@@ -61,12 +62,10 @@ public class MainActivity extends Activity {
 	private Animation				mSlideInAnimation;
 	private Bitmap					mDefaultUserImage;
 
-	@TargetApi(11)
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		
+
 		// Create a Contact Manager instance. Lets use RandomContactManager since we need a random contact
 		mContactManager = new RandomContactManager(getContentResolver(), getResources());
 
@@ -79,19 +78,11 @@ public class MainActivity extends Activity {
 		mListContainer = findViewById(R.id.listContainer);
 
 		// Decode the default image only once
-		mDefaultUserImage = BitmapFactory.decodeResource(getResources(), R.drawable.ic_user_default);
+		mDefaultUserImage = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
 
 		// Hide the last contacted time initially
 		mLastContactedLayout.setVisibility(View.GONE);
 
-		// Access the Actionbar only if its available
-		if (android.os.Build.VERSION.SDK_INT > 11) {
-			// hide the app icon from the actionbar
-			getActionBar().setDisplayShowHomeEnabled(false);
-			// style the background color for the actionbar
-			getActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.dark_blue)));
-		}
-		
 		// Create the Recycler Adapter
 		mRecyclerAdapter = new ContactRecyclerAdapter(null, R.layout.contact_info_row, this);
 
@@ -101,7 +92,7 @@ public class MainActivity extends Activity {
 		recyclerView.setAdapter(mRecyclerAdapter);
 		recyclerView.setLayoutManager(new LinearLayoutManager(this));
 		recyclerView.setItemAnimator(new DefaultItemAnimator());
-		
+
 		// Configure some animations
 		// mFadeInAnimation = AnimationUtils.loadAnimation(this, R.animator.fade_in);
 		// mSlideInAnimation = AnimationUtils.loadAnimation(this, R.animator.slide_in_top);
@@ -117,6 +108,15 @@ public class MainActivity extends Activity {
 		} else {
 			showRandomContact();
 		}
+		
+		// Inflate and handle menu clicks
+		getToolBar().inflateMenu(R.menu.main);
+		getToolBar().setOnMenuItemClickListener(this);
+	}
+	
+	@Override
+	protected int getLayoutResId(){
+		return R.layout.activity_main;
 	}
 
 	@Override
@@ -188,11 +188,16 @@ public class MainActivity extends Activity {
 				bitmap = mDefaultUserImage;
 			}
 			mUserImage.setImageBitmap(bitmap);
+			
+			// Use palette to generate a color from the contact image
+			Palette palette = Palette.generate(bitmap);
+			int actionBarColor = palette.getDarkVibrantColor(android.support.v7.appcompat.R.color.material_blue_grey_950);
+			getSupportActionBar().setBackgroundDrawable(new ColorDrawable(actionBarColor));
 
 			// Update the List Adapter with the phonenumbers
 			// mListAdapter.setArrayList(contactVo.getPhoneNumbersList());
 			// mListAdapter.notifyDataSetChanged();
-			
+
 			// Change the data for the RecyclerView
 			mRecyclerAdapter.setList(contactVo.getPhoneNumbersList());
 
@@ -211,5 +216,25 @@ public class MainActivity extends Activity {
 				// previousContact.setEnabled(true);
 			}
 		}
+	}
+
+	@Override
+	public boolean onMenuItemClick(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_refresh:
+			// Show another Random Contact
+			showRandomContact();
+			return true;
+		case R.id.action_about:
+			// show about screen
+			startActivity(new Intent(getBaseContext(), AboutActivity.class));
+			return true;
+		case R.id.action_license:
+			// show license - Remember to pass "this" instead of getBaseContext() etc...
+			DialogUtils.showWithMessageAndOkButton(this, R.string.action_license, R.string.str_license,
+					android.R.string.ok);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 }
