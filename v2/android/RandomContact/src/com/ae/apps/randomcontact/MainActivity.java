@@ -21,12 +21,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.Toolbar.OnMenuItemClickListener;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -42,10 +40,11 @@ import com.ae.apps.common.utils.DialogUtils;
 import com.ae.apps.common.views.RoundedImageView;
 import com.ae.apps.common.vo.ContactVo;
 import com.ae.apps.randomcontact.activities.AboutActivity;
+import com.ae.apps.randomcontact.activities.ToolBarBaseActivity;
 import com.ae.apps.randomcontact.adapters.ContactRecyclerAdapter;
 import com.ae.apps.randomcontact.managers.RandomContactManager;
 
-public class MainActivity extends ActionBarActivity implements OnMenuItemClickListener {
+public class MainActivity extends ToolBarBaseActivity implements OnMenuItemClickListener {
 
 	private static final String		SAVED_CONTACT_ID	= "savedContactId";
 
@@ -63,19 +62,9 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
 	private Animation				mSlideInAnimation;
 	private Bitmap					mDefaultUserImage;
 
-	// @TargetApi(11)
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-
-		// Find the toolbar and set it as action bar
-		Toolbar toolbar = (Toolbar) findViewById(R.id.the_toolbar);
-		setSupportActionBar(toolbar);
-
-		toolbar.setOnMenuItemClickListener(this);
-
-		toolbar.inflateMenu(R.menu.main);
 
 		// Create a Contact Manager instance. Lets use RandomContactManager since we need a random contact
 		mContactManager = new RandomContactManager(getContentResolver(), getResources());
@@ -119,6 +108,15 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
 		} else {
 			showRandomContact();
 		}
+		
+		// Inflate and handle menu clicks
+		getToolBar().inflateMenu(R.menu.main);
+		getToolBar().setOnMenuItemClickListener(this);
+	}
+	
+	@Override
+	protected int getLayoutResId(){
+		return R.layout.activity_main;
 	}
 
 	@Override
