@@ -16,10 +16,13 @@
 
 package com.ae.apps.randomcontact;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -34,7 +37,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.ae.apps.common.managers.ContactManager;
 import com.ae.apps.common.utils.DialogUtils;
 import com.ae.apps.common.views.RoundedImageView;
@@ -53,11 +55,11 @@ public class MainActivity extends ToolBarBaseActivity implements OnMenuItemClick
 	private TextView				mLastContactedTime;
 	private ContactManager			mContactManager;
 	private ContactRecyclerAdapter	mRecyclerAdapter;
-	private ContactVo				mPreviousContact;
 	private ContactVo				mCurrentContact;
 	private LinearLayout			mLastContactedLayout;
 	private RoundedImageView		mUserImage;
 	private View					mListContainer;
+	private View					mToolbarExtend;
 	private Animation				mFadeInAnimation;
 	private Animation				mSlideInAnimation;
 	private Bitmap					mDefaultUserImage;
@@ -76,6 +78,7 @@ public class MainActivity extends ToolBarBaseActivity implements OnMenuItemClick
 		mLastContactedTime = (TextView) findViewById(R.id.lastContactedTime);
 		mLastContactedLayout = (LinearLayout) findViewById(R.id.lastContactedLayout);
 		mListContainer = findViewById(R.id.listContainer);
+		mToolbarExtend = findViewById(R.id.toolbarExtend);
 
 		// Decode the default image only once
 		mDefaultUserImage = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
@@ -108,14 +111,14 @@ public class MainActivity extends ToolBarBaseActivity implements OnMenuItemClick
 		} else {
 			showRandomContact();
 		}
-		
+
 		// Inflate and handle menu clicks
 		getToolBar().inflateMenu(R.menu.main);
 		getToolBar().setOnMenuItemClickListener(this);
 	}
-	
+
 	@Override
-	protected int getLayoutResId(){
+	protected int getLayoutResId() {
 		return R.layout.activity_main;
 	}
 
@@ -167,6 +170,8 @@ public class MainActivity extends ToolBarBaseActivity implements OnMenuItemClick
 		}
 	}
 
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+	@SuppressWarnings("deprecation")
 	private void displayContact(ContactVo contactVo) {
 		if (null != contactVo) {
 			mUserName.setText(contactVo.getName());
@@ -188,33 +193,26 @@ public class MainActivity extends ToolBarBaseActivity implements OnMenuItemClick
 				bitmap = mDefaultUserImage;
 			}
 			mUserImage.setImageBitmap(bitmap);
-			
-			// Use palette to generate a color from the contact image
-			Palette palette = Palette.generate(bitmap);
-			int actionBarColor = palette.getDarkVibrantColor(android.support.v7.appcompat.R.color.material_blue_grey_950);
-			getSupportActionBar().setBackgroundDrawable(new ColorDrawable(actionBarColor));
 
-			// Update the List Adapter with the phonenumbers
-			// mListAdapter.setArrayList(contactVo.getPhoneNumbersList());
-			// mListAdapter.notifyDataSetChanged();
+			// Use palette to generate a color from the contact image and apply to
+			Palette palette = Palette.generate(bitmap);
+			int actionBarColor = palette
+					.getDarkVibrantColor(android.support.v7.appcompat.R.color.material_blue_grey_950);
+			Drawable colorDrawable = new ColorDrawable(actionBarColor);
+			getSupportActionBar().setBackgroundDrawable(colorDrawable);
+			
+			//mToolbarExtend.setBackground(colorDrawable);
+			//mToolbarExtend.setBackgroundColor(getResources().getColor(R.color.lime_green));
+			//mToolbarExtend.setBackgroundDrawable(colorDrawable);
 
 			// Change the data for the RecyclerView
 			mRecyclerAdapter.setList(contactVo.getPhoneNumbersList());
 
-			// Do Animations
+			// Do some basic Animations
 			mUserName.startAnimation(mSlideInAnimation);
 			mListContainer.startAnimation(mFadeInAnimation);
 
-			// Track the previous and Current Contct objects
-			// Future implementation?
-			mPreviousContact = mCurrentContact;
 			mCurrentContact = contactVo;
-			if (null != mPreviousContact) {
-				// Enable the prev button
-				// Button previousContact = (Button)
-				// findViewById(R.id.btnPreviousContact);
-				// previousContact.setEnabled(true);
-			}
 		}
 	}
 

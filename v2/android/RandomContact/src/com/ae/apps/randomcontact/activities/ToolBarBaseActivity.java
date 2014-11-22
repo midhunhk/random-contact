@@ -39,7 +39,7 @@ public abstract class ToolBarBaseActivity extends ActionBarActivity {
 		setContentView(getLayoutResId());
 
 		// Find the toolbar and set it as action bar
-		mToolbar = (Toolbar) findViewById(R.id.the_toolbar);
+		mToolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(mToolbar);
 
 		mToolbar.inflateMenu(R.menu.main);
