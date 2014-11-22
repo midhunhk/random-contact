@@ -6,19 +6,24 @@
     android:paddingBottom="@dimen/card_margin"
     tools:context=".MainActivity" >
 
-    <View
-        android:id="@+id/toolbarExtend"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:background="@color/material_deep_teal_200" />
+        android:layout_height="wrap_content" >
+
+        <View
+            android:id="@+id/toolbarExtend"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:background="@color/material_deep_teal_200" />
+    </FrameLayout>
 
     <include layout="@layout/toolbar" />
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/card_margin"
         android:layout_below="@+id/toolbar"
+        android:layout_margin="@dimen/card_margin"
         android:background="@color/white"
         android:padding="@dimen/card_padding" >
 

@@ -202,7 +202,8 @@ public class MainActivity extends ToolBarBaseActivity implements OnMenuItemClick
 			getSupportActionBar().setBackgroundDrawable(colorDrawable);
 			
 			//mToolbarExtend.setBackground(colorDrawable);
-			//mToolbarExtend.setBackgroundColor(getResources().getColor(R.color.lime_green));
+			//mToolbarExtend.invalidate();
+			mToolbarExtend.setBackgroundColor(actionBarColor);
 			//mToolbarExtend.setBackgroundDrawable(colorDrawable);
 
 			// Change the data for the RecyclerView

@@ -2,68 +2,70 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical" >
 
-    <include layout="@layout/toolbar"/>
-    
-    <RelativeLayout
-        android:padding="@dimen/card_padding" 
+    <include layout="@layout/toolbar" />
+
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/card_margin"
+        android:padding="@dimen/card_padding" >
 
-        <ImageView
-            android:id="@+id/appIcon"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_gravity="start"
-            android:layout_margin="4dip"
-            android:contentDescription="@string/empty_text"
-            android:padding="@dimen/card_padding"
-            android:src="@drawable/ic_launcher" />
+            android:padding="@dimen/card_padding" >
 
-        <TextView
-            android:id="@+id/appVersion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_toRightOf="@+id/appIcon"
-            android:padding="@dimen/card_padding"
-            android:text="@string/app_name"
-            android:textStyle="bold" />
+            <ImageView
+                android:id="@+id/appIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_gravity="start"
+                android:layout_margin="4dip"
+                android:contentDescription="@string/empty_text"
+                android:padding="@dimen/card_padding"
+                android:src="@drawable/ic_launcher" />
 
-        <TextView
-            android:id="@+id/appDeveloper"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/appVersion"
-            android:layout_gravity="start"
-            android:layout_toRightOf="@+id/appIcon"
-            android:padding="@dimen/card_padding"
-            android:text="@string/app_version" />
+            <TextView
+                android:id="@+id/appVersion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_toRightOf="@+id/appIcon"
+                android:padding="@dimen/card_padding"
+                android:text="@string/app_name"
+                android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/appDeveloper"
-            android:layout_gravity="start"
-            android:layout_toRightOf="@+id/appIcon"
-            android:padding="@dimen/card_padding"
-            android:text="@string/app_developer_info" />
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/appDeveloper"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/appVersion"
+                android:layout_gravity="start"
+                android:layout_toRightOf="@+id/appIcon"
+                android:padding="@dimen/card_padding"
+                android:text="@string/app_version" />
 
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="1dip"
-        android:layout_margin="@dimen/card_padding"
-        android:padding="@dimen/card_padding"
-        android:background="@android:color/darker_gray" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/appDeveloper"
+                android:layout_gravity="start"
+                android:layout_toRightOf="@+id/appIcon"
+                android:padding="@dimen/card_padding"
+                android:text="@string/app_developer_info" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:padding="@dimen/card_padding"
+        android:layout_margin="@dimen/card_margin"
         android:text="@string/app_desc" />
 
 </LinearLayout>
