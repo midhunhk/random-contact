@@ -63,8 +63,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:paddingLeft="@dimen/card_margin"
-                android:paddingRight="@dimen/card_margin" >
+                android:padding="@dimen/card_margin">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -98,7 +97,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="@dimen/card_margin" >
+                android:padding="@dimen/card_margin">
 
                 <LinearLayout
                     android:id="@+id/lastContactedLayout"
@@ -127,7 +126,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/card_margin"
+                    android:layout_margin="@dimen/card_margin"
                     android:padding="@dimen/card_padding"
                     android:text="@string/str_contact_now"
                     android:textColor="@color/bright_orange"
@@ -136,6 +135,7 @@
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@android:id/list"
+                    android:padding="@dimen/card_margin"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content" />
             </LinearLayout>

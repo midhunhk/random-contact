@@ -16,13 +16,11 @@
 
 package com.ae.apps.randomcontact;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -37,6 +35,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.ae.apps.common.managers.ContactManager;
 import com.ae.apps.common.utils.DialogUtils;
 import com.ae.apps.common.views.RoundedImageView;
@@ -170,8 +169,6 @@ public class MainActivity extends ToolBarBaseActivity implements OnMenuItemClick
 		}
 	}
 
-	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-	@SuppressWarnings("deprecation")
 	private void displayContact(ContactVo contactVo) {
 		if (null != contactVo) {
 			mUserName.setText(contactVo.getName());
@@ -200,11 +197,7 @@ public class MainActivity extends ToolBarBaseActivity implements OnMenuItemClick
 					.getDarkVibrantColor(android.support.v7.appcompat.R.color.material_blue_grey_950);
 			Drawable colorDrawable = new ColorDrawable(actionBarColor);
 			getSupportActionBar().setBackgroundDrawable(colorDrawable);
-			
-			//mToolbarExtend.setBackground(colorDrawable);
-			//mToolbarExtend.invalidate();
 			mToolbarExtend.setBackgroundColor(actionBarColor);
-			//mToolbarExtend.setBackgroundDrawable(colorDrawable);
 
 			// Change the data for the RecyclerView
 			mRecyclerAdapter.setList(contactVo.getPhoneNumbersList());
