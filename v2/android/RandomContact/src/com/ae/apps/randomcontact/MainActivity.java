@@ -37,6 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ae.apps.common.managers.ContactManager;
+import com.ae.apps.common.mock.MockContactDataUtils;
 import com.ae.apps.common.utils.DialogUtils;
 import com.ae.apps.common.views.RoundedImageView;
 import com.ae.apps.common.vo.ContactVo;
@@ -63,6 +64,11 @@ public class MainActivity extends ToolBarBaseActivity implements OnMenuItemClick
 	private Animation				mFadeInAnimation;
 	private Animation				mSlideInAnimation;
 	private Bitmap					mDefaultUserImage;
+	
+	/**
+	 * This wont work when orientation switched to landscape
+	 */
+	private boolean					isMockMode			= false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +88,8 @@ public class MainActivity extends ToolBarBaseActivity implements OnMenuItemClick
 		mToolbarExtend = findViewById(R.id.toolbarExtend);
 
 		// Decode the default image and cache it
-		mDefaultUserImage = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
+		mDefaultUserImage = BitmapFactory.decodeResource(getResources(), 
+				com.ae.apps.aeappslibrary.R.drawable.profile_icon_5);
 
 		// Hide the last contacted time initially
 		mLastContactedLayout.setVisibility(View.GONE);
@@ -151,11 +158,16 @@ public class MainActivity extends ToolBarBaseActivity implements OnMenuItemClick
 	}
 
 	/**
-	 * This method will display a random contact entry
+	 * Displays a random contact entry
 	 */
 	private void showRandomContact() {
-		// generate a random number less than contactsList.size();
-		ContactVo contactVo = mContactManager.getRandomContact();
+		ContactVo contactVo = null;
+		if (isMockMode) {
+			contactVo = MockContactDataUtils.getMockContact();
+		} else {
+			contactVo = mContactManager.getRandomContact();
+		}
+
 		if (null != contactVo) {
 			displayContact(contactVo);
 		} else {
@@ -180,7 +192,7 @@ public class MainActivity extends ToolBarBaseActivity implements OnMenuItemClick
 			showLastContactedTime(contactVo);
 
 			// User has the right for a image. if they do not, one will be provided.
-			Bitmap bitmap = mContactManager.getContactPhoto(contactVo.getId(), mDefaultUserImage);
+			Bitmap bitmap = mContactManager.getContactPhotoWithMock(contactVo, mDefaultUserImage, getResources());
 			mUserImage.setImageBitmap(bitmap);
 
 			// theme some UI elements based on the image color
@@ -211,10 +223,9 @@ public class MainActivity extends ToolBarBaseActivity implements OnMenuItemClick
 	private void applyThemeFromImage(Bitmap bitmap) {
 		// Use palette to generate a color from the contact image and apply to
 		Palette palette = Palette.generate(bitmap);
-		int darkVibrantColor = palette
-				.getDarkVibrantColor(android.support.v7.appcompat.R.color.material_blue_grey_950);
+		int darkVibrantColor = palette.getDarkVibrantColor(android.support.v7.appcompat.R.color.material_blue_grey_950);
 		int vibrantColor = palette.getVibrantColor(R.color.bright_orange);
-		
+
 		Drawable colorDrawable = new ColorDrawable(darkVibrantColor);
 		getSupportActionBar().setBackgroundDrawable(colorDrawable);
 		mToolbarExtend.setBackgroundColor(darkVibrantColor);

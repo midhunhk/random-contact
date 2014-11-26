@@ -4,7 +4,7 @@
     <string name="app_name">Random Contact</string>
     <string name="app_version">Version 2.2.50 (Nov 2014)</string>
     <string name="app_desc">This app displays a Random Contact from your contacts list. Contact a long lost friend of your friends today!</string>
-    <string name="app_developer_info">Designed and developed at ae labs</string>
+    <string name="app_developer_info">Designed and developed at ae labs, with material design principles</string>
     
     <string name="empty_text"></string>
     <string name="empty_set">This contact does not have any phone numbers.</string>
