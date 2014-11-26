@@ -9,6 +9,8 @@ Play Store
 ==========
 https://play.google.com/store/apps/details?id=com.ae.apps.randomcontact
 
+<img alt="screenshot" src="https://lh4.googleusercontent.com/-tDCNljxuwp0/VHWPV8hD6II/AAAAAAAACAM/5jvqjYEwdRA/w976-h577-no/device-2014-11-26-121541_framed.png" />
+
 Dependencies
 ============
 The following libraries are needed for this application.
