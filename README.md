@@ -9,6 +9,14 @@ Play Store
 ==========
 https://play.google.com/store/apps/details?id=com.ae.apps.randomcontact
 
+Dependencies
+============
+The following libraries are needed for this application.
+ae-apps-library (https://github.com/midhunhk/ae-apps-library)
+android-support-v7-appcompat
+android-support-v7-cardview
+android-support-v7-recyclerview
+
 License
 =======
 Copyright 2014 Midhun Harikumar
