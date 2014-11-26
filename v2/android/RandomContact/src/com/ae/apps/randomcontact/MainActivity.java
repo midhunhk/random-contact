@@ -52,6 +52,7 @@ public class MainActivity extends ToolBarBaseActivity implements OnMenuItemClick
 	private TextView				mUserName;
 	private TextView				mUserContactedCount;
 	private TextView				mLastContactedTime;
+	private TextView				mContactNowText;
 	private ContactManager			mContactManager;
 	private ContactRecyclerAdapter	mRecyclerAdapter;
 	private ContactVo				mCurrentContact;
@@ -76,10 +77,11 @@ public class MainActivity extends ToolBarBaseActivity implements OnMenuItemClick
 		mUserContactedCount = (TextView) findViewById(R.id.userContactedCount);
 		mLastContactedTime = (TextView) findViewById(R.id.lastContactedTime);
 		mLastContactedLayout = (LinearLayout) findViewById(R.id.lastContactedLayout);
+		mContactNowText = (TextView) findViewById(R.id.contactNowText);
 		mListContainer = findViewById(R.id.listContainer);
 		mToolbarExtend = findViewById(R.id.toolbarExtend);
 
-		// Decode the default image only once
+		// Decode the default image and cache it
 		mDefaultUserImage = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
 
 		// Hide the last contacted time initially
@@ -175,29 +177,14 @@ public class MainActivity extends ToolBarBaseActivity implements OnMenuItemClick
 			mUserContactedCount.setText(contactVo.getTimesContacted());
 
 			// Show the last contcted time of the user if it exists
-			String lastContacted = contactVo.getLastContactedTime();
-			if (null != lastContacted && lastContacted.trim().length() > 0) {
-				mLastContactedTime.setText(lastContacted);
-				mLastContactedLayout.setVisibility(View.VISIBLE);
-				mLastContactedLayout.startAnimation(mFadeInAnimation);
-			} else {
-				mLastContactedLayout.setVisibility(View.GONE);
-			}
+			showLastContactedTime(contactVo);
 
 			// User has the right for a image. if they do not, one will be provided.
-			Bitmap bitmap = mContactManager.getContactPhoto(contactVo.getId());
-			if (null == bitmap) {
-				bitmap = mDefaultUserImage;
-			}
+			Bitmap bitmap = mContactManager.getContactPhoto(contactVo.getId(), mDefaultUserImage);
 			mUserImage.setImageBitmap(bitmap);
 
-			// Use palette to generate a color from the contact image and apply to
-			Palette palette = Palette.generate(bitmap);
-			int actionBarColor = palette
-					.getDarkVibrantColor(android.support.v7.appcompat.R.color.material_blue_grey_950);
-			Drawable colorDrawable = new ColorDrawable(actionBarColor);
-			getSupportActionBar().setBackgroundDrawable(colorDrawable);
-			mToolbarExtend.setBackgroundColor(actionBarColor);
+			// theme some UI elements based on the image color
+			applyThemeFromImage(bitmap);
 
 			// Change the data for the RecyclerView
 			mRecyclerAdapter.setList(contactVo.getPhoneNumbersList());
@@ -208,6 +195,31 @@ public class MainActivity extends ToolBarBaseActivity implements OnMenuItemClick
 
 			mCurrentContact = contactVo;
 		}
+	}
+
+	private void showLastContactedTime(ContactVo contactVo) {
+		String lastContacted = contactVo.getLastContactedTime();
+		if (null != lastContacted && lastContacted.trim().length() > 0) {
+			mLastContactedTime.setText(lastContacted);
+			mLastContactedLayout.setVisibility(View.VISIBLE);
+			mLastContactedLayout.startAnimation(mFadeInAnimation);
+		} else {
+			mLastContactedLayout.setVisibility(View.GONE);
+		}
+	}
+
+	private void applyThemeFromImage(Bitmap bitmap) {
+		// Use palette to generate a color from the contact image and apply to
+		Palette palette = Palette.generate(bitmap);
+		int darkVibrantColor = palette
+				.getDarkVibrantColor(android.support.v7.appcompat.R.color.material_blue_grey_950);
+		int vibrantColor = palette.getVibrantColor(R.color.bright_orange);
+		
+		Drawable colorDrawable = new ColorDrawable(darkVibrantColor);
+		getSupportActionBar().setBackgroundDrawable(colorDrawable);
+		mToolbarExtend.setBackgroundColor(darkVibrantColor);
+		mUserContactedCount.setTextColor(vibrantColor);
+		mContactNowText.setTextColor(vibrantColor);
 	}
 
 	@Override

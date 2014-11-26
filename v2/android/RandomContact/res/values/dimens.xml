@@ -4,8 +4,9 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="icon_margin">16dp</dimen>
-    <dimen name="card_margin">10dp</dimen>
+    <dimen name="card_margin">8dp</dimen>
     <dimen name="card_padding">4dp</dimen>
+    <dimen name="padding_small">2dp</dimen>
 
     <!-- Default radius for CardView corners. -->
     <dimen name="cardview_default_radius">2dp</dimen>
