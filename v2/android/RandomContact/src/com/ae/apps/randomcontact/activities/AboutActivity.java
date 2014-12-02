@@ -16,7 +16,6 @@
 
 package com.ae.apps.randomcontact.activities;
 
-import android.annotation.TargetApi;
 import android.os.Bundle;
 
 import com.ae.apps.randomcontact.R;
@@ -28,7 +27,6 @@ import com.ae.apps.randomcontact.R;
  * 
  */
 public class AboutActivity extends ToolBarBaseActivity {
-	@TargetApi(11)
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

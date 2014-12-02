@@ -25,7 +25,7 @@ import com.ae.apps.randomcontact.R;
 /**
  * Base activity to support toolbar in activity layouts
  * 
- * @author user
+ * @author midhunhk
  *
  */
 public abstract class ToolBarBaseActivity extends ActionBarActivity {
