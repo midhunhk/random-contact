@@ -27,6 +27,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -41,10 +42,9 @@ import com.ae.apps.common.views.RoundedImageView;
 import com.ae.apps.common.vo.ContactVo;
 import com.ae.apps.randomcontact.R;
 import com.ae.apps.randomcontact.adapters.ContactRecyclerAdapter;
-import com.ae.apps.randomcontact.data.ContactManagerConsumer;
 import com.ae.apps.randomcontact.data.ContactManagerProvider;
 
-public class RandomContactFragment extends Fragment implements ContactManagerConsumer {
+public class RandomContactFragment extends Fragment {
 
 	private static final String		SAVED_CONTACT_ID	= "savedContactId";
 
@@ -56,6 +56,7 @@ public class RandomContactFragment extends Fragment implements ContactManagerCon
 	private RoundedImageView		mUserImage;
 	private View					mListContainer;
 	private Toolbar					mFragmentToolbar;
+	private View					mToolbarExtend;
 
 	private Animation				mFadeInAnimation;
 	private Animation				mSlideInAnimation;
@@ -79,9 +80,6 @@ public class RandomContactFragment extends Fragment implements ContactManagerCon
 		mContactManagerProvider = (ContactManagerProvider) getActivity();
 		mContext = getActivity().getBaseContext();
 
-		// Register with parent activity for getting callbacks
-		mContactManagerProvider.registerConsumer(this);
-
 		// Find some UI controls
 		mUserName = (TextView) layout.findViewById(R.id.userDisplayName);
 		mUserImage = (RoundedImageView) layout.findViewById(R.id.userProfileImage);
@@ -91,6 +89,7 @@ public class RandomContactFragment extends Fragment implements ContactManagerCon
 		mContactNowText = (TextView) layout.findViewById(R.id.contactNowText);
 		mListContainer = layout.findViewById(R.id.listContainer);
 		mFragmentToolbar = (Toolbar) layout.findViewById(R.id.toolbar2);
+		mToolbarExtend = layout.findViewById(R.id.toolbarExtend);
 
 		// Decode the default image and cache it
 		mDefaultUserImage = BitmapFactory.decodeResource(getResources(),
@@ -113,8 +112,30 @@ public class RandomContactFragment extends Fragment implements ContactManagerCon
 		mFadeInAnimation = AnimationUtils.loadAnimation(mContext, R.animator.fade_in);
 		mSlideInAnimation = AnimationUtils.loadAnimation(mContext, R.animator.slide_in_top);
 		mFadeInAnimation.setStartOffset(250);
-		
-		// mFragmentToolbar.setm
+
+		// Set Menu for the fragment's toolbar and the click handler
+		mFragmentToolbar.inflateMenu(R.menu.main);
+		mFragmentToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+
+				switch (item.getItemId()) {
+				case R.id.action_refresh:
+					// Show another Random Contact
+					showRandomContact();
+					return true;
+				case R.id.action_view_contact:
+					if (null != mContactManagerProvider) {
+						mContactManagerProvider.getContactDataManager()
+								.showContactInAddressBook(getActivity(), getCurrentContact());
+					}
+					return true;
+				}
+
+				return false;
+			}
+		});
 
 		// Lets start with showing a random contact
 		if (null != savedInstanceState) {
@@ -150,7 +171,7 @@ public class RandomContactFragment extends Fragment implements ContactManagerCon
 			// Show the last contcted time of the user if it exists
 			showLastContactedTime(contactVo);
 
-			// User has the right for a image. if they do not, one will be provided.
+			// User has the right for a profile image. if they do not have it, one will be provided.
 			Bitmap bitmap = getContactManager().getContactPhotoWithMock(contactVo, mDefaultUserImage, getResources());
 			mUserImage.setImageBitmap(bitmap);
 
@@ -193,11 +214,12 @@ public class RandomContactFragment extends Fragment implements ContactManagerCon
 		int vibrantColor = palette.getVibrantColor(R.color.bright_orange);
 		mUserContactedCount.setTextColor(vibrantColor);
 		mContactNowText.setTextColor(vibrantColor);
-		
-		mFragmentToolbar.setBackgroundColor(palette.getDarkVibrantColor(R.color.bright_foreground_material_dark));
+
+		int toolbarColor = palette.getLightVibrantColor(R.color.bright_foreground_material_dark);
+		mFragmentToolbar.setBackgroundColor(toolbarColor);
+		mToolbarExtend.setBackgroundColor(toolbarColor);
 	}
 
-	@Override
 	public void showRandomContact() {
 		ContactVo contactVo = null;
 		if (isMockMode) {
@@ -214,7 +236,6 @@ public class RandomContactFragment extends Fragment implements ContactManagerCon
 		}
 	}
 
-	@Override
 	public ContactVo getCurrentContact() {
 		return mCurrentContact;
 	}

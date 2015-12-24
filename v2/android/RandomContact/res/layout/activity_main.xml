@@ -7,33 +7,24 @@
     tools:ignore="MergeRootFrame" >
 
     <!-- The toolbar -->
+
     <include layout="@layout/toolbar" />
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <View
-            android:id="@+id/toolbarExtend"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:background="@color/material_deep_teal_200" />
-    </FrameLayout>
 
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" 
-        android:layout_marginTop="-80dp">
+        android:layout_height="match_parent" >
 
         <!-- Load Fragments into this container -->
+
         <FrameLayout
             android:id="@+id/frame"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent" >
         </FrameLayout>
 
         <!-- Layout for the Left Navigation Drawer -->
+
         <LinearLayout
             android:id="@+id/left_drawer"
             android:layout_width="280dp"
@@ -81,7 +72,6 @@
                 android:layout_gravity="start"
                 android:background="@color/white"
                 android:divider="@android:color/transparent" />
-
         </LinearLayout>
     </android.support.v4.widget.DrawerLayout>
 
