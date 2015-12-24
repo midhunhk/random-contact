@@ -5,9 +5,10 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="AppTheme.Base" parent="Theme.AppCompat.Light">
+    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@color/material_blue_grey_800</item>
         <item name="colorPrimaryDark">@color/material_blue_grey_950</item>
         <item name="colorAccent">@color/bright_orange</item>

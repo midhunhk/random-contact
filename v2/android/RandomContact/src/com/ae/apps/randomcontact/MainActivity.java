@@ -16,59 +16,45 @@
 
 package com.ae.apps.randomcontact;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.graphics.Palette;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar.OnMenuItemClickListener;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 
 import com.ae.apps.common.managers.ContactManager;
-import com.ae.apps.common.mock.MockContactDataUtils;
 import com.ae.apps.common.utils.DialogUtils;
-import com.ae.apps.common.views.RoundedImageView;
-import com.ae.apps.common.vo.ContactVo;
-import com.ae.apps.randomcontact.activities.AboutActivity;
 import com.ae.apps.randomcontact.activities.ToolBarBaseActivity;
-import com.ae.apps.randomcontact.adapters.ContactRecyclerAdapter;
+import com.ae.apps.randomcontact.adapters.NavDrawerListAdapter;
+import com.ae.apps.randomcontact.data.ContactManagerConsumer;
+import com.ae.apps.randomcontact.data.ContactManagerProvider;
+import com.ae.apps.randomcontact.fragments.AboutFragment;
+import com.ae.apps.randomcontact.fragments.FrequentContactsFragment;
+import com.ae.apps.randomcontact.fragments.RandomContactFragment;
 import com.ae.apps.randomcontact.managers.RandomContactManager;
 
-public class MainActivity extends ToolBarBaseActivity implements OnMenuItemClickListener {
+public class MainActivity extends ToolBarBaseActivity implements OnMenuItemClickListener, ContactManagerProvider,
+		OnItemClickListener {
 
-	private static final String		SAVED_CONTACT_ID	= "savedContactId";
-
-	private TextView				mUserName;
-	private TextView				mUserContactedCount;
-	private TextView				mLastContactedTime;
-	private TextView				mContactNowText;
-	private ContactManager			mContactManager;
-	private ContactRecyclerAdapter	mRecyclerAdapter;
-	private ContactVo				mCurrentContact;
-	private LinearLayout			mLastContactedLayout;
-	private RoundedImageView		mUserImage;
-	private View					mListContainer;
 	private View					mToolbarExtend;
-	private Animation				mFadeInAnimation;
-	private Animation				mSlideInAnimation;
-	private Bitmap					mDefaultUserImage;
-	
-	/**
-	 * This wont work when orientation switched to landscape
-	 */
-	private boolean					isMockMode			= false;
+	private DrawerLayout			mDrawerLayout;
+	private ActionBarDrawerToggle	mDrawerToggle;
+	private ContactManager			mContactManager;
+	private ContactManagerConsumer	mConsumer;
+	private ListView				mDrawerList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -77,52 +63,58 @@ public class MainActivity extends ToolBarBaseActivity implements OnMenuItemClick
 		// Create a Contact Manager instance. Lets use RandomContactManager since we need a random contact
 		mContactManager = new RandomContactManager(getContentResolver(), getResources());
 
-		// Find some UI controls
-		mUserName = (TextView) findViewById(R.id.userDisplayName);
-		mUserImage = (RoundedImageView) findViewById(R.id.userProfileImage);
-		mUserContactedCount = (TextView) findViewById(R.id.userContactedCount);
-		mLastContactedTime = (TextView) findViewById(R.id.lastContactedTime);
-		mLastContactedLayout = (LinearLayout) findViewById(R.id.lastContactedLayout);
-		mContactNowText = (TextView) findViewById(R.id.contactNowText);
-		mListContainer = findViewById(R.id.listContainer);
 		mToolbarExtend = findViewById(R.id.toolbarExtend);
+		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-		// Decode the default image and cache it
-		mDefaultUserImage = BitmapFactory.decodeResource(getResources(), 
-				com.ae.apps.aeappslibrary.R.drawable.profile_icon_5);
+		mDrawerList = (ListView) findViewById(R.id.left_drawer_list);
 
-		// Hide the last contacted time initially
-		mLastContactedLayout.setVisibility(View.GONE);
+		List<String> navItems = new ArrayList<String>();
+		navItems.add("Random Contact");
+		navItems.add("Frequent Contact");
+		navItems.add("About");
 
-		// Create the Recycler Adapter
-		mRecyclerAdapter = new ContactRecyclerAdapter(null, R.layout.contact_info_row, this);
+		// Create the list for the main fragments to be shown in the drawer
+		NavDrawerListAdapter drawerListAdapter = new NavDrawerListAdapter(this, navItems);
 
-		// Find the RecyclerView and set some properties
-		RecyclerView recyclerView = (RecyclerView) findViewById(android.R.id.list);
-		recyclerView.setHasFixedSize(true);
-		recyclerView.setAdapter(mRecyclerAdapter);
-		recyclerView.setLayoutManager(new LinearLayoutManager(this));
-		recyclerView.setItemAnimator(new DefaultItemAnimator());
+		mDrawerList.setAdapter(drawerListAdapter);
+		mDrawerList.setOnItemClickListener(this);
 
-		// Configure some animations
-		mFadeInAnimation = AnimationUtils.loadAnimation(this, R.animator.fade_in);
-		mSlideInAnimation = AnimationUtils.loadAnimation(this, R.animator.slide_in_top);
-		mFadeInAnimation.setStartOffset(250);
+		// displayHomeAsUp();
 
-		// Lets start with showing a random contact
-		if (null != savedInstanceState) {
-			String savedContactId = savedInstanceState.getString(SAVED_CONTACT_ID);
-			mCurrentContact = mContactManager.getContactWithPhoneDetails(savedContactId);
-			if (null != mCurrentContact) {
-				displayContact(mCurrentContact);
-			}
-		} else {
-			showRandomContact();
-		}
+		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, getToolBar(), R.string.app_name,
+				R.string.app_name);
+
+		mDrawerLayout.setDrawerListener(mDrawerToggle);
+		mDrawerToggle.syncState();
+
+		/*
+		 * mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+		 * 
+		 * @Override public boolean onNavigationItemSelected(MenuItem item) {
+		 * 
+		 * // Toggle the checked state item.setChecked(!item.isChecked());
+		 * 
+		 * switch (item.getItemId()) { case R.id.navigation_item_1: showFragment(new Fragment()); return true; }
+		 * 
+		 * return false; }
+		 * 
+		 * });
+		 */
 
 		// Inflate and handle menu clicks
 		getToolBar().inflateMenu(R.menu.main);
 		getToolBar().setOnMenuItemClickListener(this);
+
+		if (null == savedInstanceState) {
+			// Message Counter is the default fragment
+			showFragment(new RandomContactFragment());
+		}
+	}
+
+	private void showFragment(Fragment fragment) {
+		getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
+
 	}
 
 	@Override
@@ -135,17 +127,19 @@ public class MainActivity extends ToolBarBaseActivity implements OnMenuItemClick
 		switch (item.getItemId()) {
 		case R.id.action_refresh:
 			// Show another Random Contact
-			showRandomContact();
+			if (null != mConsumer) {
+				mConsumer.showRandomContact();
+			}
 			return true;
-		case R.id.action_about:
+		/*case R.id.action_about:
 			// show about screen
-			startActivity(new Intent(getBaseContext(), AboutActivity.class));
+			startActivity(new Intent(getBaseContext(), AboutFragment.class));
 			return true;
 		case R.id.action_license:
 			// show license - Remember to pass "this" instead of getBaseContext() etc...
 			DialogUtils.showWithMessageAndOkButton(this, R.string.action_license, R.string.str_license,
 					android.R.string.ok);
-			return true;
+			return true;*/
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -157,80 +151,12 @@ public class MainActivity extends ToolBarBaseActivity implements OnMenuItemClick
 		return true;
 	}
 
-	/**
-	 * Displays a random contact entry
-	 */
-	private void showRandomContact() {
-		ContactVo contactVo = null;
-		if (isMockMode) {
-			contactVo = MockContactDataUtils.getMockContact();
-		} else {
-			contactVo = mContactManager.getRandomContact();
-		}
-
-		if (null != contactVo) {
-			displayContact(contactVo);
-		} else {
-			Toast.makeText(this, getResources().getString(R.string.str_empty_contact_list), Toast.LENGTH_LONG).show();
-		}
-	}
-
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		if (null != mCurrentContact) {
-			outState.putString(SAVED_CONTACT_ID, mCurrentContact.getId());
-		}
-	}
-
-	private void displayContact(ContactVo contactVo) {
-		if (null != contactVo) {
-			mUserName.setText(contactVo.getName());
-			mUserContactedCount.setText(contactVo.getTimesContacted());
-
-			// Show the last contcted time of the user if it exists
-			showLastContactedTime(contactVo);
-
-			// User has the right for a image. if they do not, one will be provided.
-			Bitmap bitmap = mContactManager.getContactPhotoWithMock(contactVo, mDefaultUserImage, getResources());
-			mUserImage.setImageBitmap(bitmap);
-
-			// theme some UI elements based on the image color
-			applyThemeFromImage(bitmap);
-
-			// Change the data for the RecyclerView
-			mRecyclerAdapter.setList(contactVo.getPhoneNumbersList());
-
-			// Do some basic Animations
-			mUserName.startAnimation(mSlideInAnimation);
-			mListContainer.startAnimation(mFadeInAnimation);
-
-			mCurrentContact = contactVo;
-		}
-	}
-
-	private void showLastContactedTime(ContactVo contactVo) {
-		String lastContacted = contactVo.getLastContactedTime();
-		if (null != lastContacted && lastContacted.trim().length() > 0) {
-			mLastContactedTime.setText(lastContacted);
-			mLastContactedLayout.setVisibility(View.VISIBLE);
-			mLastContactedLayout.startAnimation(mFadeInAnimation);
-		} else {
-			mLastContactedLayout.setVisibility(View.GONE);
-		}
-	}
-
-	private void applyThemeFromImage(Bitmap bitmap) {
-		// Use palette to generate a color from the contact image and apply to
-		Palette palette = Palette.generate(bitmap);
+	public void applyThemeFromImage(Palette palette) {
 		int darkVibrantColor = palette.getDarkVibrantColor(android.support.v7.appcompat.R.color.material_blue_grey_950);
-		int vibrantColor = palette.getVibrantColor(R.color.bright_orange);
 
 		Drawable colorDrawable = new ColorDrawable(darkVibrantColor);
 		getSupportActionBar().setBackgroundDrawable(colorDrawable);
 		mToolbarExtend.setBackgroundColor(darkVibrantColor);
-		mUserContactedCount.setTextColor(vibrantColor);
-		mContactNowText.setTextColor(vibrantColor);
 	}
 
 	@Override
@@ -238,18 +164,57 @@ public class MainActivity extends ToolBarBaseActivity implements OnMenuItemClick
 		switch (item.getItemId()) {
 		case R.id.action_refresh:
 			// Show another Random Contact
-			showRandomContact();
+			if (null != mConsumer) {
+				mConsumer.showRandomContact();
+			}
 			return true;
+/*
 		case R.id.action_about:
 			// show about screen
-			startActivity(new Intent(getBaseContext(), AboutActivity.class));
+			// startActivity(new Intent(getBaseContext(), AboutFragment.class));
+			showFragment(new AboutFragment());
 			return true;
+
 		case R.id.action_license:
 			// show license - Remember to pass "this" instead of getBaseContext() etc...
 			DialogUtils.showWithMessageAndOkButton(this, R.string.action_license, R.string.str_license,
 					android.R.string.ok);
 			return true;
+*/
+		case R.id.action_view_contact:
+			if (null != mConsumer) {
+				mContactManager.showContactInAddressBook(this, mConsumer.getCurrentContact());
+			}
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
+	@Override
+	public ContactManager getContactDataManager() {
+		return mContactManager;
+	}
+
+	@Override
+	public void registerConsumer(ContactManagerConsumer consumer) {
+		mConsumer = consumer;
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+		// TODO Auto-generated method stub
+		switch(pos){
+		case 0:
+			showFragment(new RandomContactFragment());
+			break;
+		case 1:
+			showFragment(new FrequentContactsFragment());
+			break;
+		case 2:
+			showFragment(new AboutFragment());
+			break;
+		}
+		mDrawerLayout.closeDrawers();
+	}
+
 }

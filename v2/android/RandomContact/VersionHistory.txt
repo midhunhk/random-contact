@@ -45,3 +45,17 @@ RandomContact 2.1.10[Jan 2014]
  - 	Redesigned About screen
  -	Simple Animations
  -	Optimizations
+ 
+//------------------------------
+// Version 2.2
+//------------------------------
+
+RandomContact 2.2.50[Nov 2014]
+
+//------------------------------
+// Version 2.3
+//------------------------------
+
+RandomContact 2.3.0[Dec 2015]
+ -	UI deisgn changes
+ -	Frequent Contacts list
