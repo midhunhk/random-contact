@@ -54,6 +54,15 @@ public class FrequentContactsFragment extends Fragment {
 		mContext = getActivity().getBaseContext();
 
 		List<ContactVo> contacts = new ArrayList<ContactVo>();
+		// Adding dummy list for testing
+		contacts.add(mContactManagerProvider.getContactDataManager().getRandomContact());
+		contacts.add(mContactManagerProvider.getContactDataManager().getRandomContact());
+		contacts.add(mContactManagerProvider.getContactDataManager().getRandomContact());
+		contacts.add(mContactManagerProvider.getContactDataManager().getRandomContact());
+		contacts.add(mContactManagerProvider.getContactDataManager().getRandomContact());
+		contacts.add(mContactManagerProvider.getContactDataManager().getRandomContact());
+		contacts.add(mContactManagerProvider.getContactDataManager().getRandomContact());
+		contacts.add(mContactManagerProvider.getContactDataManager().getRandomContact());
 		contacts.add(mContactManagerProvider.getContactDataManager().getRandomContact());
 
 		FrequentContactAdapter frequentContactAdapter = new FrequentContactAdapter(contacts,

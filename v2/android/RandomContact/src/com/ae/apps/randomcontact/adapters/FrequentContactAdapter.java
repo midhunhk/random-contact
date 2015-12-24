@@ -2,22 +2,19 @@ package com.ae.apps.randomcontact.adapters;
 
 import java.util.List;
 
-import com.ae.apps.common.utils.MobileNetworkUtils;
-import com.ae.apps.common.vo.ContactVo;
-import com.ae.apps.common.vo.PhoneNumberVo;
-import com.ae.apps.randomcontact.R;
-
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.ae.apps.common.vo.ContactVo;
+import com.ae.apps.randomcontact.R;
 
 /**
  * Adapter for RecyclerView to show contact details
@@ -30,12 +27,15 @@ public class FrequentContactAdapter extends Adapter<FrequentContactAdapter.ViewH
 	private Context			mContext;
 	private List<ContactVo>	items;
 	private int				layoutResourceId;
+	Bitmap					defaultImage;
 
 	public FrequentContactAdapter(List<ContactVo> items, int layoutResourceId, Context context) {
 		super();
 		this.layoutResourceId = layoutResourceId;
 		setList(items);
 		this.mContext = context;
+		defaultImage = BitmapFactory.decodeResource(mContext.getResources(),
+				com.ae.apps.aeappslibrary.R.drawable.profile_icon_5);
 	}
 
 	public void setList(List<ContactVo> items) {
@@ -55,8 +55,13 @@ public class FrequentContactAdapter extends Adapter<FrequentContactAdapter.ViewH
 			holder.contactNameText.setText(contactVo.getName());
 			holder.contactCountText.setText(contactVo.getTimesContacted());
 
-			holder.imgProfile.setImageBitmap(BitmapFactory.decodeResource(mContext.getResources(),
-					com.ae.apps.aeappslibrary.R.drawable.profile_icon_5));
+			// Try to get this contact's profile image
+			Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(),
+					contactVo.getMockProfileImageResource());
+			if (bitmap == null) {
+				bitmap = defaultImage;
+			}
+			holder.imgProfile.setImageBitmap(bitmap);
 		}
 	}
 

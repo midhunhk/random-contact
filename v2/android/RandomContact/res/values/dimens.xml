@@ -7,6 +7,11 @@
     <dimen name="card_margin">8dp</dimen>
     <dimen name="card_padding">4dp</dimen>
     <dimen name="padding_small">2dp</dimen>
+    
+    <dimen name="icon_size">48dp</dimen>
+    
+    <dimen name="navigation_drawer_width">280dp</dimen>
+    <dimen name="navigation_drawer_header_height">140dp</dimen>
 
     <!-- Default radius for CardView corners. -->
     <dimen name="cardview_default_radius">2dp</dimen>

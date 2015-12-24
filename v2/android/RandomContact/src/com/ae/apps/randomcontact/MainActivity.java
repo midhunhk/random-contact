@@ -31,22 +31,20 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.ae.apps.common.activities.ToolBarBaseActivity;
 import com.ae.apps.common.managers.ContactManager;
-import com.ae.apps.randomcontact.activities.ToolBarBaseActivity;
 import com.ae.apps.randomcontact.adapters.NavDrawerListAdapter;
-import com.ae.apps.randomcontact.data.ContactManagerConsumer;
 import com.ae.apps.randomcontact.data.ContactManagerProvider;
-import com.ae.apps.randomcontact.fragments.AboutFragment;
-import com.ae.apps.randomcontact.fragments.FrequentContactsFragment;
-import com.ae.apps.randomcontact.fragments.RandomContactFragment;
+import com.ae.apps.randomcontact.managers.NavigationFragmentManager;
 import com.ae.apps.randomcontact.managers.RandomContactManager;
 
 public class MainActivity extends ToolBarBaseActivity implements OnItemClickListener, ContactManagerProvider {
 
-	private DrawerLayout			mDrawerLayout;
-	private ActionBarDrawerToggle	mDrawerToggle;
-	private ContactManager			mContactManager;
-	private ListView				mDrawerList;
+	private DrawerLayout				mDrawerLayout;
+	private ActionBarDrawerToggle		mDrawerToggle;
+	private ContactManager				mContactManager;
+	private ListView					mDrawerList;
+	private NavigationFragmentManager	mNavFragmentManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,12 +52,12 @@ public class MainActivity extends ToolBarBaseActivity implements OnItemClickList
 
 		// Create a Contact Manager instance. Lets use RandomContactManager since we need a random contact
 		mContactManager = new RandomContactManager(getContentResolver(), getResources());
+		mNavFragmentManager = new NavigationFragmentManager();
 
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
 		mDrawerList = (ListView) findViewById(R.id.left_drawer_list);
 
-		// NavDrawer Items
+		// NavDrawer Items - read from strings
 		List<String> navItems = new ArrayList<String>();
 		navItems.add("Random Contact");
 		navItems.add("Frequent Contacts");
@@ -68,12 +66,12 @@ public class MainActivity extends ToolBarBaseActivity implements OnItemClickList
 		// Create the list for the main fragments to be shown in the drawer
 		NavDrawerListAdapter drawerListAdapter = new NavDrawerListAdapter(this, navItems);
 
-		if(null != mDrawerList){
+		if (null != mDrawerList) {
 			mDrawerList.setAdapter(drawerListAdapter);
 			mDrawerList.setOnItemClickListener(this);
 		}
 
-		// displayHomeAsUp();
+		displayHomeAsUp();
 
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, getToolBar(), R.string.app_name,
@@ -88,18 +86,15 @@ public class MainActivity extends ToolBarBaseActivity implements OnItemClickList
 
 		if (null == savedInstanceState) {
 			// Message Counter is the default fragment
-			showFragment(new RandomContactFragment());
+			showFragment(mNavFragmentManager.getFragmentInstance(0));
 		}
 	}
 
 	private void showFragment(Fragment fragment) {
-		getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
-
-	}
-
-	@Override
-	protected int getLayoutResId() {
-		return R.layout.activity_main;
+		getSupportFragmentManager()
+				.beginTransaction()
+				.replace(R.id.frame, fragment)
+				.commit();
 	}
 
 	public void applyThemeFromImage(Palette palette) {
@@ -109,20 +104,9 @@ public class MainActivity extends ToolBarBaseActivity implements OnItemClickList
 		getSupportActionBar().setBackgroundDrawable(colorDrawable);
 	}
 
-
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long id) {
-		switch (pos) {
-		case 0:
-			showFragment(new RandomContactFragment());
-			break;
-		case 1:
-			showFragment(new FrequentContactsFragment());
-			break;
-		case 2:
-			showFragment(new AboutFragment());
-			break;
-		}
+		showFragment(mNavFragmentManager.getFragmentInstance(pos));
 		mDrawerLayout.closeDrawers();
 	}
 
@@ -132,8 +116,13 @@ public class MainActivity extends ToolBarBaseActivity implements OnItemClickList
 	}
 
 	@Override
-	public void registerConsumer(ContactManagerConsumer consumer) {
-		// Do nothing as we will be removing this functionality
+	protected int getToolbarResourceId() {
+		return R.id.toolbar;
+	}
+
+	@Override
+	protected int getLayoutResourceId() {
+		return R.layout.activity_main;
 	}
 
 }

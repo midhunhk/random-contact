@@ -26,9 +26,4 @@ public interface ContactManagerProvider {
 	 */
 	void applyThemeFromImage(Palette palette);
 
-	/**
-	 * 
-	 * @param consumer
-	 */
-	void registerConsumer(ContactManagerConsumer consumer);
 }
