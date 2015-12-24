@@ -68,8 +68,10 @@ public class MainActivity extends ToolBarBaseActivity implements OnItemClickList
 		// Create the list for the main fragments to be shown in the drawer
 		NavDrawerListAdapter drawerListAdapter = new NavDrawerListAdapter(this, navItems);
 
-		mDrawerList.setAdapter(drawerListAdapter);
-		mDrawerList.setOnItemClickListener(this);
+		if(null != mDrawerList){
+			mDrawerList.setAdapter(drawerListAdapter);
+			mDrawerList.setOnItemClickListener(this);
+		}
 
 		// displayHomeAsUp();
 
@@ -101,9 +103,9 @@ public class MainActivity extends ToolBarBaseActivity implements OnItemClickList
 	}
 
 	public void applyThemeFromImage(Palette palette) {
-		int darkVibrantColor = palette.getDarkVibrantColor(android.support.v7.appcompat.R.color.material_blue_grey_950);
+		int toolbarColor = palette.getVibrantColor(android.support.v7.appcompat.R.color.material_blue_grey_950);
 
-		Drawable colorDrawable = new ColorDrawable(darkVibrantColor);
+		Drawable colorDrawable = new ColorDrawable(toolbarColor);
 		getSupportActionBar().setBackgroundDrawable(colorDrawable);
 	}
 

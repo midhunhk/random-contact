@@ -215,9 +215,10 @@ public class RandomContactFragment extends Fragment {
 		mUserContactedCount.setTextColor(vibrantColor);
 		mContactNowText.setTextColor(vibrantColor);
 
-		int toolbarColor = palette.getLightVibrantColor(R.color.bright_foreground_material_dark);
-		mFragmentToolbar.setBackgroundColor(toolbarColor);
-		mToolbarExtend.setBackgroundColor(toolbarColor);
+		mFragmentToolbar.setBackgroundColor(palette.getDarkVibrantColor(R.color.bright_foreground_material_dark));
+		
+		// int toolbarColor = palette.getLightVibrantColor(R.color.bright_foreground_material_dark);
+		mToolbarExtend.setBackgroundColor(vibrantColor);
 	}
 
 	public void showRandomContact() {

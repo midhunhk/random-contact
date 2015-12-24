@@ -53,7 +53,7 @@
                         android:layout_gravity="center"
                         android:text="@string/empty_text"
                         android:textColor="@color/almost_white"
-                        android:textSize="24sp" />
+                        android:textSize="22sp" />
                 </LinearLayout>
             </android.support.v7.widget.Toolbar>
 
