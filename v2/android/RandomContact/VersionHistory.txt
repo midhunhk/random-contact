@@ -59,3 +59,5 @@ RandomContact 2.2.50[Nov 2014]
 RandomContact 2.3.0[Dec 2015]
  -	UI deisgn changes
  -	Frequent Contacts list
+ -	Fixed duplication of phone numbers
+ -	View contact in Address Book

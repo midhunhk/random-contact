@@ -19,7 +19,7 @@
     <string name="action_call">Call</string>
     <string name="action_license">License</string>
     <string name="action_message">Text</string>
-    <string name="action_view_contact">View in Addressbook</string>
+    <string name="action_view_contact">View in Address Book</string>
 
     <string name="str_times_contacted">Times Contacted</string>
     <string name="str_contact_count">0</string>
