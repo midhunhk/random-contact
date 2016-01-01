@@ -16,6 +16,9 @@
 
 package com.ae.apps.randomcontact.managers;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Random;
 
 import android.content.ContentResolver;
@@ -31,7 +34,7 @@ import com.ae.apps.common.vo.ContactVo;
  * @author Midhunhk
  * 
  */
-public class RandomContactManager extends ContactManager {
+public class RandomContactManager extends ContactManager implements FilteredContactList {
 
 	private int	index	= 0;
 
@@ -59,6 +62,28 @@ public class RandomContactManager extends ContactManager {
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	public List<ContactVo> getTopFrequentlyContacted(int maxResults) {
+		List<ContactVo> filteredList = contactsList;
+		if(null != contactsList && !contactsList.isEmpty()){
+			List<ContactVo> listToFilter = getAllContacts();
+			int contactsToShow = Math.min(maxResults, filteredList.size());
+			
+			// Apply the filter to the contacts
+			Collections.sort(listToFilter, new Comparator<ContactVo>(){
+				@Override
+				public int compare(ContactVo contact1, ContactVo contact2) {
+					return Integer.valueOf(contact2.getTimesContacted())
+							.compareTo(Integer.valueOf(contact1.getTimesContacted()));
+				}
+			});
+			
+			// We shall respect the maxResults param and return only a subset of the filtered data 
+			filteredList = listToFilter.subList(0, contactsToShow);
+		}
+		return filteredList;
 	}
 
 }

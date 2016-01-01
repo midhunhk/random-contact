@@ -17,6 +17,8 @@
 package com.ae.apps.randomcontact.fragments;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -29,7 +31,7 @@ import com.ae.apps.randomcontact.R;
 /**
  * The aboutActivity
  * 
- * @author user
+ * @author MidhunHK
  * 
  */
 public class AboutFragment extends Fragment {
@@ -40,6 +42,8 @@ public class AboutFragment extends Fragment {
 		View layout = inflater.inflate(R.layout.activity_about, container, false);
 		
 		final Context context = getActivity();
+		
+		// Show license
 		View license = layout.findViewById(R.id.viewLicense);
 		license.setOnClickListener(new View.OnClickListener() {
 
@@ -47,6 +51,19 @@ public class AboutFragment extends Fragment {
 			public void onClick(View arg0) {
 				DialogUtils.showMaterialInfoDialog(context,  R.string.action_license, R.string.str_license,
 						android.R.string.ok);
+			}
+		});
+		
+		// View the application's source
+		View viewSource = layout.findViewById(R.id.viewSourceCode);
+		viewSource.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				String url = getString(R.string.github_source_url);
+				Intent intent = new Intent(Intent.ACTION_VIEW);
+				intent.setData(Uri.parse(url));
+				startActivity(intent);		
 			}
 		});
 		

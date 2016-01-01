@@ -16,7 +16,6 @@
 
 package com.ae.apps.randomcontact.fragments;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -33,8 +32,11 @@ import com.ae.apps.common.vo.ContactVo;
 import com.ae.apps.randomcontact.R;
 import com.ae.apps.randomcontact.adapters.FrequentContactAdapter;
 import com.ae.apps.randomcontact.data.ContactManagerProvider;
+import com.ae.apps.randomcontact.managers.FilteredContactList;
 
 /**
+ * 
+ * Fragment that displays the FrequentlyContacts
  * 
  * @author MidhunHk
  *
@@ -43,31 +45,29 @@ public class FrequentContactsFragment extends Fragment {
 
 	private ContactManagerProvider	mContactManagerProvider	= null;
 	private Context					mContext;
+	private FilteredContactList		mFilteredContacts;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		mContactManagerProvider = (ContactManagerProvider) getActivity();
-
-		View layout = inflater.inflate(R.layout.fragment_frequent_contacts, container, false);
-
 		mContext = getActivity().getBaseContext();
 
-		List<ContactVo> contacts = new ArrayList<ContactVo>();
-		// Adding dummy list for testing
-		contacts.add(mContactManagerProvider.getContactDataManager().getRandomContact());
-		contacts.add(mContactManagerProvider.getContactDataManager().getRandomContact());
-		contacts.add(mContactManagerProvider.getContactDataManager().getRandomContact());
-		contacts.add(mContactManagerProvider.getContactDataManager().getRandomContact());
-		contacts.add(mContactManagerProvider.getContactDataManager().getRandomContact());
-		contacts.add(mContactManagerProvider.getContactDataManager().getRandomContact());
-		contacts.add(mContactManagerProvider.getContactDataManager().getRandomContact());
-		contacts.add(mContactManagerProvider.getContactDataManager().getRandomContact());
-		contacts.add(mContactManagerProvider.getContactDataManager().getRandomContact());
+		View layout = inflater.inflate(R.layout.fragment_frequent_contacts, container, false);
+		// We need to display a Filtered set of Contacts
+		try {
+			mFilteredContacts = (FilteredContactList) mContactManagerProvider.getContactDataManager();
+		} catch (ClassCastException e) {
+			throw new ClassCastException(getActivity().toString() + " must implement FilteredContactList");
+		}
 
-		FrequentContactAdapter frequentContactAdapter = new FrequentContactAdapter(contacts,
-				R.layout.contact_row, mContext);
+		List<ContactVo> contacts = mFilteredContacts.getTopFrequentlyContacted(40);
 
+		// Create the Adapter for the RecyclerView here
+		FrequentContactAdapter frequentContactAdapter = new FrequentContactAdapter(contacts, R.layout.contact_row,
+				mContext, mContactManagerProvider.getContactDataManager());
+
+		// Find the recyclerview and set required properties
 		RecyclerView recyclerView = (RecyclerView) layout.findViewById(android.R.id.list);
 		recyclerView.setHasFixedSize(true);
 		recyclerView.setAdapter(frequentContactAdapter);

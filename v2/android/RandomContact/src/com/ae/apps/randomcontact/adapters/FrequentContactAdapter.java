@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ae.apps.common.managers.ContactManager;
 import com.ae.apps.common.vo.ContactVo;
 import com.ae.apps.randomcontact.R;
 
@@ -27,15 +28,18 @@ public class FrequentContactAdapter extends Adapter<FrequentContactAdapter.ViewH
 	private Context			mContext;
 	private List<ContactVo>	items;
 	private int				layoutResourceId;
-	Bitmap					defaultImage;
+	private Bitmap			defaultImage;
+	private ContactManager	mContactManager;
 
-	public FrequentContactAdapter(List<ContactVo> items, int layoutResourceId, Context context) {
+	public FrequentContactAdapter(List<ContactVo> items, int layoutResourceId, Context context,
+			ContactManager contactManager) {
 		super();
 		this.layoutResourceId = layoutResourceId;
 		setList(items);
 		this.mContext = context;
 		defaultImage = BitmapFactory.decodeResource(mContext.getResources(),
 				com.ae.apps.aeappslibrary.R.drawable.profile_icon_5);
+		mContactManager = contactManager;
 	}
 
 	public void setList(List<ContactVo> items) {
@@ -56,12 +60,8 @@ public class FrequentContactAdapter extends Adapter<FrequentContactAdapter.ViewH
 			holder.contactCountText.setText(contactVo.getTimesContacted());
 
 			// Try to get this contact's profile image
-			Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(),
-					contactVo.getMockProfileImageResource());
-			if (bitmap == null) {
-				bitmap = defaultImage;
-			}
-			holder.imgProfile.setImageBitmap(bitmap);
+			Bitmap profileImage = mContactManager.getContactPhotoWithMock(contactVo, defaultImage, mContext.getResources());
+			holder.imgProfile.setImageBitmap(profileImage);
 		}
 	}
 
