@@ -10,11 +10,28 @@
         android:background="@color/white"
         android:padding="@dimen/card_padding" >
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@android:id/list"
-            android:layout_width="fill_parent"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/card_margin" />
+            android:padding="@dimen/padding_medium" >
+
+            <TextView
+                android:id="@+id/topContactedTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:text="@string/str_top_contacted"
+                android:textSize="@dimen/abc_text_size_title_material"
+                android:textColor="@color/material_blue_grey_800"
+                android:textStyle="bold" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@android:id/list"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/topContactedTitle"
+                android:padding="@dimen/card_margin" />
+        </RelativeLayout>
     </android.support.v7.widget.CardView>
 
 </LinearLayout>
