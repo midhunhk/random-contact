@@ -16,16 +16,17 @@
 
 package com.ae.apps.randomcontact;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.graphics.Palette;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -40,6 +41,8 @@ import com.ae.apps.randomcontact.managers.RandomContactManager;
 
 public class MainActivity extends ToolBarBaseActivity implements OnItemClickListener, ContactManagerProvider {
 
+	private static final String	PREF_KEY_NAV_DRAWER_INTRO_GIVEN	= "pref_key_nav_drawer_intro";
+	
 	private DrawerLayout				mDrawerLayout;
 	private ActionBarDrawerToggle		mDrawerToggle;
 	private ContactManager				mContactManager;
@@ -50,21 +53,16 @@ public class MainActivity extends ToolBarBaseActivity implements OnItemClickList
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		// Create a Contact Manager instance. Lets use RandomContactManager since we need a random contact
+		// Create a Contact Manager instance. We will use RandomContactManager since we need a random contact
 		mContactManager = new RandomContactManager(getContentResolver(), getResources());
 		mNavFragmentManager = new NavigationFragmentManager();
 
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer_list);
 
-		// NavDrawer Items - read from strings
-		List<String> navItems = new ArrayList<String>();
-		navItems.add("Random Contact");
-		navItems.add("Frequent Contacts");
-		navItems.add("About");
 
 		// Create the list for the main fragments to be shown in the drawer
-		NavDrawerListAdapter drawerListAdapter = new NavDrawerListAdapter(this, navItems);
+		NavDrawerListAdapter drawerListAdapter = new NavDrawerListAdapter(this, mNavFragmentManager.getNavTitles());
 
 		if (null != mDrawerList) {
 			mDrawerList.setAdapter(drawerListAdapter);
@@ -80,14 +78,12 @@ public class MainActivity extends ToolBarBaseActivity implements OnItemClickList
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 		mDrawerToggle.syncState();
 
-		// Inflate and handle menu clicks on MainToolbar
-		// getToolBar().inflateMenu(R.menu.main);
-		// getToolBar().setOnMenuItemClickListener(this);
-
 		if (null == savedInstanceState) {
-			// Message Counter is the default fragment
+			// Show the default fragment
 			showFragment(mNavFragmentManager.getFragmentInstance(0));
 		}
+		
+		showNavDrawerIntro();
 	}
 
 	private void showFragment(Fragment fragment) {
@@ -107,6 +103,7 @@ public class MainActivity extends ToolBarBaseActivity implements OnItemClickList
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long id) {
 		showFragment(mNavFragmentManager.getFragmentInstance(pos));
+		setToolbarTitle(mNavFragmentManager.getItemTitle(pos));
 		mDrawerLayout.closeDrawers();
 	}
 
@@ -123,6 +120,27 @@ public class MainActivity extends ToolBarBaseActivity implements OnItemClickList
 	@Override
 	protected int getLayoutResourceId() {
 		return R.layout.activity_main;
+	}
+	
+	@SuppressLint("RtlHardcoded")
+	private void showNavDrawerIntro() {
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+		boolean helloNavDrawer = sharedPreferences.getBoolean(PREF_KEY_NAV_DRAWER_INTRO_GIVEN, false);
+
+		// Check and introduce the Navigation Drawer on first use to the user
+		if (null != mDrawerLayout && !helloNavDrawer) {
+			mDrawerLayout.openDrawer(Gravity.LEFT);
+			sharedPreferences.edit().putBoolean(PREF_KEY_NAV_DRAWER_INTRO_GIVEN, true).commit();
+		}
+	}
+	
+	@Override
+	public void onBackPressed() {
+		if (mDrawerLayout.isDrawerOpen(Gravity.START)) {
+			mDrawerLayout.closeDrawers();
+			return;
+		}
+		super.onBackPressed();
 	}
 
 }
