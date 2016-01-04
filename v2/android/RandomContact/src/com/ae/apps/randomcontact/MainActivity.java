@@ -20,6 +20,7 @@ import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -28,6 +29,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.graphics.Palette;
 import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -93,11 +96,20 @@ public class MainActivity extends ToolBarBaseActivity implements OnItemClickList
 				.commit();
 	}
 
+	@SuppressLint({ "InlinedApi", "NewApi" })
 	public void applyThemeFromImage(Palette palette) {
-		int toolbarColor = palette.getVibrantColor(android.support.v7.appcompat.R.color.material_blue_grey_950);
+		int toolbarColor = palette.getVibrantColor(android.support.v7.appcompat.R.color.material_blue_grey_800);
 
 		Drawable colorDrawable = new ColorDrawable(toolbarColor);
 		getSupportActionBar().setBackgroundDrawable(colorDrawable);
+		
+		// Theme the status bar on Lollipop and above
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+			int statusBarColor = palette.getDarkMutedColor(android.support.v7.appcompat.R.color.material_blue_grey_950);
+			Window window = getWindow();
+			window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+			window.setStatusBarColor(statusBarColor);
+		}
 	}
 
 	@Override
