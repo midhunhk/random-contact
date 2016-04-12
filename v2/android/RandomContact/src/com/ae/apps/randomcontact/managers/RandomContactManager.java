@@ -42,7 +42,16 @@ public class RandomContactManager extends ContactManager implements FilteredCont
 		super(contentResolver, res);
 		// In order to avoid repetition of contacts, we simply start from a random point in the list of contacts
 		// Hopefully the user has a very large number of contacts with phone numbers and may not notice :)
-		index = new Random().nextInt(getTotalContactCount());
+		// This would be based on the order the contacts were added to the contacts database which should
+		// be random unless it was imported in a sorted order (the chances of which are less)
+		int totalContactCount = getTotalContactCount();
+		
+		// Handle conditions when there are no contacts. This can happen when
+		// 	1. The user has no contacts yet
+		//	2. Access to Contacts permission denied in Marshmallow and up 
+		if(totalContactCount > 0){
+			index = new Random().nextInt(getTotalContactCount());
+		}
 	}
 
 	/**
