@@ -11,6 +11,9 @@ https://play.google.com/store/apps/details?id=com.ae.apps.randomcontact
 
 <img alt="screenshot" src="https://lh4.googleusercontent.com/-tDCNljxuwp0/VHWPV8hD6II/AAAAAAAACAM/5jvqjYEwdRA/w976-h577-no/device-2014-11-26-121541_framed.png" />
 
+App Announcement blog entry
+http://midhunhk.blogspot.in/2013/11/randomcontact-new-app-announcement.html
+
 Dependencies
 ============
 The following libraries are needed for this application.
