@@ -31,6 +31,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +41,7 @@ import com.ae.apps.common.mock.MockContactDataUtils;
 import com.ae.apps.common.views.RoundedImageView;
 import com.ae.apps.common.vo.ContactVo;
 import com.ae.apps.randomcontact.R;
+import com.ae.apps.randomcontact.Utils;
 import com.ae.apps.randomcontact.adapters.ContactRecyclerAdapter;
 import com.ae.apps.randomcontact.data.ContactManagerProvider;
 
@@ -108,9 +110,9 @@ public class RandomContactFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         // Configure some animations
-        //mFadeInAnimation = AnimationUtils.loadAnimation(mContext, getResources().getAnimation(R.animator.fade_in));
-        //mSlideInAnimation = AnimationUtils.loadAnimation(mContext, R.animator.fade_in);
-        //mFadeInAnimation.setStartOffset(250);
+        mFadeInAnimation = AnimationUtils.loadAnimation(mContext, R.anim.fade_in);
+        mSlideInAnimation = AnimationUtils.loadAnimation(mContext, R.anim.slide_in_top);
+        mFadeInAnimation.setStartOffset(250);
 
         // Set Menu for the fragment's toolbar and the click handler
         mFragmentToolbar.inflateMenu(R.menu.main);
@@ -126,11 +128,8 @@ public class RandomContactFragment extends Fragment {
                         return true;
                     case R.id.action_view_contact:
                         if (null != mContactManagerProvider) {
-                            Toast.makeText(getContext(), "show contact in addressbook", Toast.LENGTH_SHORT).show();
-                            // TODO fix later
-                            /*mContactManagerProvider.getContactDataManager()
-                                    .showContactInAddressBook(getActivity(), getCurrentContact());
-                                    */
+                            Toast.makeText(getContext(), "opening contact in address book", Toast.LENGTH_SHORT).show();
+                            Utils.showContactInAddressBook(getActivity(), getCurrentContact().getId());
                         }
                         return true;
                 }
