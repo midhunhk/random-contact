@@ -7,9 +7,9 @@
     <dimen name="card_margin">8dp</dimen>
     <dimen name="card_padding">4dp</dimen>
     <dimen name="padding_small">2dp</dimen>
-    
+
     <dimen name="icon_size">48dp</dimen>
-    
+
     <dimen name="navigation_drawer_width">300dp</dimen>
     <dimen name="navigation_drawer_header_height">140dp</dimen>
 
@@ -20,4 +20,5 @@
     <!-- Inset shadow for RoundRectDrawableWithShadow. It is used to avoid gaps between the card
      and the shadow. -->
     <dimen name="cardview_compat_inset_shadow">1dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>

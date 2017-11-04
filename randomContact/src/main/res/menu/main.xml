@@ -12,8 +12,8 @@
         android:id="@+id/action_view_contact"
         android:icon="@drawable/ic_address_book"
         android:orderInCategory="102"
-        android:showAsAction="ifRoom"
-        android:title="@string/action_view_contact"/>
+        android:title="@string/action_view_contact"
+        app:showAsAction="ifRoom"/>
 <!--    
     <item
         android:id="@+id/action_license"

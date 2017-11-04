@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/card_margin"
-        android:padding="@dimen/card_padding" >
+        android:padding="@dimen/card_padding">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/card_padding" >
+            android:padding="@dimen/card_padding">
 
             <ImageView
                 android:id="@+id/appIcon"
@@ -24,7 +24,7 @@
                 android:layout_margin="4dip"
                 android:contentDescription="@string/empty_text"
                 android:padding="@dimen/card_padding"
-                android:src="@drawable/ic_launcher" />
+                android:src="@drawable/app_icon"/>
 
             <TextView
                 android:id="@+id/appVersion"
@@ -34,7 +34,7 @@
                 android:layout_toRightOf="@+id/appIcon"
                 android:padding="@dimen/card_padding"
                 android:text="@string/app_name"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/appDeveloper"
@@ -44,7 +44,7 @@
                 android:layout_gravity="start"
                 android:layout_toRightOf="@+id/appIcon"
                 android:padding="@dimen/card_padding"
-                android:text="@string/app_version" />
+                android:text="@string/app_version"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -53,7 +53,7 @@
                 android:layout_gravity="start"
                 android:layout_toRightOf="@+id/appIcon"
                 android:padding="@dimen/card_padding"
-                android:text="@string/app_developer_info" />
+                android:text="@string/app_developer_info"/>
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
@@ -61,44 +61,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/card_margin"
-        android:padding="@dimen/card_padding" >
+        android:padding="@dimen/card_padding">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/card_padding" >
+            android:padding="@dimen/padding_medium">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_margin"
                 android:padding="@dimen/card_padding"
-                android:text="@string/app_desc" />
+                android:text="@string/app_desc"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_margin"
                 android:padding="@dimen/card_padding"
-                android:text="@string/app_disclaimer" />
+                android:text="@string/app_disclaimer"/>
 
-            <include layout="@layout/separator_line" />
-
-            <Button
-                android:id="@+id/viewLicense"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
-                android:drawableLeft="@drawable/icon_text"
-                android:drawablePadding="@dimen/padding_medium"
-                android:drawableStart="@drawable/icon_github"
-                android:padding="@dimen/padding_small"
-                android:text="@string/action_license"
-                android:gravity="center_vertical"
-                android:textAllCaps="false" />
-
-            <include layout="@layout/separator_line" />
+            <include layout="@layout/separator_line"/>
 
             <Button
                 android:id="@+id/viewSourceCode"
@@ -108,9 +91,27 @@
                 android:drawableLeft="@drawable/icon_github"
                 android:drawablePadding="@dimen/padding_medium"
                 android:drawableStart="@drawable/icon_github"
+                android:gravity="center_vertical"
                 android:padding="@dimen/padding_small"
                 android:text="@string/github_source_visible_url"
-                android:gravity="center_vertical"                android:textAllCaps="false" />
+                android:textAllCaps="false"/>
+
+            <include layout="@layout/separator_line"/>
+
+            <Button
+                android:id="@+id/viewLicense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:drawableLeft="@drawable/icon_text"
+                android:drawablePadding="@dimen/padding_medium"
+                android:drawableStart="@drawable/icon_github"
+                android:gravity="center_vertical"
+                android:padding="@dimen/padding_small"
+                android:text="@string/action_license"
+                android:textAllCaps="false"/>
+
+
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
