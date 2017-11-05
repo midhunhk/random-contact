@@ -7,4 +7,5 @@ package com.ae.apps.randomcontact.utils;
 public interface AppConstants {
     
     String CONTACT_ID_SEPARATOR = ",";
+    String DEFAULT_CONTACT_ID = "0";
 }

@@ -31,7 +31,7 @@ import com.ae.apps.randomcontact.R;
 /**
  * The About Fragment
  *
- * @author MidhunHK
+ * @author midhunhk
  */
 public class AboutFragment extends Fragment {
 

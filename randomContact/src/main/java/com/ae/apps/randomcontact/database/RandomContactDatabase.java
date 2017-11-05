@@ -95,7 +95,7 @@ public class RandomContactDatabase extends DataBaseHelper {
      * @return list of contact groups
      */
     public List<ContactGroup> getAllContactGroups() {
-        Cursor contactGroupsCursor = query(DatabaseConstants.DATABASE_NAME,
+        Cursor contactGroupsCursor = query(DatabaseConstants.CONTACT_GROUP_TABLE,
                 DatabaseConstants.CONTACT_GROUP_COLUMNS,
                 null, null, null, null, null);
         List<ContactGroup> contactGroups = new ArrayList<>();

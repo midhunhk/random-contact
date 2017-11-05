@@ -16,6 +16,7 @@
 package com.ae.apps.randomcontact.managers;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.ae.apps.randomcontact.data.ContactGroup;
@@ -33,6 +34,7 @@ public class ContactGroupManager {
 
     private static ContactGroupManager sInstance;
 
+    private SharedPreferences mSharedPreferences;
     private RandomContactDatabase mRandomContactDatabase;
 
     /**
@@ -49,18 +51,18 @@ public class ContactGroupManager {
     }
 
     private ContactGroupManager(final Context context) {
+
         mRandomContactDatabase = new RandomContactDatabase(context);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     /**
      * Returns the selected contact group
      *
-     * @param context context
      * @return
      */
-    public String selectedContactGroup(Context context) {
-        return PreferenceManager.getDefaultSharedPreferences(context)
-                .getString(PREF_KEY_SELECTED_CONTACT_GROUP, DEFAULT_CONTACT_GROUP);
+    public String selectedContactGroup() {
+        return mSharedPreferences.getString(PREF_KEY_SELECTED_CONTACT_GROUP, DEFAULT_CONTACT_GROUP);
     }
 
     /**
@@ -104,5 +106,15 @@ public class ContactGroupManager {
      */
     public List<ContactGroup> getAllContactGroups() {
         return mRandomContactDatabase.getAllContactGroups();
+    }
+
+    /**
+     * Return the specific ContactGroup details by id
+     *
+     * @param mCurrentContactGroupId
+     * @return
+     */
+    public ContactGroup getContactGroupById(final String mCurrentContactGroupId) {
+        return mRandomContactDatabase.getContactGroupById(mCurrentContactGroupId);
     }
 }

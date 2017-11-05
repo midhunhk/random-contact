@@ -26,11 +26,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ae.apps.common.managers.contact.AeContactManager;
 import com.ae.apps.common.vo.ContactVo;
 import com.ae.apps.randomcontact.R;
 import com.ae.apps.randomcontact.adapters.FrequentContactAdapter;
-import com.ae.apps.randomcontact.data.ContactManagerProvider;
 import com.ae.apps.randomcontact.managers.FilteredContactList;
+import com.ae.apps.randomcontact.managers.RandomContactManager;
 
 import java.util.List;
 
@@ -41,29 +42,26 @@ import java.util.List;
  */
 public class FrequentContactsFragment extends Fragment {
 
-    private ContactManagerProvider mContactManagerProvider = null;
-    private Context mContext;
-    private FilteredContactList mFilteredContacts;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        mContactManagerProvider = (ContactManagerProvider) getActivity();
-        mContext = getActivity().getBaseContext();
+        Context mContext = getActivity().getBaseContext();
+        AeContactManager contactManager = RandomContactManager.getInstance(mContext);
 
         View layout = inflater.inflate(R.layout.fragment_frequent_contacts, container, false);
         // We need to display a Filtered set of Contacts
+        FilteredContactList filteredContacts;
         try {
-            mFilteredContacts = (FilteredContactList) mContactManagerProvider.getContactDataManager();
+            filteredContacts = (FilteredContactList) contactManager;
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString() + " must implement FilteredContactList");
         }
 
-        List<ContactVo> contacts = mFilteredContacts.getTopFrequentlyContacted(40);
+        List<ContactVo> contacts = filteredContacts.getTopFrequentlyContacted(40);
 
         // Create the Adapter for the RecyclerView here
         FrequentContactAdapter frequentContactAdapter = new FrequentContactAdapter(contacts, R.layout.frequent_contact_item,
-                mContext, mContactManagerProvider.getContactDataManager());
+                mContext, contactManager);
 
         // Find the recycler view and set required properties
         RecyclerView recyclerView = (RecyclerView) layout.findViewById(android.R.id.list);

@@ -12,15 +12,26 @@
 
     <Button
         android:id="@+id/btnCreateContactGroup"
-        android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:backgroundTint="@color/colorAccent"
-        android:text="@string/str_create_group"/>
+        android:text="@string/str_create_group"
+        android:textColor="@color/almost_white"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:text="@string/str_select_contact_group"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:orientation="horizontal">
 
         <RadioButton
@@ -31,15 +42,40 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/str_all_contacts"/>
+            android:text="@string/str_all_contacts"
+            android:textSize="18sp"
+            android:textColor="@color/text_black"
+            android:textAllCaps="true"/>
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/list"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        app:layoutManager="LinearLayoutManager"/>
+        android:layout_height="match_parent">
 
+        <com.ae.apps.common.views.EmptyRecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            app:layoutManager="LinearLayoutManager"/>
+
+        <RelativeLayout
+            android:id="@+id/empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/padding_large"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="@dimen/margin_extra_large"
+                android:drawablePadding="@dimen/padding_medium"
+                android:gravity="center"
+                android:text="@string/str_empty_list_groups"/>
+        </RelativeLayout>
+    </FrameLayout>
 </LinearLayout>

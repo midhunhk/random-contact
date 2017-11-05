@@ -7,30 +7,17 @@
     android:orientation="vertical"
     android:padding="@dimen/activity_vertical_margin">
 
-    <LinearLayout
+
+    <EditText
+        android:id="@+id/txtGroupName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight=".35"
-            android:text="@string/str_group_name"
-            android:textSize="18sp"/>
-
-        <EditText
-            android:id="@+id/txtGroupName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:gravity="right"
-            android:inputType="text|textCapWords"
-            tools:ignore="RtlHardcoded"/>
-    </LinearLayout>
+        android:layout_weight="1"
+        android:ems="10"
+        android:gravity="right"
+        android:hint="@string/str_group_name"
+        android:inputType="text|textCapWords"
+        tools:ignore="RtlHardcoded"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -43,6 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:layout_marginTop="8dp"
             android:text="@string/str_group_members"
             android:textSize="18sp"/>
 

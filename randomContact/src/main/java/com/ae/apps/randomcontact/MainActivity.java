@@ -38,11 +38,11 @@ import android.widget.ListView;
 import com.ae.apps.common.activities.ToolBarBaseActivity;
 import com.ae.apps.common.managers.contact.AeContactManager;
 import com.ae.apps.randomcontact.adapters.NavDrawerListAdapter;
-import com.ae.apps.randomcontact.data.ContactManagerProvider;
+import com.ae.apps.randomcontact.data.GlobalThemeChanger;
 import com.ae.apps.randomcontact.managers.NavigationFragmentManager;
 import com.ae.apps.randomcontact.managers.RandomContactManager;
 
-public class MainActivity extends ToolBarBaseActivity implements OnItemClickListener, ContactManagerProvider {
+public class MainActivity extends ToolBarBaseActivity implements OnItemClickListener, GlobalThemeChanger {
 
     private static final String PREF_KEY_NAV_DRAWER_INTRO_GIVEN = "pref_key_nav_drawer_intro";
 
@@ -54,8 +54,7 @@ public class MainActivity extends ToolBarBaseActivity implements OnItemClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Create a Contact Manager instance. We will use RandomContactManager since we need a random contact
-        mContactManager = RandomContactManager.getInstance(getContentResolver(), getResources());
+        mContactManager = RandomContactManager.getInstance(getBaseContext());
         mNavFragmentManager = new NavigationFragmentManager();
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -73,7 +72,8 @@ public class MainActivity extends ToolBarBaseActivity implements OnItemClickList
         displayHomeAsUp();
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, getToolBar(), R.string.app_name,
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, getToolBar(),
+                R.string.app_name,
                 R.string.app_name);
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
@@ -120,11 +120,6 @@ public class MainActivity extends ToolBarBaseActivity implements OnItemClickList
     }
 
     @Override
-    public AeContactManager getContactDataManager() {
-        return mContactManager;
-    }
-
-    @Override
     protected int getToolbarResourceId() {
         return R.id.toolbar;
     }
@@ -158,3 +153,4 @@ public class MainActivity extends ToolBarBaseActivity implements OnItemClickList
     }
 
 }
+

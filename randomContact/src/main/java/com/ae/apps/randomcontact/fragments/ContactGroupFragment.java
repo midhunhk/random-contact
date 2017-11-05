@@ -25,24 +25,34 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.ae.apps.randomcontact.R;
 import com.ae.apps.randomcontact.adapters.ContactGroupRecyclerViewAdapter;
 import com.ae.apps.randomcontact.data.ContactGroup;
-import com.ae.apps.randomcontact.fragments.dummy.DummyContent;
-import com.ae.apps.randomcontact.fragments.dummy.DummyContent.DummyItem;
+import com.ae.apps.randomcontact.data.ContactGroupInteractionListener;
 import com.ae.apps.randomcontact.managers.ContactGroupManager;
+import com.ae.apps.randomcontact.utils.AppConstants;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
+ * Activities containing this fragment MUST implement the {@link ContactGroupInteractionListener}
  * interface.
  */
-public class ContactGroupFragment extends Fragment implements AddContactGroupDialogFragment.AddContactGroupDialogListener {
+public class ContactGroupFragment extends Fragment
+        implements AddContactGroupDialogFragment.AddContactGroupDialogListener,
+        ContactGroupInteractionListener {
 
-    private OnListFragmentInteractionListener mListener;
+    private RadioButton mRadioAllContacts;
+    private List<ContactGroup> mContactGroups;
+    private ContactGroupManager mContactGroupManager;
+    private ContactGroupRecyclerViewAdapter mViewAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -54,7 +64,6 @@ public class ContactGroupFragment extends Fragment implements AddContactGroupDia
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -62,14 +71,25 @@ public class ContactGroupFragment extends Fragment implements AddContactGroupDia
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_contact_group, container, false);
 
-        // Set the adapter
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
-        if (null != recyclerView) {
-            Context context = view.getContext();
-            recyclerView.setAdapter(new ContactGroupRecyclerViewAdapter(DummyContent.ITEMS, mListener));
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-        }
+        mContactGroupManager = ContactGroupManager.getInstance(getActivity());
+
+        initViews(view);
+
+        return view;
+    }
+
+    private void initViews(View view) {
+        String selectedContactGroup = mContactGroupManager.selectedContactGroup();
+        mRadioAllContacts = (RadioButton) view.findViewById(R.id.radioAllContacts);
+
+        mRadioAllContacts.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                mViewAdapter.setSelectedGroupId(AppConstants.DEFAULT_CONTACT_ID);
+                mViewAdapter.notifyDataSetChanged();
+                mContactGroupManager.setSelectedContactGroup(getActivity(), AppConstants.DEFAULT_CONTACT_ID);
+            }
+        });
 
         View createButton = view.findViewById(R.id.btnCreateContactGroup);
         createButton.setOnClickListener(new View.OnClickListener() {
@@ -79,7 +99,25 @@ public class ContactGroupFragment extends Fragment implements AddContactGroupDia
             }
         });
 
-        return view;
+        setUpRecyclerView(view, selectedContactGroup);
+
+        if (AppConstants.DEFAULT_CONTACT_ID.equals(selectedContactGroup)) {
+            mRadioAllContacts.setSelected(true);
+            mRadioAllContacts.setChecked(true);
+        }
+    }
+
+    private void setUpRecyclerView(View view, String selectedContactGroup) {
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
+        mContactGroups = mContactGroupManager.getAllContactGroups();
+        if (null != recyclerView) {
+            Context context = view.getContext();
+            mViewAdapter = new ContactGroupRecyclerViewAdapter(mContactGroups, this);
+            mViewAdapter.setSelectedGroupId(selectedContactGroup);
+            recyclerView.setAdapter(mViewAdapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+        }
     }
 
     private void showAddContactGroupDialog() {
@@ -89,44 +127,25 @@ public class ContactGroupFragment extends Fragment implements AddContactGroupDia
         fragment.show(fragmentManager, "fragment_add_contact_group");
     }
 
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        /*if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }*/
-    }
-
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
     @Override
     public void onContactGroupAdded(final ContactGroup contactGroup) {
         ContactGroup addedContactGroup = ContactGroupManager.getInstance(getActivity())
                 .addContactGroup(contactGroup);
-        Toast.makeText(getContext(), "Added group" + addedContactGroup.getName() + " with id " + addedContactGroup.getId(),
+        mContactGroups.add(contactGroup);
+        mViewAdapter.notifyItemInserted(mContactGroups.indexOf(contactGroup));
+        Toast.makeText(getContext(), "Added group " + addedContactGroup.getName() + " with id " + addedContactGroup.getId(),
                 Toast.LENGTH_SHORT).show();
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+    @Override
+    public void onContactGroupSelected(@NotNull ContactGroup item) {
+        mRadioAllContacts.setSelected(false);
+        mRadioAllContacts.setChecked(false);
+        mContactGroupManager.setSelectedContactGroup(getActivity(), item.getId());
     }
 }

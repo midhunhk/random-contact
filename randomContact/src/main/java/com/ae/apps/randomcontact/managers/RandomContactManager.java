@@ -16,53 +16,59 @@
 
 package com.ae.apps.randomcontact.managers;
 
-import android.content.ContentResolver;
-import android.content.res.Resources;
+import android.content.Context;
 import android.graphics.Bitmap;
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
 
 import com.ae.apps.common.managers.ContactManager;
 import com.ae.apps.common.managers.contact.AeContactManager;
 import com.ae.apps.common.managers.contact.ContactDataConsumer;
 import com.ae.apps.common.vo.ContactVo;
 import com.ae.apps.common.vo.MessageVo;
+import com.ae.apps.randomcontact.data.ContactGroup;
+import com.ae.apps.randomcontact.utils.AppConstants;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
 /**
- * Adds the special bit of randomness to Contact Manager. Overrides the basic random contact generation of the
- * ContactManager
+ * The RandomContactManager adds custom behavior to the ContactManager for this app.
+ * 1. Give TopContacts using the interface {@link FilteredContactList}
+ * 2. Generate Random contacts with a selected list of contacts
  *
  * @author Midhunhk
  */
 public class RandomContactManager implements FilteredContactList, AeContactManager {
 
-    private int index = 0;
-
-    private final AeContactManager mContactManager;
-
     private static RandomContactManager sRandomContactManager;
+
+    private int index = 0;
+    private String mCurrentContactGroupId;
+    private List<ContactVo> mCustomContactList;
+    private final AeContactManager mContactManager;
+    private final ContactGroupManager mContactGroupManager;
 
     /**
      * Returns an instance of RandomContactManager
      *
-     * @param contentResolver contentResolver
-     * @param res             resources
+     * @param context context
      * @return instance
      */
-    public static AeContactManager getInstance(ContentResolver contentResolver, Resources res) {
+    public static AeContactManager getInstance(final Context context) {
         if (null == sRandomContactManager) {
-            sRandomContactManager = new RandomContactManager(contentResolver, res);
+            sRandomContactManager = new RandomContactManager(context);
         }
         return sRandomContactManager;
     }
 
-    private RandomContactManager(ContentResolver contentResolver, Resources res) {
+    private RandomContactManager(final Context context) {
+        mContactGroupManager = ContactGroupManager.getInstance(context);
+        mCurrentContactGroupId = mContactGroupManager.selectedContactGroup();
 
-        mContactManager = new ContactManager.Builder(contentResolver, res)
+        mContactManager = new ContactManager.Builder(context.getContentResolver(), context.getResources())
                 .addContactsWithPhoneNumbers(true)
                 .build();
         mContactManager.fetchAllContacts();
@@ -109,12 +115,49 @@ public class RandomContactManager implements FilteredContactList, AeContactManag
     @Override
     public ContactVo getRandomContact() {
         if (!getAllContacts().isEmpty()) {
-            // Increment the index - we will wrap around when we reach the end
-            index = (index + 1) % getTotalContactCount();
-            // Make sure the phone details are present
-            return getContactWithPhoneDetails(getAllContacts().get(index).getId());
+            List<ContactVo> contactsList;
+
+            boolean selectionChanged = isContactGroupSelectionChanged();
+
+            if (AppConstants.DEFAULT_CONTACT_ID.equals(mCurrentContactGroupId)) {
+                // Get Random Contacts from All Contacts
+                contactsList = getAllContacts();
+                // Increment the index - we will wrap around when we reach the end
+                index = (index + 1) % getTotalContactCount();
+            } else {
+                // Get the Random Contact from a sublist
+                if (selectionChanged || null == mCustomContactList || mCustomContactList.isEmpty()) {
+                    // If the source selection was changed, we need to update the custom contacts list
+                    updateCustomContactGroup();
+                }
+                index = new Random().nextInt(mCustomContactList.size());
+                contactsList = mCustomContactList;
+            }
+
+            // Make sure the phone details are present by wrapping the contact details
+            // in a call to get contact with phone details
+            return getContactWithPhoneDetails(
+                    contactsList.get(index).getId());
         }
         return null;
+    }
+
+    private boolean isContactGroupSelectionChanged() {
+        String selectedContactGroupId = mContactGroupManager.selectedContactGroup();
+        if (!selectedContactGroupId.equals(mCurrentContactGroupId)) {
+            mCurrentContactGroupId = selectedContactGroupId;
+            return true;
+        }
+        return false;
+    }
+
+    private void updateCustomContactGroup() {
+        ContactGroup contactGroup = mContactGroupManager.getContactGroupById(mCurrentContactGroupId);
+        String[] selectedContacts = contactGroup.getSelectedContacts().split(AppConstants.CONTACT_ID_SEPARATOR);
+        mCustomContactList = new ArrayList<>();
+        for (String contactId : selectedContacts) {
+            mCustomContactList.add(mContactManager.getContactInfo(contactId));
+        }
     }
 
     @Override
@@ -152,10 +195,10 @@ public class RandomContactManager implements FilteredContactList, AeContactManag
         return mContactManager.getContactPhoto(contactId);
     }
 
-    @Nullable
+    @NonNull
     @Override
     public List<ContactVo> getTopFrequentlyContacted(int maxResults) {
-        List<ContactVo> filteredList = null;
+        List<ContactVo> filteredList = Collections.EMPTY_LIST;
         if (mContactManager.getTotalContactCount() > 0) {
             // The listToFilter would be sorted in place
             List<ContactVo> listToFilter = getAllContacts();

@@ -23,22 +23,25 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.ae.apps.randomcontact.R;
-import com.ae.apps.randomcontact.fragments.ContactGroupFragment.OnListFragmentInteractionListener;
-import com.ae.apps.randomcontact.fragments.dummy.DummyContent.DummyItem;
+import com.ae.apps.randomcontact.data.ContactGroup;
+import com.ae.apps.randomcontact.data.ContactGroupInteractionListener;
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
+ * {@link RecyclerView.Adapter} that can display a {@link ContactGroup} and makes a call to the
+ * specified {@link ContactGroupInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class ContactGroupRecyclerViewAdapter extends RecyclerView.Adapter<ContactGroupRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
-    private final OnListFragmentInteractionListener mListener;
+    private final List<ContactGroup> mValues;
+    private final ContactGroupInteractionListener mListener;
 
-    public ContactGroupRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
+    private String mSelectedGroupId;
+    private RadioButton mLastChecked;
+
+    public ContactGroupRecyclerViewAdapter(List<ContactGroup> items, ContactGroupInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -53,18 +56,32 @@ public class ContactGroupRecyclerViewAdapter extends RecyclerView.Adapter<Contac
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.mGroupName.setText(mValues.get(position).getName());
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
+        holder.mRadio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                RadioButton radioButton = (RadioButton) v;
+                if (radioButton.isChecked() && null != mListener) {
+                    mListener.onContactGroupSelected(holder.mItem);
                 }
+                // To support only one radio button being selected a time,
+                // we hold a reference to the last selected checkbox
+                if (null != mLastChecked && mLastChecked != radioButton) {
+                    mLastChecked.setChecked(false);
+                }
+                mLastChecked = radioButton;
             }
         });
+
+        if (null != mSelectedGroupId && mSelectedGroupId.equals(holder.mItem.getId())) {
+            holder.mRadio.setSelected(true);
+            holder.mRadio.setChecked(true);
+            mLastChecked = holder.mRadio;
+        } else {
+            holder.mRadio.setSelected(false);
+            holder.mRadio.setChecked(false);
+        }
     }
 
     @Override
@@ -72,22 +89,26 @@ public class ContactGroupRecyclerViewAdapter extends RecyclerView.Adapter<Contac
         return mValues.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final RadioButton mRadio;
-        public final TextView mContentView;
-        public DummyItem mItem;
+    public void setSelectedGroupId(String selectedGroupId) {
+        this.mSelectedGroupId = selectedGroupId;
+    }
 
-        public ViewHolder(View view) {
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        final View mView;
+        final RadioButton mRadio;
+        final TextView mGroupName;
+        ContactGroup mItem;
+
+        ViewHolder(View view) {
             super(view);
             mView = view;
             mRadio = (RadioButton) view.findViewById(R.id.radioSelected);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mGroupName = (TextView) view.findViewById(R.id.content);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + mGroupName.getText() + "'";
         }
     }
 }

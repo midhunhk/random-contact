@@ -41,9 +41,10 @@ import com.ae.apps.common.mock.MockContactDataUtils;
 import com.ae.apps.common.views.RoundedImageView;
 import com.ae.apps.common.vo.ContactVo;
 import com.ae.apps.randomcontact.R;
-import com.ae.apps.randomcontact.utils.Utils;
 import com.ae.apps.randomcontact.adapters.ContactRecyclerAdapter;
-import com.ae.apps.randomcontact.data.ContactManagerProvider;
+import com.ae.apps.randomcontact.data.GlobalThemeChanger;
+import com.ae.apps.randomcontact.managers.RandomContactManager;
+import com.ae.apps.randomcontact.utils.Utils;
 
 public class RandomContactFragment extends Fragment {
 
@@ -63,10 +64,9 @@ public class RandomContactFragment extends Fragment {
     private Animation mSlideInAnimation;
     private Bitmap mDefaultUserImage;
     private ContactRecyclerAdapter mRecyclerAdapter;
-
+    private GlobalThemeChanger mContactManagerProvider;
     private Context mContext;
-    private ContactManagerProvider mContactManagerProvider;
-
+    private AeContactManager mContactManager;
     private ContactVo mCurrentContact;
 
     /**
@@ -78,9 +78,76 @@ public class RandomContactFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_random_contact, container, false);
 
-        mContactManagerProvider = (ContactManagerProvider) getActivity();
         mContext = getActivity().getBaseContext();
+        mContactManager = RandomContactManager.getInstance(mContext);
+        mContactManagerProvider = (GlobalThemeChanger) getActivity();
 
+        initViews(layout);
+
+        setupRecyclerView(layout);
+
+        configureAnimations();
+
+        setupMenu();
+
+        // Lets start with showing a random contact
+        if (null != savedInstanceState) {
+            String savedContactId = savedInstanceState.getString(SAVED_CONTACT_ID);
+            mCurrentContact = mContactManager.getContactWithPhoneDetails(savedContactId);
+            if (null != mCurrentContact) {
+                displayContact(mCurrentContact);
+            }
+        } else {
+            showRandomContact();
+        }
+
+        return layout;
+    }
+
+    private void setupMenu() {
+        // Set Menu for the fragment's toolbar and the click handler
+        mFragmentToolbar.inflateMenu(R.menu.main);
+        mFragmentToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                switch (item.getItemId()) {
+                    case R.id.action_refresh:
+                        // Show another Random Contact
+                        showRandomContact();
+                        return true;
+                    case R.id.action_view_contact:
+                        Toast.makeText(getContext(), "Opening contact in Contacts app", Toast.LENGTH_SHORT).show();
+                        Utils.showContactInAddressBook(getActivity(), getCurrentContact().getId());
+                        return true;
+                }
+
+                return false;
+            }
+        });
+    }
+
+    private void configureAnimations() {
+        // Configure some animations
+        mFadeInAnimation = AnimationUtils.loadAnimation(mContext, R.anim.fade_in);
+        mSlideInAnimation = AnimationUtils.loadAnimation(mContext, R.anim.slide_in_top);
+        mFadeInAnimation.setStartOffset(250);
+    }
+
+    private void setupRecyclerView(View layout) {
+        // Create the Recycler Adapter
+        mRecyclerAdapter = new ContactRecyclerAdapter(null, R.layout.contact_info_item, getActivity());
+
+        // Find the RecyclerView and set some properties
+        RecyclerView recyclerView = (RecyclerView) layout.findViewById(android.R.id.list);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(mRecyclerAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+    }
+
+    private void initViews(View layout) {
         // Find some UI controls
         mUserName = (TextView) layout.findViewById(R.id.userDisplayName);
         mUserImage = (RoundedImageView) layout.findViewById(R.id.userProfileImage);
@@ -98,59 +165,6 @@ public class RandomContactFragment extends Fragment {
 
         // Hide the last contacted time initially
         mLastContactedLayout.setVisibility(View.GONE);
-
-        // Create the Recycler Adapter
-        mRecyclerAdapter = new ContactRecyclerAdapter(null, R.layout.contact_info_item, getActivity());
-
-        // Find the RecyclerView and set some properties
-        RecyclerView recyclerView = (RecyclerView) layout.findViewById(android.R.id.list);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(mRecyclerAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        // Configure some animations
-        mFadeInAnimation = AnimationUtils.loadAnimation(mContext, R.anim.fade_in);
-        mSlideInAnimation = AnimationUtils.loadAnimation(mContext, R.anim.slide_in_top);
-        mFadeInAnimation.setStartOffset(250);
-
-        // Set Menu for the fragment's toolbar and the click handler
-        mFragmentToolbar.inflateMenu(R.menu.main);
-        mFragmentToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-
-                switch (item.getItemId()) {
-                    case R.id.action_refresh:
-                        // Show another Random Contact
-                        showRandomContact();
-                        return true;
-                    case R.id.action_view_contact:
-                        if (null != mContactManagerProvider) {
-                            Toast.makeText(getContext(), "opening contact in address book", Toast.LENGTH_SHORT).show();
-                            Utils.showContactInAddressBook(getActivity(), getCurrentContact().getId());
-                        }
-                        return true;
-                }
-
-                return false;
-            }
-        });
-
-        // Lets start with showing a random contact
-        if (null != savedInstanceState) {
-            String savedContactId = savedInstanceState.getString(SAVED_CONTACT_ID);
-            mCurrentContact = mContactManagerProvider.getContactDataManager()
-                    .getContactWithPhoneDetails(savedContactId);
-            if (null != mCurrentContact) {
-                displayContact(mCurrentContact);
-            }
-        } else {
-            showRandomContact();
-        }
-
-        return layout;
     }
 
     /**
@@ -173,7 +187,7 @@ public class RandomContactFragment extends Fragment {
             showLastContactedTime(contactVo);
 
             // User has the right for a profile image. if they do not have it, one will be provided.
-            Bitmap bitmap = getContactManager().getContactPhoto(contactVo.getId(), mDefaultUserImage);
+            Bitmap bitmap = mContactManager.getContactPhoto(contactVo.getId(), mDefaultUserImage);
             mUserImage.setImageBitmap(bitmap);
 
             // theme some UI elements based on the image color
@@ -201,10 +215,6 @@ public class RandomContactFragment extends Fragment {
         }
     }
 
-    private AeContactManager getContactManager() {
-        return mContactManagerProvider.getContactDataManager();
-    }
-
     private void applyTheme(Bitmap bitmap) {
         // Use palette to generate a color from the contact image and apply to
         Palette palette = Palette.from(bitmap).generate();
@@ -227,7 +237,7 @@ public class RandomContactFragment extends Fragment {
         if (isMockMode) {
             contactVo = MockContactDataUtils.getMockContact();
         } else {
-            contactVo = mContactManagerProvider.getContactDataManager().getRandomContact();
+            contactVo = mContactManager.getRandomContact();
         }
 
         if (null != contactVo) {

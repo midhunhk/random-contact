@@ -60,7 +60,6 @@ public class AddContactGroupDialogFragment extends AppCompatDialogFragment {
 
     public AddContactGroupDialogFragment() {
         // Required empty public constructor
-        mContactManager = RandomContactManager.getInstance(getActivity().getContentResolver(), getResources());
     }
 
     public static AddContactGroupDialogFragment newInstance() {
@@ -80,6 +79,7 @@ public class AddContactGroupDialogFragment extends AppCompatDialogFragment {
         // getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setStyle(STYLE_NO_TITLE, 0);
+        mContactManager = RandomContactManager.getInstance(getActivity());
     }
 
     @Override

@@ -39,7 +39,7 @@ interface DatabaseConstants {
     String CONTACT_GROUP_SQL = "CREATE TABLE " + CONTACT_GROUP_TABLE + " (" +
             CONTACT_GROUP_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             CONTACT_GROUP_NAME + TEXT + "," +
-            CONTACT_GROUP_CONTACTS + TEXT + "," +
+            CONTACT_GROUP_CONTACTS + TEXT +
             ")";
 
     String[] CONTACT_GROUP_COLUMNS = {
