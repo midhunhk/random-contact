@@ -212,18 +212,18 @@ public class RandomContactFragment extends Fragment {
         // Update the toolbar colors
         mContactManagerProvider.applyThemeFromImage(palette);
 
-        int vibrantColor = palette.getVibrantColor(getResources().getColor(R.color.bright_orange));
+        int vibrantColor = palette.getVibrantColor(getResources().getColor(R.color.colorAccent));
         mUserContactedCount.setTextColor(vibrantColor);
         mContactNowText.setTextColor(vibrantColor);
 
-        mFragmentToolbar.setBackgroundColor(palette.getDarkVibrantColor(getResources().getColor(R.color.bright_foreground_material_dark)));
-
-        // int toolbarColor = palette.getLightVibrantColor(R.color.bright_foreground_material_dark);
+        int toolbarColor = palette.getDarkVibrantColor(getResources()
+                .getColor(R.color.colorPrimary));
+        mFragmentToolbar.setBackgroundColor(toolbarColor);
         mToolbarExtend.setBackgroundColor(vibrantColor);
     }
 
     public void showRandomContact() {
-        ContactVo contactVo = null;
+        ContactVo contactVo;
         if (isMockMode) {
             contactVo = MockContactDataUtils.getMockContact();
         } else {

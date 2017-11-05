@@ -65,7 +65,7 @@ public class FrequentContactsFragment extends Fragment {
         FrequentContactAdapter frequentContactAdapter = new FrequentContactAdapter(contacts, R.layout.contact_row,
                 mContext, mContactManagerProvider.getContactDataManager());
 
-        // Find the recyclerview and set required properties
+        // Find the recycler view and set required properties
         RecyclerView recyclerView = (RecyclerView) layout.findViewById(android.R.id.list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(frequentContactAdapter);

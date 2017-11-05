@@ -97,14 +97,14 @@ public class MainActivity extends ToolBarBaseActivity implements OnItemClickList
     @SuppressLint({"InlinedApi", "NewApi"})
     public void applyThemeFromImage(Palette palette) {
         int toolbarColor = palette.getVibrantColor(
-                getResources().getColor(android.support.v7.appcompat.R.color.material_blue_grey_800));
+                getResources().getColor(R.color.colorAccent));
 
         Drawable colorDrawable = new ColorDrawable(toolbarColor);
         getSupportActionBar().setBackgroundDrawable(colorDrawable);
 
         // Theme the status bar on Lollipop and above
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            int color = getResources().getColor(android.support.v7.appcompat.R.color.material_blue_grey_950);
+            int color = getResources().getColor(R.color.colorPrimary);
             int statusBarColor = palette.getDarkMutedColor(color);
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
