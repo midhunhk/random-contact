@@ -41,7 +41,7 @@ public class ContactGroupManager {
      * Returns an instance of ContactGroupManager
      *
      * @param context context
-     * @return
+     * @return an instance
      */
     public static ContactGroupManager getInstance(final Context context) {
         if (null == sInstance) {
@@ -59,7 +59,7 @@ public class ContactGroupManager {
     /**
      * Returns the selected contact group
      *
-     * @return
+     * @return selected contact group id
      */
     public String selectedContactGroup() {
         return mSharedPreferences.getString(PREF_KEY_SELECTED_CONTACT_GROUP, DEFAULT_CONTACT_GROUP);
@@ -82,7 +82,7 @@ public class ContactGroupManager {
      * Adds a new Contact Group
      *
      * @param contactGroup contactGroup
-     * @return
+     * @return updated contact group
      */
     public ContactGroup addContactGroup(final ContactGroup contactGroup) {
         long rowId = mRandomContactDatabase.createContactGroup(contactGroup);
@@ -102,7 +102,7 @@ public class ContactGroupManager {
     /**
      * Returns all contact groups
      *
-     * @return
+     * @return all contact groups
      */
     public List<ContactGroup> getAllContactGroups() {
         return mRandomContactDatabase.getAllContactGroups();
@@ -111,10 +111,10 @@ public class ContactGroupManager {
     /**
      * Return the specific ContactGroup details by id
      *
-     * @param mCurrentContactGroupId
-     * @return
+     * @param contactId contactId
+     * @return contact group
      */
-    public ContactGroup getContactGroupById(final String mCurrentContactGroupId) {
-        return mRandomContactDatabase.getContactGroupById(mCurrentContactGroupId);
+    public ContactGroup getContactGroupById(final String contactId) {
+        return mRandomContactDatabase.getContactGroupById(contactId);
     }
 }
