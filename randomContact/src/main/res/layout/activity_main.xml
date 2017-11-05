@@ -56,7 +56,7 @@
                 android:id="@+id/appVersion"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_margin="2dip"
+                android:layout_marginLeft="8dip"
                 android:layout_toEndOf="@+id/appIcon"
                 android:layout_toRightOf="@+id/appIcon"
                 android:gravity="center_vertical"

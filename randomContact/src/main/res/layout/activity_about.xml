@@ -28,21 +28,20 @@
                 android:src="@drawable/app_icon"/>
 
             <TextView
-                android:id="@+id/appVersion"
+                android:id="@+id/appName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:layout_toRightOf="@+id/appIcon"
-                android:layout_marginLeft="@dimen/margin_medium"
                 android:padding="@dimen/card_padding"
                 android:text="@string/app_name"
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/appDeveloper"
+                android:id="@+id/appVersion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/appVersion"
+                android:layout_below="@+id/appName"
                 android:layout_gravity="start"
                 android:layout_toRightOf="@+id/appIcon"
                 android:padding="@dimen/card_padding"
@@ -52,7 +51,7 @@
                 android:id="@+id/appReleaseDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/appDeveloper"
+                android:layout_below="@+id/appVersion"
                 android:layout_gravity="start"
                 android:layout_toRightOf="@+id/appIcon"
                 android:padding="@dimen/card_padding"
