@@ -100,7 +100,7 @@ public class RandomContactFragment extends Fragment {
         mLastContactedLayout.setVisibility(View.GONE);
 
         // Create the Recycler Adapter
-        mRecyclerAdapter = new ContactRecyclerAdapter(null, R.layout.contact_info_row, getActivity());
+        mRecyclerAdapter = new ContactRecyclerAdapter(null, R.layout.contact_info_item, getActivity());
 
         // Find the RecyclerView and set some properties
         RecyclerView recyclerView = (RecyclerView) layout.findViewById(android.R.id.list);

@@ -62,7 +62,7 @@ public class FrequentContactsFragment extends Fragment {
         List<ContactVo> contacts = mFilteredContacts.getTopFrequentlyContacted(40);
 
         // Create the Adapter for the RecyclerView here
-        FrequentContactAdapter frequentContactAdapter = new FrequentContactAdapter(contacts, R.layout.contact_row,
+        FrequentContactAdapter frequentContactAdapter = new FrequentContactAdapter(contacts, R.layout.frequent_contact_item,
                 mContext, mContactManagerProvider.getContactDataManager());
 
         // Find the recycler view and set required properties

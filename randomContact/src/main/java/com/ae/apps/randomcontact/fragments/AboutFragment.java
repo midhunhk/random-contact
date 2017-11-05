@@ -29,7 +29,7 @@ import com.ae.apps.common.utils.DialogUtils;
 import com.ae.apps.randomcontact.R;
 
 /**
- * The aboutActivity
+ * The About Fragment
  *
  * @author MidhunHK
  */
@@ -38,7 +38,7 @@ public class AboutFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View layout = inflater.inflate(R.layout.activity_about, container, false);
+        View layout = inflater.inflate(R.layout.fragment_about, container, false);
 
         final Context context = getActivity();
 

@@ -19,6 +19,7 @@ package com.ae.apps.randomcontact.managers;
 import android.content.ContentResolver;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.support.annotation.Nullable;
 
 import com.ae.apps.common.managers.ContactManager;
 import com.ae.apps.common.managers.contact.AeContactManager;
@@ -151,12 +152,14 @@ public class RandomContactManager implements FilteredContactList, AeContactManag
         return mContactManager.getContactPhoto(contactId);
     }
 
+    @Nullable
     @Override
     public List<ContactVo> getTopFrequentlyContacted(int maxResults) {
-        List<ContactVo> filteredList = mContactManager.getAllContacts();
-        if (null != filteredList && !filteredList.isEmpty()) {
+        List<ContactVo> filteredList = null;
+        if (mContactManager.getTotalContactCount() > 0) {
+            // The listToFilter would be sorted in place
             List<ContactVo> listToFilter = getAllContacts();
-            int contactsToShow = Math.min(maxResults, filteredList.size());
+            int contactsToShow = Math.min(maxResults, mContactManager.getTotalContactCount());
 
             // Apply the filter to the contacts
             Collections.sort(listToFilter, new Comparator<ContactVo>() {

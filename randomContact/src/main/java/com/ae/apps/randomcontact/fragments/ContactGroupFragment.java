@@ -1,3 +1,18 @@
+/*
+ * Copyright 2017 Midhun Harikumar
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.ae.apps.randomcontact.fragments;
 
 import android.content.Context;
@@ -40,12 +55,12 @@ public class ContactGroupFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_contact_group_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_contact_group, container, false);
 
         // Set the adapter
-        if (view instanceof RecyclerView) {
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
+        if (null != recyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
             recyclerView.setAdapter(new ContactGroupRecyclerViewAdapter(DummyContent.ITEMS, mListener));
         }
