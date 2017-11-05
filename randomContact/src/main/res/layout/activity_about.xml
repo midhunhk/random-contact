@@ -20,6 +20,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_gravity="start"
                 android:layout_margin="4dip"
                 android:contentDescription="@string/empty_text"
@@ -47,9 +48,19 @@
                 android:text="@string/app_version"/>
 
             <TextView
+                android:id="@+id/appReleaseDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/appDeveloper"
+                android:layout_gravity="start"
+                android:layout_toRightOf="@+id/appIcon"
+                android:padding="@dimen/card_padding"
+                android:text="@string/app_release_date"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/appReleaseDate"
                 android:layout_gravity="start"
                 android:layout_toRightOf="@+id/appIcon"
                 android:padding="@dimen/card_padding"
