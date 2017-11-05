@@ -11,7 +11,7 @@ public interface ContactManagerConsumer {
 
 	/**
 	 * Gets current contact
-	 * 
+	 *
 	 * @return
 	 */
 	ContactVo getCurrentContact();

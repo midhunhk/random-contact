@@ -1,4 +1,4 @@
-package com.ae.apps.randomcontact;
+package com.ae.apps.randomcontact.utils;
 
 import android.content.Context;
 import android.content.Intent;

@@ -11,6 +11,10 @@
     <color name="lime_green">#99AF1C</color>
     <color name="dark_blue">#253D61</color>
 
+    <color name="colorPrimary">#3D639C</color>
+    <color name="colorPrimaryDark">#243C5E</color>
+    <color name="colorAccent">#FF3366</color>
+
     <!-- Background color for light CardView. -->
     <color name="cardview_light_background">#FFFAFAFA</color>
 	<!-- Background color for dark CardView. -->

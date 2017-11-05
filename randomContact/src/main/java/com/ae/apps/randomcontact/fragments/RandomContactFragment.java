@@ -41,7 +41,7 @@ import com.ae.apps.common.mock.MockContactDataUtils;
 import com.ae.apps.common.views.RoundedImageView;
 import com.ae.apps.common.vo.ContactVo;
 import com.ae.apps.randomcontact.R;
-import com.ae.apps.randomcontact.Utils;
+import com.ae.apps.randomcontact.utils.Utils;
 import com.ae.apps.randomcontact.adapters.ContactRecyclerAdapter;
 import com.ae.apps.randomcontact.data.ContactManagerProvider;
 
@@ -207,9 +207,9 @@ public class RandomContactFragment extends Fragment {
 
     private void applyTheme(Bitmap bitmap) {
         // Use palette to generate a color from the contact image and apply to
-        Palette palette = Palette.generate(bitmap);
+        Palette palette = Palette.from(bitmap).generate();
 
-        // Upadte the toolbar colors
+        // Update the toolbar colors
         mContactManagerProvider.applyThemeFromImage(palette);
 
         int vibrantColor = palette.getVibrantColor(getResources().getColor(R.color.bright_orange));

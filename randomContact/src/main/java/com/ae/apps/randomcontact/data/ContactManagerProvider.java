@@ -23,7 +23,7 @@ public interface ContactManagerProvider {
 	/**
 	 * Apply a theme to toolbar from given image
 	 * 
-	 * @param bitmap
+	 * @param palette palette
 	 */
 	void applyThemeFromImage(Palette palette);
 

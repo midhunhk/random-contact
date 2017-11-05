@@ -111,13 +111,9 @@ public class RandomContactManager implements FilteredContactList, AeContactManag
             // Increment the index - we will wrap around when we reach the end
             index = (index + 1) % getTotalContactCount();
             // Make sure the phone details are present
-            ContactVo contactVo = getContactWithPhoneDetails(getAllContacts().get(index).getId());
-            // Update the contacts list with the updated contact item
-            // contactsList.set(index, contactVo);
-            return contactVo;
-        } else {
-            return null;
+            return getContactWithPhoneDetails(getAllContacts().get(index).getId());
         }
+        return null;
     }
 
     @Override

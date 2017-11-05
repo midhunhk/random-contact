@@ -9,21 +9,21 @@
         <!-- Customize your theme here. -->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="colorPrimary">@color/material_blue_grey_800</item>
-        <item name="colorPrimaryDark">@color/material_blue_grey_950</item>
-        <item name="colorAccent">@color/bright_orange</item>
-    </style>
-    
-<!-- 
-    <style name="MediumSizedText">
-        <item name="android:textStyle">italic</item>
-        <item name="android:padding">2dp</item>
-        <item name="android:textSize">24sp</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="EmphasisedText">
-        <item name="android:padding">4dp</item>
-        <item name="android:textSize">48sp</item>
-    </style>
- -->
+    <!--
+        <style name="MediumSizedText">
+            <item name="android:textStyle">italic</item>
+            <item name="android:padding">2dp</item>
+            <item name="android:textSize">24sp</item>
+        </style>
+
+        <style name="EmphasisedText">
+            <item name="android:padding">4dp</item>
+            <item name="android:textSize">48sp</item>
+        </style>
+     -->
 </resources>
