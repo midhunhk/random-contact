@@ -18,16 +18,21 @@ package com.ae.apps.randomcontact.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.ae.apps.randomcontact.R;
 import com.ae.apps.randomcontact.adapters.ContactGroupRecyclerViewAdapter;
+import com.ae.apps.randomcontact.data.ContactGroup;
 import com.ae.apps.randomcontact.fragments.dummy.DummyContent;
 import com.ae.apps.randomcontact.fragments.dummy.DummyContent.DummyItem;
+import com.ae.apps.randomcontact.managers.ContactGroupManager;
 
 /**
  * A fragment representing a list of Items.
@@ -35,7 +40,7 @@ import com.ae.apps.randomcontact.fragments.dummy.DummyContent.DummyItem;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class ContactGroupFragment extends Fragment {
+public class ContactGroupFragment extends Fragment implements AddContactGroupDialogFragment.AddContactGroupDialogListener {
 
     private OnListFragmentInteractionListener mListener;
 
@@ -61,10 +66,27 @@ public class ContactGroupFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
         if (null != recyclerView) {
             Context context = view.getContext();
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
             recyclerView.setAdapter(new ContactGroupRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
         }
+
+        View createButton = view.findViewById(R.id.btnCreateContactGroup);
+        createButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAddContactGroupDialog();
+            }
+        });
+
         return view;
+    }
+
+    private void showAddContactGroupDialog() {
+        FragmentManager fragmentManager = getFragmentManager();
+        AddContactGroupDialogFragment fragment = AddContactGroupDialogFragment.newInstance();
+        fragment.setTargetFragment(ContactGroupFragment.this, 300);
+        fragment.show(fragmentManager, "fragment_add_contact_group");
     }
 
 
@@ -83,6 +105,14 @@ public class ContactGroupFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onContactGroupAdded(final ContactGroup contactGroup) {
+        ContactGroup addedContactGroup = ContactGroupManager.getInstance(getActivity())
+                .addContactGroup(contactGroup);
+        Toast.makeText(getContext(), "Added group" + addedContactGroup.getName() + " with id " + addedContactGroup.getId(),
+                Toast.LENGTH_SHORT).show();
     }
 
     /**

@@ -33,15 +33,18 @@ interface DatabaseConstants {
     // Custom Contact Group Table
     String CONTACT_GROUP_TABLE = "custom_contact_group";
     String CONTACT_GROUP_ID = BaseColumns._ID;
+    String CONTACT_GROUP_NAME = "contact_group_name";
     String CONTACT_GROUP_CONTACTS = "contact_ids";
 
     String CONTACT_GROUP_SQL = "CREATE TABLE " + CONTACT_GROUP_TABLE + " (" +
             CONTACT_GROUP_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            CONTACT_GROUP_NAME + TEXT + "," +
             CONTACT_GROUP_CONTACTS + TEXT + "," +
             ")";
 
     String[] CONTACT_GROUP_COLUMNS = {
             CONTACT_GROUP_ID,
+            CONTACT_GROUP_NAME,
             CONTACT_GROUP_CONTACTS
     };
 

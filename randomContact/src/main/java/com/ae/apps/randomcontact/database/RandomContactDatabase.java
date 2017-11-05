@@ -44,6 +44,7 @@ public class RandomContactDatabase extends DataBaseHelper {
      */
     public long createContactGroup(ContactGroup contactGroup) {
         ContentValues contentValues = new ContentValues();
+        contentValues.put(DatabaseConstants.CONTACT_GROUP_NAME, contactGroup.getName());
         contentValues.put(DatabaseConstants.CONTACT_GROUP_CONTACTS, contactGroup.getSelectedContacts());
         return insert(DatabaseConstants.CONTACT_GROUP_TABLE, contentValues);
     }
@@ -111,8 +112,9 @@ public class RandomContactDatabase extends DataBaseHelper {
 
     private ContactGroup mapContactGroupModel(Cursor cursor) {
         String id = cursor.getString(cursor.getColumnIndex(DatabaseConstants.CONTACT_GROUP_ID));
+        String name = cursor.getString(cursor.getColumnIndex(DatabaseConstants.CONTACT_GROUP_NAME));
         String contacts = cursor.getString(cursor.getColumnIndex(DatabaseConstants.CONTACT_GROUP_CONTACTS));
-        return new ContactGroup(id, contacts);
+        return new ContactGroup(id, name, contacts);
     }
 
 }

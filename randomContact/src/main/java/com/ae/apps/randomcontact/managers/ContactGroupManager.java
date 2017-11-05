@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Manages the data for ContactGroups
  */
-class ContactGroupManager {
+public class ContactGroupManager {
 
     private static final String DEFAULT_CONTACT_GROUP = "0";
     private static final String PREF_KEY_SELECTED_CONTACT_GROUP = "pref_key_selected_contact_group";
@@ -41,7 +41,7 @@ class ContactGroupManager {
      * @param context context
      * @return
      */
-    static ContactGroupManager getInstance(final Context context) {
+    public static ContactGroupManager getInstance(final Context context) {
         if (null == sInstance) {
             sInstance = new ContactGroupManager(context);
         }
