@@ -43,16 +43,15 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.</string>
+
+    <!-- v3.0.0 -->
     <string name="str_all_contacts">All Contacts</string>
     <string name="str_create_group">Create Group</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="str_group_name">Contact Group Name</string>
-    <string name="str_contact_group_add">Add</string>
+    <string name="str_contact_group_add">Create</string>
     <string name="str_group_members">Group Members</string>
     <string name="str_contact_group_add_member">Add</string>
-    <string name="str_select_contact_group">Select a group to generate Random Contacts from</string>
+    <string name="str_select_contact_group">Select a group to generate Random Contacts from.</string>
     <string name="str_empty_list_groups">No Custom Groups created</string>
 
 </resources>
