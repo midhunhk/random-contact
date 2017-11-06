@@ -29,6 +29,7 @@ import com.ae.apps.randomcontact.data.ContactGroup;
 import com.ae.apps.randomcontact.utils.AppConstants;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -47,7 +48,7 @@ public class RandomContactManager implements FilteredContactList, AeContactManag
 
     private int index = 0;
     private String mCurrentContactGroupId;
-    private List<ContactVo> mCustomContactList;
+    private List<String> mCustomContactIds;
     private final AeContactManager mContactManager;
     private final ContactGroupManager mContactGroupManager;
 
@@ -115,29 +116,27 @@ public class RandomContactManager implements FilteredContactList, AeContactManag
     @Override
     public ContactVo getRandomContact() {
         if (!getAllContacts().isEmpty()) {
-            List<ContactVo> contactsList;
+            String randomContactId;
 
             boolean selectionChanged = isContactGroupSelectionChanged();
 
             if (AppConstants.DEFAULT_CONTACT_ID.equals(mCurrentContactGroupId)) {
-                // Get Random Contacts from All Contacts
-                contactsList = getAllContacts();
                 // Increment the index - we will wrap around when we reach the end
                 index = (index + 1) % getTotalContactCount();
+                randomContactId = getAllContacts().get(index).getId();
             } else {
                 // Get the Random Contact from a sublist
-                if (selectionChanged || null == mCustomContactList || mCustomContactList.isEmpty()) {
+                if (selectionChanged || null == mCustomContactIds || mCustomContactIds.isEmpty()) {
                     // If the source selection was changed, we need to update the custom contacts list
                     updateCustomContactGroup();
                 }
-                index = new Random().nextInt(mCustomContactList.size());
-                contactsList = mCustomContactList;
+                index = new Random().nextInt(mCustomContactIds.size());
+                randomContactId = mCustomContactIds.get(index);
             }
 
             // Make sure the phone details are present by wrapping the contact details
             // in a call to get contact with phone details
-            return getContactWithPhoneDetails(
-                    contactsList.get(index).getId());
+            return getContactWithPhoneDetails(randomContactId);
         }
         return null;
     }
@@ -154,10 +153,7 @@ public class RandomContactManager implements FilteredContactList, AeContactManag
     private void updateCustomContactGroup() {
         ContactGroup contactGroup = mContactGroupManager.getContactGroupById(mCurrentContactGroupId);
         String[] selectedContacts = contactGroup.getSelectedContacts().split(AppConstants.CONTACT_ID_SEPARATOR);
-        mCustomContactList = new ArrayList<>();
-        for (String contactId : selectedContacts) {
-            mCustomContactList.add(mContactManager.getContactInfo(contactId));
-        }
+        mCustomContactIds = Arrays.asList(selectedContacts);
     }
 
     @Override
