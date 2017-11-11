@@ -28,7 +28,6 @@ import com.ae.apps.common.vo.MessageVo;
 import com.ae.apps.randomcontact.data.ContactGroup;
 import com.ae.apps.randomcontact.utils.AppConstants;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -84,7 +83,7 @@ public class RandomContactManager implements FilteredContactList, AeContactManag
         // 	1. The user has no contacts yet
         //	2. Access to Contacts permission denied in Marshmallow and up
         if (totalContactCount > 0) {
-            index = new Random().nextInt(getTotalContactCount());
+            index = new Random().nextInt(totalContactCount);
         }
     }
 
@@ -109,13 +108,15 @@ public class RandomContactManager implements FilteredContactList, AeContactManag
     }
 
     /**
-     * Override the default implementation
+     * Supply a RandomContact
      *
      * @return a random contact object, null if no contacts found
+     * @throws UnsupportedOperationException if ContactManager is not yet initialized
      */
     @Override
     public ContactVo getRandomContact() {
-        if (!getAllContacts().isEmpty()) {
+        final List<ContactVo> allContacts = getAllContacts();
+        if (!allContacts.isEmpty()) {
             String randomContactId;
 
             boolean selectionChanged = isContactGroupSelectionChanged();
@@ -123,7 +124,7 @@ public class RandomContactManager implements FilteredContactList, AeContactManag
             if (AppConstants.DEFAULT_CONTACT_ID.equals(mCurrentContactGroupId)) {
                 // Increment the index - we will wrap around when we reach the end
                 index = (index + 1) % getTotalContactCount();
-                randomContactId = getAllContacts().get(index).getId();
+                randomContactId = allContacts.get(index).getId();
             } else {
                 // Get the Random Contact from a sublist
                 if (selectionChanged || null == mCustomContactIds || mCustomContactIds.isEmpty()) {
@@ -200,7 +201,7 @@ public class RandomContactManager implements FilteredContactList, AeContactManag
             List<ContactVo> listToFilter = getAllContacts();
             int contactsToShow = Math.min(maxResults, mContactManager.getTotalContactCount());
 
-            // Apply the filter to the contacts
+            // Sort the contacts list based on the number of times each are contacted
             Collections.sort(listToFilter, new Comparator<ContactVo>() {
                 @Override
                 public int compare(ContactVo contact1, ContactVo contact2) {

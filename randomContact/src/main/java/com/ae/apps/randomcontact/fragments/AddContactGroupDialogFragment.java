@@ -42,7 +42,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Add a contact group
+ * Dialog to add a contact group
  */
 public class AddContactGroupDialogFragment extends AppCompatDialogFragment {
 
