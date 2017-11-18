@@ -3,7 +3,7 @@
 <img alt="Random Contact" src="/resources/promotional/feature_graphic_v2.png" width="820"/>
 
 Random Contact is an Android app that shows the details of a random contact from your contacts list. 
-This is a fun and personal project which has been made open source.
+This is an experimental, fun and personal project which has been made open source.
 
 ## Features
  - Designed based on material design principles
@@ -11,15 +11,16 @@ This is a fun and personal project which has been made open source.
  - Open Source
 
 ## Play Store
-https://play.google.com/store/apps/details?id=com.ae.apps.randomcontact
+The latest version of Random Contact is available in [Google Play Store](https://play.google.com/store/apps/details?id=com.ae.apps.randomcontact)
 
-<img alt="screenshot" src="https://lh4.googleusercontent.com/-tDCNljxuwp0/VHWPV8hD6II/AAAAAAAACAM/5jvqjYEwdRA/w976-h577-no/device-2014-11-26-121541_framed.png" />
+<img alt="screenshot" src="/resources/promotional/screen-random-contact.png" />
 
+## Web Resources
 App Announcement blog entry
-http://midhunhk.blogspot.in/2013/11/randomcontact-new-app-announcement.html
+ - http://midhunhk.blogspot.in/2013/11/randomcontact-new-app-announcement.html
 
 ## Dependencies
-The following libraries are needed for this application.
+Random Contact used the below dependent libraries for functioning
 - ae-apps-library (https://github.com/midhunhk/ae-apps-library)
 
 # License
