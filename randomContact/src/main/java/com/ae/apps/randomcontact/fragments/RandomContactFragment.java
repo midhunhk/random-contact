@@ -45,6 +45,8 @@ import com.ae.apps.randomcontact.data.GlobalThemeChanger;
 import com.ae.apps.randomcontact.managers.RandomContactManager;
 import com.ae.apps.randomcontact.utils.Utils;
 
+import java.util.Collections;
+
 public class RandomContactFragment extends Fragment {
 
     private static final String SAVED_CONTACT_ID = "savedContactId";
@@ -135,7 +137,9 @@ public class RandomContactFragment extends Fragment {
 
     private void setupRecyclerView(View layout) {
         // Create the Recycler Adapter
-        mRecyclerAdapter = new ContactRecyclerAdapter(null, R.layout.contact_info_item, getActivity());
+        mRecyclerAdapter = new ContactRecyclerAdapter(Collections.EMPTY_LIST,
+                R.layout.contact_info_item,
+                getActivity());
 
         // Find the RecyclerView and set some properties
         RecyclerView recyclerView = (RecyclerView) layout.findViewById(android.R.id.list);
