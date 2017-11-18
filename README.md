@@ -1,12 +1,16 @@
-Random Contact
-==============
+# Random Contact
 
-This is an Android application that shows the details of a random contact from your contacts list. This is a fun and personal project which has been made opensource.
+<img alt="Random Contact" src="/resources/promotional/feature_graphic_v2.png" width="820"/>
 
-Now designed based on material design principles from Android Lollipop
+Random Contact is an Android app that shows the details of a random contact from your contacts list. 
+This is a fun and personal project which has been made open source.
 
-Play Store
-==========
+## Features
+ - Designed based on material design principles
+ - Create custom Contact Groups for Random Contact Generation
+ - Open Source
+
+## Play Store
 https://play.google.com/store/apps/details?id=com.ae.apps.randomcontact
 
 <img alt="screenshot" src="https://lh4.googleusercontent.com/-tDCNljxuwp0/VHWPV8hD6II/AAAAAAAACAM/5jvqjYEwdRA/w976-h577-no/device-2014-11-26-121541_framed.png" />
@@ -14,17 +18,12 @@ https://play.google.com/store/apps/details?id=com.ae.apps.randomcontact
 App Announcement blog entry
 http://midhunhk.blogspot.in/2013/11/randomcontact-new-app-announcement.html
 
-Dependencies
-============
+## Dependencies
 The following libraries are needed for this application.
 - ae-apps-library (https://github.com/midhunhk/ae-apps-library)
-- android-support-v7-appcompat
-- android-support-v7-cardview
-- android-support-v7-recyclerview
 
-License
-=======
-Copyright 2014 Midhun Harikumar
+# License
+Copyright 2017 Midhun Harikumar
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
