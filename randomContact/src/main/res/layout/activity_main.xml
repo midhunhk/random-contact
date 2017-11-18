@@ -44,6 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
+            android:layout_marginTop="@dimen/card_margin"
             android:background="@color/white"
             android:divider="@android:color/transparent"/>
     </LinearLayout>
