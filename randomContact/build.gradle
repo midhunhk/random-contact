@@ -9,12 +9,27 @@ android {
         applicationId "com.ae.apps.randomcontact"
         minSdkVersion 14
         targetSdkVersion 22
+        versionCode 126
+        versionName "3.0.0"
     }
 
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    compileOptions {
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            outputFileName = "$app_build_name-${variant.name}-${variant.versionName}-build-${variant.versionCode}.apk"
         }
     }
 }
