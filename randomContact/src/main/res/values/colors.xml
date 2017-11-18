@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="bright_orange">#FF9900</color>
-    <color name="dark_gray">#333333</color>
-    <color name="light_gray">#9a9a9a</color>
-    <color name="almost_white">#f4f4f4</color>
-    <color name="red">#ff0000</color>
-    <color name="white">#ffffff</color>
-    <color name="slate_blue_dark">#483D8B</color>
-    <color name="lime_green">#99AF1C</color>
-    <color name="dark_blue">#253D61</color>
+    <color name="material_blue_grey">#ff21272b</color>
 
     <color name="colorPrimary">#3D639C</color>
     <color name="colorPrimaryDark">#243C5E</color>

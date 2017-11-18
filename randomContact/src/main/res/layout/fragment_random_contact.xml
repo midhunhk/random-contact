@@ -28,7 +28,7 @@
                 android:id="@+id/toolbar2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/material_blue_grey_950"
+                android:background="@color/material_blue_grey"
                 android:minHeight="50dp"
                 app:theme="@style/Theme.AppCompat" >
 
@@ -54,7 +54,7 @@
                         android:layout_marginLeft="@dimen/icon_margin"
                         android:layout_marginStart="@dimen/icon_margin"
                         android:text="@string/empty_text"
-                        android:textColor="@color/almost_white"
+                        android:textColor="@color/color_almost_white"
                         android:textSize="20sp" />
                 </LinearLayout>
             </android.support.v7.widget.Toolbar>
@@ -86,8 +86,9 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="@dimen/card_padding"
+                    android:layout_marginEnd="@dimen/card_padding"
                     android:text="@string/str_contact_count"
-                    android:textColor="@color/bright_orange"
+                    android:textColor="@color/color_bright_orange"
                     android:textSize="48sp" />
             </RelativeLayout>
             <!-- last contacted count -->
@@ -114,6 +115,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:paddingStart="@dimen/card_margin"
+                        android:paddingLeft="@dimen/card_margin"
                         android:paddingEnd="@dimen/card_margin"
                         android:paddingRight="@dimen/card_margin"
                         android:text="@string/str_last_contcted_on" />
@@ -133,7 +136,7 @@
                     android:layout_margin="@dimen/card_margin"
                     android:padding="@dimen/card_padding"
                     android:text="@string/str_contact_now"
-                    android:textColor="@color/bright_orange"
+                    android:textColor="@color/color_bright_orange"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 

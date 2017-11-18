@@ -53,5 +53,11 @@ limitations under the License.</string>
     <string name="str_contact_group_add_member">Add</string>
     <string name="str_select_contact_group">Select a group to generate Random Contacts from.</string>
     <string name="str_empty_list_groups">No Custom Groups created</string>
+    <string name="str_contact_group_delete_title">Delete this Contact Group?</string>
+    <string name="str_multi_contact_title">Select Contacts</string>
+
+    <string name="str_multi_contact_continue">Continue</string>
+    <string name="str_multi_contact_validation">Please select at least one contact</string>
+    <string name="str_multi_contact_no_contacts">No Contacts to display</string>
 
 </resources>

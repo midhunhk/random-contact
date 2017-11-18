@@ -32,6 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
+                android:layout_toEndOf="@+id/appIcon"
                 android:layout_toRightOf="@+id/appIcon"
                 android:padding="@dimen/card_padding"
                 android:text="@string/app_name"
@@ -43,6 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/appName"
                 android:layout_gravity="start"
+                android:layout_toEndOf="@+id/appIcon"
                 android:layout_toRightOf="@+id/appIcon"
                 android:padding="@dimen/card_padding"
                 android:text="@string/app_version"/>

@@ -1,7 +1,14 @@
 # Random Contact
-This is an Android application that shows the details of a random contact from your contacts list. 
-This is a fun and personal project which has been made opensource.
-Now designed based on material design principles from Android Lollipop
+
+<img alt="Random Contact" src="/resources/promotional/feature_graphic_v2.png" width="820"/>
+
+Random Contact is an Android app that shows the details of a random contact from your contacts list. 
+This is a fun and personal project which has been made open source.
+
+## Features
+ - Designed based on material design principles
+ - Create custom Contact Groups for Random Contact Generation
+ - Open Source
 
 ## Play Store
 https://play.google.com/store/apps/details?id=com.ae.apps.randomcontact

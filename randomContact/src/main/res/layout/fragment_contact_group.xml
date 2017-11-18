@@ -1,35 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     android:name="com.ae.apps.randomcontact.fragments.ContactGroupFragment"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.ae.apps.randomcontact.fragments.ContactGroupFragment"
     tools:listitem="@layout/contact_group_item">
 
-    <Button
-        android:id="@+id/btnCreateContactGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:backgroundTint="@color/colorAccent"
-        android:text="@string/str_create_group"
-        android:textColor="@color/almost_white"/>
-
     <TextView
+        android:id="@+id/txtContactGroupsLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_alignParentTop="true"
+        android:layout_margin="16dp"
         android:text="@string/str_select_contact_group"/>
 
     <LinearLayout
+        android:id="@+id/allContactsContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_below="@+id/txtContactGroupsLabel"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:orientation="horizontal">
@@ -43,14 +35,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/str_all_contacts"
-            android:textSize="18sp"
+            android:textAllCaps="true"
             android:textColor="@color/text_black"
-            android:textAllCaps="true"/>
+            android:textSize="18sp"/>
     </LinearLayout>
 
     <FrameLayout
+        android:id="@+id/contactGroupListContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btnCreateContactGroup"
+        android:layout_below="@+id/allContactsContainer">
 
         <com.ae.apps.common.views.EmptyRecyclerView
             android:id="@+id/list"
@@ -78,4 +73,14 @@
                 android:text="@string/str_empty_list_groups"/>
         </RelativeLayout>
     </FrameLayout>
-</LinearLayout>
+
+    <Button
+        android:id="@+id/btnCreateContactGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center_horizontal"
+        android:backgroundTint="@color/colorAccent"
+        android:text="@string/str_create_group"
+        android:textColor="@color/color_almost_white"/>
+</RelativeLayout>
