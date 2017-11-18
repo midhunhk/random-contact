@@ -37,7 +37,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ae.apps.common.managers.contact.AeContactManager;
-import com.ae.apps.common.mock.MockContactDataUtils;
 import com.ae.apps.common.views.RoundedImageView;
 import com.ae.apps.common.vo.ContactVo;
 import com.ae.apps.randomcontact.R;
@@ -69,11 +68,6 @@ public class RandomContactFragment extends Fragment {
     private AeContactManager mContactManager;
     private ContactVo mCurrentContact;
 
-    /**
-     * This wont work when orientation switched to landscape
-     */
-    private boolean isMockMode = false;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_random_contact, container, false);
@@ -90,7 +84,13 @@ public class RandomContactFragment extends Fragment {
 
         setupMenu();
 
-        // Lets start with showing a random contact
+        showInitialContact(savedInstanceState);
+
+        return layout;
+    }
+
+    private void showInitialContact(Bundle savedInstanceState) {
+        // Show same contact if orientation has been changed
         if (null != savedInstanceState) {
             String savedContactId = savedInstanceState.getString(SAVED_CONTACT_ID);
             mCurrentContact = mContactManager.getContactWithPhoneDetails(savedContactId);
@@ -100,8 +100,6 @@ public class RandomContactFragment extends Fragment {
         } else {
             showRandomContact();
         }
-
-        return layout;
     }
 
     private void setupMenu() {
@@ -161,15 +159,12 @@ public class RandomContactFragment extends Fragment {
 
         // Decode the default image and cache it
         mDefaultUserImage = BitmapFactory.decodeResource(getResources(),
-                com.ae.apps.aeappslibrary.R.drawable.profile_icon_5);
+                com.ae.apps.aeappslibrary.R.drawable.profile_icon_4);
 
         // Hide the last contacted time initially
         mLastContactedLayout.setVisibility(View.GONE);
     }
 
-    /**
-     * Displays a random contact entry
-     */
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -233,12 +228,7 @@ public class RandomContactFragment extends Fragment {
     }
 
     public void showRandomContact() {
-        ContactVo contactVo;
-        if (isMockMode) {
-            contactVo = MockContactDataUtils.getMockContact();
-        } else {
-            contactVo = mContactManager.getRandomContact();
-        }
+        ContactVo contactVo = mContactManager.getRandomContact();
 
         if (null != contactVo) {
             displayContact(contactVo);

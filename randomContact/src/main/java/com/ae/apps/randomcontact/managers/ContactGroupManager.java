@@ -21,6 +21,7 @@ import android.preference.PreferenceManager;
 
 import com.ae.apps.randomcontact.data.ContactGroup;
 import com.ae.apps.randomcontact.database.RandomContactDatabase;
+import com.ae.apps.randomcontact.utils.AppConstants;
 
 import java.util.List;
 
@@ -29,7 +30,6 @@ import java.util.List;
  */
 public class ContactGroupManager {
 
-    private static final String DEFAULT_CONTACT_GROUP = "0";
     private static final String PREF_KEY_SELECTED_CONTACT_GROUP = "pref_key_selected_contact_group";
 
     private static ContactGroupManager sInstance;
@@ -62,7 +62,7 @@ public class ContactGroupManager {
      * @return selected contact group id
      */
     public String selectedContactGroup() {
-        return mSharedPreferences.getString(PREF_KEY_SELECTED_CONTACT_GROUP, DEFAULT_CONTACT_GROUP);
+        return mSharedPreferences.getString(PREF_KEY_SELECTED_CONTACT_GROUP, AppConstants.DEFAULT_CONTACT_GROUP);
     }
 
     /**

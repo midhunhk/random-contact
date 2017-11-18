@@ -15,7 +15,9 @@
  */
 package com.ae.apps.randomcontact.fragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -73,21 +75,24 @@ public class ContactGroupFragment extends Fragment
 
         mContactGroupManager = ContactGroupManager.getInstance(getActivity());
 
-        initViews(view);
+        String selectedContactGroup = mContactGroupManager.selectedContactGroup();
+
+        initViews(view, selectedContactGroup);
+
+        setUpRecyclerView(view, selectedContactGroup);
 
         return view;
     }
 
-    private void initViews(View view) {
-        String selectedContactGroup = mContactGroupManager.selectedContactGroup();
+    private void initViews(View view, String selectedContactGroup) {
         mRadioAllContacts = (RadioButton) view.findViewById(R.id.radioAllContacts);
 
-        mRadioAllContacts.setOnClickListener(new View.OnClickListener(){
+        mRadioAllContacts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mViewAdapter.setSelectedGroupId(AppConstants.DEFAULT_CONTACT_ID);
+                mViewAdapter.setSelectedGroupId(AppConstants.DEFAULT_CONTACT_GROUP);
                 mViewAdapter.notifyDataSetChanged();
-                mContactGroupManager.setSelectedContactGroup(getActivity(), AppConstants.DEFAULT_CONTACT_ID);
+                mContactGroupManager.setSelectedContactGroup(getActivity(), AppConstants.DEFAULT_CONTACT_GROUP);
             }
         });
 
@@ -99,9 +104,7 @@ public class ContactGroupFragment extends Fragment
             }
         });
 
-        setUpRecyclerView(view, selectedContactGroup);
-
-        if (AppConstants.DEFAULT_CONTACT_ID.equals(selectedContactGroup)) {
+        if (AppConstants.DEFAULT_CONTACT_GROUP.equals(selectedContactGroup)) {
             mRadioAllContacts.setSelected(true);
             mRadioAllContacts.setChecked(true);
         }
@@ -134,12 +137,10 @@ public class ContactGroupFragment extends Fragment
 
     @Override
     public void onContactGroupAdded(final ContactGroup contactGroup) {
-        ContactGroup addedContactGroup = ContactGroupManager.getInstance(getActivity())
-                .addContactGroup(contactGroup);
+        ContactGroup addedContactGroup = mContactGroupManager.addContactGroup(contactGroup);
         mContactGroups.add(contactGroup);
         mViewAdapter.notifyItemInserted(mContactGroups.indexOf(contactGroup));
-        Toast.makeText(getContext(), "Added group " + addedContactGroup.getName() + " with id " + addedContactGroup.getId(),
-                Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Added group " + addedContactGroup.getName(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -147,5 +148,41 @@ public class ContactGroupFragment extends Fragment
         mRadioAllContacts.setSelected(false);
         mRadioAllContacts.setChecked(false);
         mContactGroupManager.setSelectedContactGroup(getActivity(), item.getId());
+    }
+
+    @Override
+    public void onContactGroupDeleted(@NotNull final ContactGroup item) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                .setCancelable(true)
+                .setTitle(R.string.str_contact_group_delete_title)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        processContactGroupRemoval(item);
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        builder.show();
+    }
+
+    private void processContactGroupRemoval(@NotNull ContactGroup item) {
+        int position = mContactGroups.indexOf(item);
+        mContactGroups.remove(item);
+        mViewAdapter.notifyItemRemoved(position);
+
+        // Remove the contact group item from the database
+        mContactGroupManager.deleteContactGroup(item);
+
+        // Make the All Contacts radio checked if the deleted item was previously selected
+        if (mContactGroupManager.selectedContactGroup().equals(item.getId())) {
+            mRadioAllContacts.setChecked(true);
+            mContactGroupManager.setSelectedContactGroup(getContext(), AppConstants.DEFAULT_CONTACT_GROUP);
+        }
     }
 }

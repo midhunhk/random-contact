@@ -121,7 +121,7 @@ public class RandomContactManager implements FilteredContactList, AeContactManag
 
             boolean selectionChanged = isContactGroupSelectionChanged();
 
-            if (AppConstants.DEFAULT_CONTACT_ID.equals(mCurrentContactGroupId)) {
+            if (AppConstants.DEFAULT_CONTACT_GROUP.equals(mCurrentContactGroupId)) {
                 // Increment the index - we will wrap around when we reach the end
                 index = (index + 1) % getTotalContactCount();
                 randomContactId = allContacts.get(index).getId();

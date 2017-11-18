@@ -30,9 +30,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ae.apps.common.activities.multicontact.MultiContactPickerConstants;
 import com.ae.apps.common.managers.contact.AeContactManager;
 import com.ae.apps.common.vo.ContactVo;
 import com.ae.apps.randomcontact.R;
+import com.ae.apps.randomcontact.activities.MultiContactPickerActivity;
 import com.ae.apps.randomcontact.data.ContactGroup;
 import com.ae.apps.randomcontact.exceptions.ContactGroupValidationException;
 import com.ae.apps.randomcontact.managers.RandomContactManager;
@@ -46,8 +48,8 @@ import java.util.Collection;
  */
 public class AddContactGroupDialogFragment extends AppCompatDialogFragment {
 
-    private final String TAG = getClass().getSimpleName();
     private final int CONTACT_PICKER_RESULT = 1001;
+    private final int MULTI_CONTACT_PICKER_RESULT = 1002;
 
     private Collection<ContactVo> mSelectedContacts = new ArrayList<>();
     private AeContactManager mContactManager;
@@ -70,8 +72,10 @@ public class AddContactGroupDialogFragment extends AppCompatDialogFragment {
     public void onStart() {
         super.onStart();
 
-        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
+        if (null != getDialog().getWindow()) {
+            getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
     }
 
     @Override
@@ -161,20 +165,47 @@ public class AddContactGroupDialogFragment extends AppCompatDialogFragment {
     }
 
     private void pickContact() {
-        Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-        startActivityForResult(intent, CONTACT_PICKER_RESULT);
+        if (Boolean.parseBoolean("false")) {
+            Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+            startActivityForResult(intent, CONTACT_PICKER_RESULT);
+        } else {
+            Intent multiContactPickerIntent = new Intent(getActivity(), MultiContactPickerActivity.class);
+            startActivityForResult(multiContactPickerIntent, MULTI_CONTACT_PICKER_RESULT);
+        }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK && requestCode == CONTACT_PICKER_RESULT) {
-            // Handle Contact pick
-            Uri result = data.getData();
-            String contactId = result.getLastPathSegment();
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == CONTACT_PICKER_RESULT && null != data.getData()) {
 
-            ContactVo contactVo = mContactManager.getContactInfo(contactId);
+                // Handle Contact pick
+                Uri result = data.getData();
+                String contactId = result.getLastPathSegment();
 
-            if (null != contactVo && null != contactVo.getId()) {
+                ContactVo contactVo = mContactManager.getContactInfo(contactId);
+
+                if (null != contactVo && null != contactVo.getId()) {
+                    mSelectedContacts.add(contactVo);
+                    addMemberToContainer(contactVo);
+                }
+            }
+
+            if (requestCode == MULTI_CONTACT_PICKER_RESULT) {
+                String selectedContactIds = data.getStringExtra(MultiContactPickerConstants.RESULT_CONTACT_IDS);
+                addMultipleContacts(selectedContactIds);
+            }
+        }
+
+    }
+
+    private void addMultipleContacts(String selectedContactIds) {
+        ContactVo contactVo;
+        String[] contactIds = selectedContactIds.split(MultiContactPickerConstants.CONTACT_ID_SEPARATOR);
+        for (String contactId : contactIds) {
+            contactVo = mContactManager.getContactInfo(contactId);
+            if (null != contactVo && !mSelectedContacts.contains(contactVo)) {
                 mSelectedContacts.add(contactVo);
                 addMemberToContainer(contactVo);
             }

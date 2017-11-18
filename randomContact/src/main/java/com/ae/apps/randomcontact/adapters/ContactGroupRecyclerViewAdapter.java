@@ -19,6 +19,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -31,7 +32,6 @@ import java.util.List;
 /**
  * {@link RecyclerView.Adapter} that can display a {@link ContactGroup} and makes a call to the
  * specified {@link ContactGroupInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
  */
 public class ContactGroupRecyclerViewAdapter extends RecyclerView.Adapter<ContactGroupRecyclerViewAdapter.ViewHolder> {
 
@@ -82,6 +82,13 @@ public class ContactGroupRecyclerViewAdapter extends RecyclerView.Adapter<Contac
             holder.mRadio.setSelected(false);
             holder.mRadio.setChecked(false);
         }
+
+        holder.mDeleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onContactGroupDeleted(holder.mItem);
+            }
+        });
     }
 
     @Override
@@ -97,6 +104,7 @@ public class ContactGroupRecyclerViewAdapter extends RecyclerView.Adapter<Contac
         final View mView;
         final RadioButton mRadio;
         final TextView mGroupName;
+        final ImageButton mDeleteButton;
         ContactGroup mItem;
 
         ViewHolder(View view) {
@@ -104,6 +112,7 @@ public class ContactGroupRecyclerViewAdapter extends RecyclerView.Adapter<Contac
             mView = view;
             mRadio = (RadioButton) view.findViewById(R.id.radioSelected);
             mGroupName = (TextView) view.findViewById(R.id.content);
+            mDeleteButton = (ImageButton) view.findViewById(R.id.btnDeleteContactGroup);
         }
 
         @Override

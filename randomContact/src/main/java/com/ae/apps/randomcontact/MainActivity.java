@@ -36,30 +36,35 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.ae.apps.common.activities.ToolBarBaseActivity;
-import com.ae.apps.common.managers.contact.AeContactManager;
 import com.ae.apps.randomcontact.adapters.NavDrawerListAdapter;
 import com.ae.apps.randomcontact.data.GlobalThemeChanger;
 import com.ae.apps.randomcontact.managers.NavigationFragmentManager;
-import com.ae.apps.randomcontact.managers.RandomContactManager;
+import com.ae.apps.randomcontact.utils.AppConstants;
 
 public class MainActivity extends ToolBarBaseActivity implements OnItemClickListener, GlobalThemeChanger {
 
-    private static final String PREF_KEY_NAV_DRAWER_INTRO_GIVEN = "pref_key_nav_drawer_intro";
-
     private DrawerLayout mDrawerLayout;
-    private AeContactManager mContactManager;
     private NavigationFragmentManager mNavFragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mContactManager = RandomContactManager.getInstance(getBaseContext());
         mNavFragmentManager = new NavigationFragmentManager();
 
+        setupNavDrawer();
+
+        if (null == savedInstanceState) {
+            // Show the default fragment
+            showFragment(mNavFragmentManager.getFragmentInstance(0));
+        }
+
+        showNavDrawerIntro();
+    }
+
+    private void setupNavDrawer() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ListView mDrawerList = (ListView) findViewById(R.id.left_drawer_list);
-
 
         // Create the list for the main fragments to be shown in the drawer
         NavDrawerListAdapter drawerListAdapter = new NavDrawerListAdapter(this, mNavFragmentManager.getNavTitles());
@@ -72,19 +77,14 @@ public class MainActivity extends ToolBarBaseActivity implements OnItemClickList
         displayHomeAsUp();
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, getToolBar(),
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this,
+                mDrawerLayout,
+                getToolBar(),
                 R.string.app_name,
                 R.string.app_name);
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
-
-        if (null == savedInstanceState) {
-            // Show the default fragment
-            showFragment(mNavFragmentManager.getFragmentInstance(0));
-        }
-
-        showNavDrawerIntro();
     }
 
     private void showFragment(Fragment fragment) {
@@ -100,7 +100,9 @@ public class MainActivity extends ToolBarBaseActivity implements OnItemClickList
                 getResources().getColor(R.color.colorAccent));
 
         Drawable colorDrawable = new ColorDrawable(toolbarColor);
-        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+        if (null != getSupportActionBar()) {
+            getSupportActionBar().setBackgroundDrawable(colorDrawable);
+        }
 
         // Theme the status bar on Lollipop and above
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -132,13 +134,13 @@ public class MainActivity extends ToolBarBaseActivity implements OnItemClickList
     @SuppressLint("RtlHardcoded")
     private void showNavDrawerIntro() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean helloNavDrawer = sharedPreferences.getBoolean(PREF_KEY_NAV_DRAWER_INTRO_GIVEN, false);
+        boolean helloNavDrawer = sharedPreferences.getBoolean(AppConstants.PREF_KEY_NAV_DRAWER_INTRO_GIVEN, false);
 
         // Check and introduce the Navigation Drawer on first use to the user
         if (null != mDrawerLayout && !helloNavDrawer) {
             mDrawerLayout.openDrawer(Gravity.LEFT);
             sharedPreferences.edit()
-                    .putBoolean(PREF_KEY_NAV_DRAWER_INTRO_GIVEN, true)
+                    .putBoolean(AppConstants.PREF_KEY_NAV_DRAWER_INTRO_GIVEN, true)
                     .apply();
         }
     }
