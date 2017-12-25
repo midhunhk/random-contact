@@ -6,6 +6,9 @@
  - Upgrade libAeApps implementations
  - UI design changes
  - Add Contact Groups
+ 
+**RandomContact 3.0.1[Dec 2017]**
+ - Fix layout issue in Select Contacts dialog
 
 ### Version 2.3
 **RandomContact 2.3.0[Dec 2015]**
