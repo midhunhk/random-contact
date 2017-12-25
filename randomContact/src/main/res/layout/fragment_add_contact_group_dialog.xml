@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:padding="@dimen/activity_vertical_margin">
-
 
     <EditText
         android:id="@+id/txtGroupName"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/str_group_name"
         android:inputType="text|textCapWords"
@@ -20,8 +17,10 @@
         tools:ignore="RtlHardcoded"/>
 
     <RelativeLayout
+        android:id="@+id/addGroupMembersLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/txtGroupName"
         android:focusable="true"
         android:focusableInTouchMode="true">
 
@@ -43,17 +42,26 @@
             android:text="@string/str_contact_group_add_member"/>
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/selectedContactsContainer"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:orientation="vertical"/>
+        android:layout_above="@+id/buttonContainer"
+        android:layout_below="@+id/addGroupMembersLayout">
+
+        <LinearLayout
+            android:id="@+id/selectedContactsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"/>
+    </ScrollView>
 
     <LinearLayout
+        android:id="@+id/buttonContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:gravity="end"
         android:orientation="horizontal">
 
@@ -75,5 +83,5 @@
             android:text="@string/str_contact_group_add"/>
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>
 
