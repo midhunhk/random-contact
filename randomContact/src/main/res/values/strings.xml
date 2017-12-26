@@ -2,8 +2,8 @@
 <resources>
 
     <string name="app_name">Random Contact</string>
-    <string name="app_version">Version 3.0.0</string>
-    <string name="app_release_date">Nov 2017</string>
+    <string name="app_version">Version 3.0.1</string>
+    <string name="app_release_date">Dec 2017</string>
     <string name="app_desc">This app displays a "Random Contact" from your contacts list. Contact an old friend today!</string>
     <string name="app_disclaimer">The data displayed in this app are not guaranteed to be accurate and should be used as an
         indication. All the data are retrieved from the phone\'s database and no information is shared.</string>
