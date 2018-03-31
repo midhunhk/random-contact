@@ -30,7 +30,7 @@
     <string name="str_times_contacted">Times Contacted</string>
     <string name="str_contact_count">0</string>
     <string name="str_empty_contact_list">Contacts list is empty</string>
-    <string name="str_last_contcted_on">Last contacted on</string>
+    <string name="str_last_contacted_on">Last contacted</string>
     <string name="str_contact_now">CONTACT NOW</string>
     <string name="str_top_contacted">Top frequently contacted</string>
 

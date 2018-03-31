@@ -115,11 +115,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:paddingStart="@dimen/card_margin"
-                        android:paddingLeft="@dimen/card_margin"
                         android:paddingEnd="@dimen/card_margin"
-                        android:paddingRight="@dimen/card_margin"
-                        android:text="@string/str_last_contcted_on" />
+                        android:paddingRight="@dimen/card_padding"
+                        android:text="@string/str_last_contacted_on" />
 
                     <TextView
                         android:id="@+id/lastContactedTime"
