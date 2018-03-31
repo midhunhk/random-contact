@@ -24,6 +24,7 @@ import android.support.annotation.Nullable;
 import android.text.format.DateFormat;
 import android.text.format.DateUtils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -34,6 +35,8 @@ import static android.net.Uri.withAppendedPath;
  * Temporary utility methods that should be moved to libAeApps
  */
 public class Utils {
+
+    private static final String DEFAULT_DATE_FORMAT = "MMM dd, yyyy hh:mm a";
 
     /**
      * Shows this contact in the Android's Contact Manager
@@ -55,13 +58,19 @@ public class Utils {
         String friendlyDateString = formattedTimeString;
         if (formattedTimeString != null && formattedTimeString.trim().length() > 0) {
             // Un format and convert to a date object
-            SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm a", Locale.getDefault());
-            friendlyDateString = DateUtils.getRelativeDateTimeString(context,
-                    dateFormat.getCalendar().getTimeInMillis(),
-                    DateUtils.MINUTE_IN_MILLIS,
-                    DateUtils.WEEK_IN_MILLIS,
-                    0)
+            try {
+                SimpleDateFormat dateFormat = new SimpleDateFormat(DEFAULT_DATE_FORMAT, Locale.getDefault());
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(dateFormat.parse(formattedTimeString).getTime());
+                friendlyDateString = DateUtils.getRelativeDateTimeString(context,
+                        dateFormat.getCalendar().getTimeInMillis(),
+                        DateUtils.MINUTE_IN_MILLIS,
+                        DateUtils.WEEK_IN_MILLIS,
+                        0)
                         .toString();
+            } catch(ParseException ex){
+                // Silently catch the exception
+            }
         }
 
         return friendlyDateString;
