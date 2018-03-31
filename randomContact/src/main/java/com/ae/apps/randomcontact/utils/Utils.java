@@ -21,6 +21,12 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.format.DateFormat;
+import android.text.format.DateUtils;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 import static android.net.Uri.withAppendedPath;
 
@@ -43,5 +49,21 @@ public class Utils {
 
             context.startActivity(intent);
         }
+    }
+
+    public static String friendlyDateFormat(final Context context, final String formattedTimeString){
+        String friendlyDateString = formattedTimeString;
+        if (formattedTimeString != null && formattedTimeString.trim().length() > 0) {
+            // Un format and convert to a date object
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm a", Locale.getDefault());
+            friendlyDateString = DateUtils.getRelativeDateTimeString(context,
+                    dateFormat.getCalendar().getTimeInMillis(),
+                    DateUtils.MINUTE_IN_MILLIS,
+                    DateUtils.WEEK_IN_MILLIS,
+                    0)
+                        .toString();
+        }
+
+        return friendlyDateString;
     }
 }
