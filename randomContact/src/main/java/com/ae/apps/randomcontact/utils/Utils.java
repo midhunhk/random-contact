@@ -17,11 +17,11 @@ package com.ae.apps.randomcontact.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.format.DateFormat;
 import android.text.format.DateUtils;
 
 import java.text.ParseException;
@@ -74,5 +74,48 @@ public class Utils {
         }
 
         return friendlyDateString;
+    }
+
+    /**
+     * Send a WhatsAppMessage to a contact number
+     * _experimental feature_
+     *
+     * @param context context
+     */
+    public static void sendWhatsAppMessage(final Context context, final String contactNo){
+        String uri = "smsto:+" + cleanupPhoneNumber(contactNo);
+
+        Intent sendIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse(uri));
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "Hello Friend.");
+        sendIntent.setType("text/plain");
+        sendIntent.setPackage(AppConstants.PACKAGE_NAME_WHATSAPP);
+        context.startActivity(sendIntent);
+    }
+
+    /**
+     * Checks if a package is installed
+     *
+     * @param packageName package name to check
+     * @param packageManager package manager
+     * @return true if package is installed, false otherwise
+     */
+    public static boolean isPackageInstalled(String packageName, PackageManager packageManager) {
+        try {
+            packageManager.getPackageInfo(packageName, 0);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
+
+    @NonNull
+    private static String cleanupPhoneNumber(String formattedPhoneNumber) {
+        // Remove spaces, hyphens and + symbols from the phone number for comparison
+        return formattedPhoneNumber.replaceAll("\\s+", "")
+                .replaceAll("\\+", "")
+                .replaceAll("-", "")
+                .replaceAll("\\(", "")
+                .replaceAll("\\)", "")
+                .trim();
     }
 }

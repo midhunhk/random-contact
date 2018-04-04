@@ -28,6 +28,7 @@ import android.widget.TextView;
 import com.ae.apps.common.utils.MobileNetworkUtils;
 import com.ae.apps.common.vo.PhoneNumberVo;
 import com.ae.apps.randomcontact.R;
+import com.ae.apps.randomcontact.utils.Utils;
 
 import java.util.List;
 
@@ -41,6 +42,7 @@ public class ContactRecyclerAdapter extends Adapter<ContactRecyclerAdapter.ViewH
     private Context mContext;
     private List<PhoneNumberVo> items;
     private int layoutResourceId;
+    private boolean enableWhatsAppIntegration;
 
     public ContactRecyclerAdapter(List<PhoneNumberVo> items, int layoutResourceId, Context context) {
         super();
@@ -66,6 +68,12 @@ public class ContactRecyclerAdapter extends Adapter<ContactRecyclerAdapter.ViewH
             holder.txtContactNumber.setText(phoneNumberVo.getPhoneNumber());
             holder.txtPhoneType.setText(phoneNumberVo.getPhoneType());
 
+            if(enableWhatsAppIntegration){
+                holder.btnWhatsAppMessage.setVisibility(View.VISIBLE);
+            } else {
+                holder.btnWhatsAppMessage.setVisibility(View.GONE);
+            }
+
             final String contactNo = phoneNumberVo.getPhoneNumber();
             holder.btnCall.setOnClickListener(new OnClickListener() {
 
@@ -84,6 +92,13 @@ public class ContactRecyclerAdapter extends Adapter<ContactRecyclerAdapter.ViewH
                     MobileNetworkUtils.textContact(mContext, contactNo);
                 }
             });
+
+            holder.btnWhatsAppMessage.setOnClickListener(new OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    Utils.sendWhatsAppMessage(mContext, contactNo);
+                }
+            });
         }
     }
 
@@ -91,6 +106,10 @@ public class ContactRecyclerAdapter extends Adapter<ContactRecyclerAdapter.ViewH
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(layoutResourceId, parent, false);
         return new ViewHolder(view);
+    }
+
+    public void setEnableWhatsAppIntegration(boolean enableWhatsAppIntegration) {
+        this.enableWhatsAppIntegration = enableWhatsAppIntegration;
     }
 
     /**
@@ -101,6 +120,7 @@ public class ContactRecyclerAdapter extends Adapter<ContactRecyclerAdapter.ViewH
         TextView txtPhoneType;
         ImageButton btnCall;
         ImageButton btnText;
+        ImageButton btnWhatsAppMessage;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -109,6 +129,7 @@ public class ContactRecyclerAdapter extends Adapter<ContactRecyclerAdapter.ViewH
             txtContactNumber = (TextView) itemView.findViewById(R.id.txtContactNumber);
             btnCall = (ImageButton) itemView.findViewById(R.id.btnCall);
             btnText = (ImageButton) itemView.findViewById(R.id.btnText);
+            btnWhatsAppMessage = (ImageButton) itemView.findViewById(R.id.btnWhatsAppMessage);
         }
 
     }

@@ -43,6 +43,7 @@ import com.ae.apps.randomcontact.R;
 import com.ae.apps.randomcontact.adapters.ContactRecyclerAdapter;
 import com.ae.apps.randomcontact.data.GlobalThemeChanger;
 import com.ae.apps.randomcontact.managers.RandomContactManager;
+import com.ae.apps.randomcontact.utils.AppConstants;
 import com.ae.apps.randomcontact.utils.Utils;
 
 import java.util.Collections;
@@ -140,6 +141,10 @@ public class RandomContactFragment extends Fragment {
         mRecyclerAdapter = new ContactRecyclerAdapter(Collections.EMPTY_LIST,
                 R.layout.contact_info_item,
                 getActivity());
+
+        boolean whatsAppInstalled = Utils.isPackageInstalled(AppConstants.PACKAGE_NAME_WHATSAPP,
+                getActivity().getPackageManager());
+        mRecyclerAdapter.setEnableWhatsAppIntegration(whatsAppInstalled);
 
         // Find the RecyclerView and set some properties
         RecyclerView recyclerView = (RecyclerView) layout.findViewById(android.R.id.list);

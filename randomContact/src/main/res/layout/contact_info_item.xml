@@ -27,6 +27,18 @@
         android:textStyle="italic"/>
 
     <ImageButton
+        android:id="@+id/btnWhatsAppMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:layout_toLeftOf="@+id/btnCall"
+        android:layout_toStartOf="@id/btnCall"
+        android:contentDescription="@string/empty_text"
+        android:padding="10dp"
+        android:src="@drawable/ic_action_chat"
+        android:text="@string/action_whatsapp_message"/>
+
+    <ImageButton
         android:id="@+id/btnCall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
