@@ -211,7 +211,7 @@ public class RandomContactFragment extends Fragment {
     private void showLastContactedTime(ContactVo contactVo) {
         String lastContacted = contactVo.getLastContactedTime();
         if (null != lastContacted && lastContacted.trim().length() > 0) {
-            mLastContactedTime.setText(Utils.friendlyDateFormat(getContext(), lastContacted));
+            mLastContactedTime.setText(Utils.friendlyDateFormat(mContext, lastContacted));
             mLastContactedLayout.setVisibility(View.VISIBLE);
             mLastContactedLayout.startAnimation(mFadeInAnimation);
         } else {
