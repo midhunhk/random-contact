@@ -15,6 +15,7 @@
  */
 package com.ae.apps.randomcontact.utils;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -23,6 +24,7 @@ import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.format.DateUtils;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -83,13 +85,22 @@ public class Utils {
      * @param context context
      */
     public static void sendWhatsAppMessage(final Context context, final String contactNo){
-        String uri = "smsto:+" + cleanupPhoneNumber(contactNo);
+        String uri = "smsto:" + cleanupPhoneNumber(contactNo);
 
-        Intent sendIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse(uri));
+        Intent sendIntent = new Intent(Intent.ACTION_SEND, Uri.parse(uri));
         sendIntent.putExtra(Intent.EXTRA_TEXT, "Hello Friend.");
         sendIntent.setType("text/plain");
         sendIntent.setPackage(AppConstants.PACKAGE_NAME_WHATSAPP);
-        context.startActivity(sendIntent);
+        try {
+            PackageManager packageManager = context.getPackageManager();
+            if(null == sendIntent.resolveActivity(packageManager)){
+                Toast.makeText(context, "No Activity to handle this Intent", Toast.LENGTH_SHORT).show();
+            } else {
+                context.startActivity(sendIntent);
+            }
+        } catch (ActivityNotFoundException ex){
+            Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
