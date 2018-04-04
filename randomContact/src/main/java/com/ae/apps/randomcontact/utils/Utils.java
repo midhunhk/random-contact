@@ -16,6 +16,7 @@
 package com.ae.apps.randomcontact.utils;
 
 import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -23,6 +24,7 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.telephony.PhoneNumberUtils;
 import android.text.format.DateUtils;
 import android.widget.Toast;
 
@@ -85,8 +87,42 @@ public class Utils {
      * @param context context
      */
     public static void sendWhatsAppMessage(final Context context, final String contactNo){
-        String uri = "smsto:" + cleanupPhoneNumber(contactNo);
+        //sendWhatsAppMethod1(context, contactNo);
+        sendWhatsAppMethod2(context, contactNo);
+    }
 
+    /**
+     * This method allows to send direct message to a contact provided, it is saved
+     * with country code prefix
+     *
+     * @param context context
+     * @param contactNo contactNo
+     */
+    private static void sendWhatsAppMethod2(Context context, String contactNo) {
+        Intent sendIntent = new Intent("android.intent.action.MAIN");
+        sendIntent.setComponent(new ComponentName(AppConstants.PACKAGE_NAME_WHATSAPP, "com.whatsapp.Conversation"));
+        sendIntent.putExtra("jid", PhoneNumberUtils.stripSeparators(contactNo) + "@s.whatsapp.net");
+
+        try {
+            PackageManager packageManager = context.getPackageManager();
+            if(null == sendIntent.resolveActivity(packageManager)){
+                Toast.makeText(context, "No Activity to handle this Intent", Toast.LENGTH_SHORT).show();
+            } else {
+                context.startActivity(sendIntent);
+            }
+        } catch (ActivityNotFoundException ex){
+            Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * This method only opens the conversation screen and not the contact chat screen
+     *
+     * @param context context
+     * @param contactNo contact no
+     */
+    private static void sendWhatsAppMethod1(Context context, String contactNo) {
+        String uri = "smsto:" + cleanupPhoneNumber(contactNo);
         Intent sendIntent = new Intent(Intent.ACTION_SEND, Uri.parse(uri));
         sendIntent.putExtra(Intent.EXTRA_TEXT, "Hello Friend.");
         sendIntent.setType("text/plain");
