@@ -145,7 +145,8 @@ public class Utils {
                     ContactsContract.Data.DATA1 + "=?",
                     new String[] { id }, null);
             if(null != cursor && !cursor.moveToFirst()){
-                Toast.makeText(context, "WhatsApp contact with this number not found. Make sure it has country code", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "WhatsApp contact with this number not found. Make sure it has country code.",
+                        Toast.LENGTH_LONG).show();
                 return;
             }
             Intent sendIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(CONTENT_CONTACTS_DATA + cursor.getString(0)));
