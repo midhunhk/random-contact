@@ -150,8 +150,10 @@ public class RandomContactFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) layout.findViewById(android.R.id.list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(mRecyclerAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
+        recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+
     }
 
     private void initViews(View layout) {
