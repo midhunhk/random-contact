@@ -199,6 +199,7 @@ public class RandomContactFragment extends Fragment {
 
             // Change the data for the RecyclerView
             mRecyclerAdapter.setList(contactVo.getPhoneNumbersList());
+            mRecyclerAdapter.setContactId(contactVo.getId());
 
             // Do some basic Animations
             mUserName.startAnimation(mSlideInAnimation);

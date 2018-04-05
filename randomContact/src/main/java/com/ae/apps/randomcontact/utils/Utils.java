@@ -20,6 +20,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
@@ -41,6 +42,7 @@ import static android.net.Uri.withAppendedPath;
 public class Utils {
 
     private static final String DEFAULT_DATE_FORMAT = "MMM dd, yyyy hh:mm a";
+    private static final String CONTENT_CONTACTS_DATA = "content://com.android.contacts/data/";
 
     /**
      * Shows this contact in the Android's Contact Manager
@@ -88,12 +90,23 @@ public class Utils {
      */
     public static void sendWhatsAppMessage(final Context context, final String contactNo){
         //sendWhatsAppMethod1(context, contactNo);
-        sendWhatsAppMethod2(context, contactNo);
+        //sendWhatsAppMethod2(context, contactNo);
+        sendWhatsAppMethod3(context, contactNo);
+    }
+
+    public static void openWhatsAppContact(Context context, String contactId){
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("content://com.android.contacts/data/" + contactId));
+        try{
+            context.startActivity(i);
+        } catch (ActivityNotFoundException ex){
+            Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
      * This method allows to send direct message to a contact provided, it is saved
      * with country code prefix
+     * Ref: https://stackoverflow.com/a/40761890/592025
      *
      * @param context context
      * @param contactNo contactNo
@@ -116,6 +129,42 @@ public class Utils {
     }
 
     /**
+     * This method opens the conversation screen for the contact
+     * The number should have the Country code prefixed when it was saved,
+     * else whatsapp will not open
+     *
+     * @param context context
+     * @param contactNo contactNo
+     */
+    private static void sendWhatsAppMethod3(Context context, String contactNo){
+        String id = cleanupPhoneNumber(contactNo) + "@s.whatsapp.net";
+        Cursor cursor = null;
+        try {
+            cursor = context.getContentResolver().query(ContactsContract.Data.CONTENT_URI,
+                    new String[] { ContactsContract.Contacts.Data._ID },
+                    ContactsContract.Data.DATA1 + "=?",
+                    new String[] { id }, null);
+            if(null != cursor && !cursor.moveToFirst()){
+                Toast.makeText(context, "WhatsApp contact with this number not found. Make sure it has country code", Toast.LENGTH_LONG).show();
+                return;
+            }
+            Intent sendIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(CONTENT_CONTACTS_DATA + cursor.getString(0)));
+            PackageManager packageManager = context.getPackageManager();
+            if(null == sendIntent.resolveActivity(packageManager)){
+                Toast.makeText(context, "No Activity to handle this Intent", Toast.LENGTH_SHORT).show();
+            } else {
+                context.startActivity(sendIntent);
+            }
+        } catch (ActivityNotFoundException ex){
+            Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
+        } finally {
+            if(null != cursor){
+                cursor.close();
+            }
+        }
+    }
+
+    /**
      * This method only opens the conversation screen and not the contact chat screen
      *
      * @param context context
@@ -125,6 +174,7 @@ public class Utils {
         String uri = "smsto:" + cleanupPhoneNumber(contactNo);
         Intent sendIntent = new Intent(Intent.ACTION_SEND, Uri.parse(uri));
         sendIntent.putExtra(Intent.EXTRA_TEXT, "Hello Friend.");
+        sendIntent.putExtra("chat", true);
         sendIntent.setType("text/plain");
         sendIntent.setPackage(AppConstants.PACKAGE_NAME_WHATSAPP);
         try {
@@ -132,7 +182,8 @@ public class Utils {
             if(null == sendIntent.resolveActivity(packageManager)){
                 Toast.makeText(context, "No Activity to handle this Intent", Toast.LENGTH_SHORT).show();
             } else {
-                context.startActivity(sendIntent);
+                context.startActivity(Intent.createChooser(sendIntent, ""));
+                //context.startActivity(sendIntent);
             }
         } catch (ActivityNotFoundException ex){
             Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();

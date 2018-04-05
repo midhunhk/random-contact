@@ -42,6 +42,7 @@ public class ContactRecyclerAdapter extends Adapter<ContactRecyclerAdapter.ViewH
     private Context mContext;
     private List<PhoneNumberVo> items;
     private int layoutResourceId;
+    private String contactId;
     private boolean enableWhatsAppIntegration;
 
     public ContactRecyclerAdapter(List<PhoneNumberVo> items, int layoutResourceId, Context context) {
@@ -54,6 +55,10 @@ public class ContactRecyclerAdapter extends Adapter<ContactRecyclerAdapter.ViewH
     public void setList(List<PhoneNumberVo> items) {
         this.items = items;
         notifyDataSetChanged();
+    }
+
+    public void setContactId(String contactId) {
+        this.contactId = contactId;
     }
 
     @Override
@@ -97,6 +102,7 @@ public class ContactRecyclerAdapter extends Adapter<ContactRecyclerAdapter.ViewH
                 @Override
                 public void onClick(View v) {
                     Utils.sendWhatsAppMessage(mContext, contactNo);
+                   //Utils.openWhatsAppContact(mContext, contactId);
                 }
             });
         }
