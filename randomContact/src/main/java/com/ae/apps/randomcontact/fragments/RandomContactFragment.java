@@ -43,6 +43,7 @@ import com.ae.apps.randomcontact.R;
 import com.ae.apps.randomcontact.adapters.ContactRecyclerAdapter;
 import com.ae.apps.randomcontact.data.GlobalThemeChanger;
 import com.ae.apps.randomcontact.managers.RandomContactManager;
+import com.ae.apps.randomcontact.utils.AppConstants;
 import com.ae.apps.randomcontact.utils.Utils;
 
 import java.util.Collections;
@@ -141,12 +142,18 @@ public class RandomContactFragment extends Fragment {
                 R.layout.contact_info_item,
                 getActivity());
 
+        boolean whatsAppInstalled = Utils.isPackageInstalled(AppConstants.PACKAGE_NAME_WHATSAPP,
+                getActivity().getPackageManager());
+        mRecyclerAdapter.setEnableWhatsAppIntegration(whatsAppInstalled);
+
         // Find the RecyclerView and set some properties
         RecyclerView recyclerView = (RecyclerView) layout.findViewById(android.R.id.list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(mRecyclerAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
+        recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+
     }
 
     private void initViews(View layout) {
@@ -194,6 +201,7 @@ public class RandomContactFragment extends Fragment {
 
             // Change the data for the RecyclerView
             mRecyclerAdapter.setList(contactVo.getPhoneNumbersList());
+            mRecyclerAdapter.setContactId(contactVo.getId());
 
             // Do some basic Animations
             mUserName.startAnimation(mSlideInAnimation);
@@ -206,7 +214,7 @@ public class RandomContactFragment extends Fragment {
     private void showLastContactedTime(ContactVo contactVo) {
         String lastContacted = contactVo.getLastContactedTime();
         if (null != lastContacted && lastContacted.trim().length() > 0) {
-            mLastContactedTime.setText(lastContacted);
+            mLastContactedTime.setText(Utils.friendlyDateFormat(mContext, lastContacted));
             mLastContactedLayout.setVisibility(View.VISIBLE);
             mLastContactedLayout.startAnimation(mFadeInAnimation);
         } else {

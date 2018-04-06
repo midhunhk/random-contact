@@ -1,5 +1,11 @@
 ## Random Contact Version History
 
+### Version 3.1 (Telephone)
+**RandomContact 3.1.0[Apr 2018]**
+ - Friendlier last contacted date
+ - WhatsApp integration from contact method options
+ - Landscape orientation for Random Contact screen
+
 ### Version 3.0 (Hypercube)
 **RandomContact 3.0.0[Nov 2017]**
  - Upgrade to Android Studio gradle project

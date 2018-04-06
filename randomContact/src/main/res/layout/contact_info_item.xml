@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <TextView
@@ -27,6 +27,18 @@
         android:textStyle="italic"/>
 
     <ImageButton
+        android:id="@+id/btnWhatsAppMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:layout_toLeftOf="@+id/btnCall"
+        android:layout_toStartOf="@id/btnCall"
+        android:contentDescription="@string/empty_text"
+        android:padding="5dp"
+        android:src="@drawable/ic_action_whatsapp"
+        android:text="@string/action_whatsapp_message"/>
+
+    <ImageButton
         android:id="@+id/btnCall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,7 +46,7 @@
         android:layout_toLeftOf="@+id/btnText"
         android:layout_toStartOf="@id/btnText"
         android:contentDescription="@string/empty_text"
-        android:padding="10dp"
+        android:padding="5dp"
         android:src="@drawable/ic_action_call"
         android:text="@string/action_call"/>
 
@@ -47,7 +59,7 @@
         android:layout_alignParentTop="true"
         android:layout_margin="3dp"
         android:contentDescription="@string/empty_text"
-        android:padding="10dp"
+        android:padding="5dp"
         android:src="@drawable/ic_action_chat"
         android:text="@string/action_message"/>
 
