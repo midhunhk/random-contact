@@ -18,6 +18,8 @@ The latest version of Random Contact is available in [Google Play Store](https:/
 ## Web Resources
 App Announcement blog entry
  - http://midhunhk.blogspot.in/2013/11/randomcontact-new-app-announcement.html
+ - http://midhunhk.github.io/random-contact/2017/12/29/Version-3-0/
+ - http://midhunhk.github.io/random-contact/2018/04/08/Version-3-1-Released/
 
 ## Dependencies
 Random Contact used the below dependent libraries for functioning
