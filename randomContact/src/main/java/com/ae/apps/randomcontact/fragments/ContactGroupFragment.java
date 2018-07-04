@@ -85,7 +85,7 @@ public class ContactGroupFragment extends Fragment
     }
 
     private void initViews(View view, String selectedContactGroup) {
-        mRadioAllContacts = (RadioButton) view.findViewById(R.id.radioAllContacts);
+        mRadioAllContacts = view.findViewById(R.id.radioAllContacts);
 
         mRadioAllContacts.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,7 +111,7 @@ public class ContactGroupFragment extends Fragment
     }
 
     private void setUpRecyclerView(View view, String selectedContactGroup) {
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
+        RecyclerView recyclerView = view.findViewById(R.id.list);
         mContactGroups = mContactGroupManager.getAllContactGroups();
         if (null != recyclerView) {
             Context context = view.getContext();

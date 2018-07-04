@@ -16,8 +16,10 @@
 
 package com.ae.apps.randomcontact;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -34,6 +36,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.ae.apps.common.activities.ToolBarBaseActivity;
 import com.ae.apps.randomcontact.adapters.NavDrawerListAdapter;
@@ -54,6 +57,8 @@ public class MainActivity extends ToolBarBaseActivity implements OnItemClickList
 
         setupNavDrawer();
 
+        boolean permissionsGranted = checkForPermissions(Manifest.permission.READ_CONTACTS);
+
         if (null == savedInstanceState) {
             // Show the default fragment
             showFragment(mNavFragmentManager.getFragmentInstance(0));
@@ -63,8 +68,8 @@ public class MainActivity extends ToolBarBaseActivity implements OnItemClickList
     }
 
     private void setupNavDrawer() {
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ListView mDrawerList = (ListView) findViewById(R.id.left_drawer_list);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        ListView mDrawerList = findViewById(R.id.left_drawer_list);
 
         // Create the list for the main fragments to be shown in the drawer
         NavDrawerListAdapter drawerListAdapter = new NavDrawerListAdapter(this, mNavFragmentManager.getNavTitles());
@@ -76,7 +81,7 @@ public class MainActivity extends ToolBarBaseActivity implements OnItemClickList
 
         displayHomeAsUp();
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this,
                 mDrawerLayout,
                 getToolBar(),
@@ -142,6 +147,30 @@ public class MainActivity extends ToolBarBaseActivity implements OnItemClickList
             sharedPreferences.edit()
                     .putBoolean(AppConstants.PREF_KEY_NAV_DRAWER_INTRO_GIVEN, true)
                     .apply();
+        }
+    }
+
+    private boolean checkForPermissions(final String permissionName){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && checkSelfPermission(permissionName) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS},
+                    AppConstants.PERMISSIONS_REQUEST_READ_CONTACTS);
+            return false;
+        } else {
+            //
+            return true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+        if (requestCode == AppConstants.PERMISSIONS_REQUEST_READ_CONTACTS) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Permission not granted", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

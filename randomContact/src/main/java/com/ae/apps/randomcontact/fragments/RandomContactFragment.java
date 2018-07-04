@@ -20,6 +20,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -72,7 +73,7 @@ public class RandomContactFragment extends Fragment {
     private ContactVo mCurrentContact;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_random_contact, container, false);
 
         mContext = getActivity().getBaseContext();
@@ -147,7 +148,7 @@ public class RandomContactFragment extends Fragment {
         mRecyclerAdapter.setEnableWhatsAppIntegration(whatsAppInstalled);
 
         // Find the RecyclerView and set some properties
-        RecyclerView recyclerView = (RecyclerView) layout.findViewById(android.R.id.list);
+        RecyclerView recyclerView = layout.findViewById(android.R.id.list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(mRecyclerAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
@@ -160,8 +161,8 @@ public class RandomContactFragment extends Fragment {
         // Find some UI controls
         mUserName = (TextView) layout.findViewById(R.id.userDisplayName);
         mUserImage = (RoundedImageView) layout.findViewById(R.id.userProfileImage);
-        mUserContactedCount = (TextView) layout.findViewById(R.id.userContactedCount);
-        mLastContactedTime = (TextView) layout.findViewById(R.id.lastContactedTime);
+        mUserContactedCount = layout.findViewById(R.id.userContactedCount);
+        mLastContactedTime = layout.findViewById(R.id.lastContactedTime);
         mLastContactedLayout = (LinearLayout) layout.findViewById(R.id.lastContactedLayout);
         mContactNowText = (TextView) layout.findViewById(R.id.contactNowText);
         mListContainer = layout.findViewById(R.id.listContainer);
