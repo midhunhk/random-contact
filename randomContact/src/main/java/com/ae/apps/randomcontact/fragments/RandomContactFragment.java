@@ -36,6 +36,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -104,8 +105,12 @@ public class RandomContactFragment extends Fragment {
             // else if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), READ_CONTACTS))
             // show a no access view as read contacts permission is required
             createNoAccessView();
-            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, AppConstants.PERMISSIONS_REQUEST_READ_CONTACTS);
+            requestContactAccessPermission();
         }
+    }
+
+    private void requestContactAccessPermission() {
+        requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, AppConstants.PERMISSIONS_REQUEST_READ_CONTACTS);
     }
 
     @Override
@@ -127,6 +132,13 @@ public class RandomContactFragment extends Fragment {
 
     private void createNoAccessView() {
         View noAccessView = mInflater.inflate(R.layout.fragment_permission_required, mContainer, false);
+        Button btnProvideAcces = noAccessView.findViewById(R.id.btnProvideAccess);
+        btnProvideAcces.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                requestContactAccessPermission();
+            }
+        });
         mRandomContactContainer.addView(noAccessView);
     }
 

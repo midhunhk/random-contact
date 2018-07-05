@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Midhun Harikumar
+ * Copyright 2016-2018 Midhun Harikumar
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package com.ae.apps.randomcontact.adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.view.LayoutInflater;
@@ -39,7 +40,6 @@ import java.util.List;
  */
 public class FrequentContactAdapter extends Adapter<FrequentContactAdapter.ViewHolder> {
 
-    private Context mContext;
     private List<ContactVo> items;
     private int layoutResourceId;
     private Bitmap defaultImage;
@@ -50,8 +50,7 @@ public class FrequentContactAdapter extends Adapter<FrequentContactAdapter.ViewH
         super();
         this.layoutResourceId = layoutResourceId;
         setList(items);
-        this.mContext = context;
-        defaultImage = BitmapFactory.decodeResource(mContext.getResources(),
+        defaultImage = BitmapFactory.decodeResource(context.getResources(),
                 com.ae.apps.aeappslibrary.R.drawable.profile_icon_4);
         mContactManager = contactManager;
     }
@@ -67,7 +66,7 @@ public class FrequentContactAdapter extends Adapter<FrequentContactAdapter.ViewH
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int pos) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int pos) {
         final ContactVo contactVo = items.get(pos);
         if (null != contactVo) {
             holder.contactNameText.setText(contactVo.getName());
@@ -80,7 +79,7 @@ public class FrequentContactAdapter extends Adapter<FrequentContactAdapter.ViewH
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(layoutResourceId, parent, false);
         return new ViewHolder(view);
     }
@@ -88,16 +87,16 @@ public class FrequentContactAdapter extends Adapter<FrequentContactAdapter.ViewH
     /**
      * @author midhun
      */
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imgProfile;
         TextView contactNameText;
         TextView contactCountText;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
-            imgProfile = (ImageView) itemView.findViewById(R.id.userProfileImage);
-            contactNameText = (TextView) itemView.findViewById(R.id.contactNameText);
-            contactCountText = (TextView) itemView.findViewById(R.id.contactCountText);
+            imgProfile = itemView.findViewById(R.id.userProfileImage);
+            contactNameText = itemView.findViewById(R.id.contactNameText);
+            contactCountText = itemView.findViewById(R.id.contactCountText);
         }
 
     }
