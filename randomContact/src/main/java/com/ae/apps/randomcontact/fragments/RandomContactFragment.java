@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Midhun Harikumar
+ * Copyright 2015-2018 Midhun Harikumar
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,17 +17,14 @@
 package com.ae.apps.randomcontact.fragments;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.content.PermissionChecker;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -46,6 +43,7 @@ import android.widget.Toast;
 import com.ae.apps.common.managers.contact.AeContactManager;
 import com.ae.apps.common.views.RoundedImageView;
 import com.ae.apps.common.vo.ContactVo;
+import com.ae.apps.common.vo.PhoneNumberVo;
 import com.ae.apps.randomcontact.R;
 import com.ae.apps.randomcontact.adapters.ContactRecyclerAdapter;
 import com.ae.apps.randomcontact.data.GlobalThemeChanger;
@@ -78,36 +76,35 @@ public class RandomContactFragment extends Fragment {
     private AeContactManager mContactManager;
     private ContactVo mCurrentContact;
 
-    private View mContentView;
     private LayoutInflater mInflater;
+    private ViewGroup mRandomContactContainer;
     private ViewGroup mContainer;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mInflater = inflater;
         mContainer = container;
+        mRandomContactContainer = Utils.createParentLayout(mContext);
 
-        if(checkAndRequestPermissions(getActivity(), Manifest.permission.READ_CONTACTS, AppConstants.PERMISSIONS_REQUEST_READ_CONTACTS)){
-            initRandomContact(savedInstanceState);
+        checkPermissions(savedInstanceState);
+
+        return mRandomContactContainer;
+    }
+
+    private void checkPermissions(Bundle savedInstanceState) {
+        if(PackageManager.PERMISSION_GRANTED == PermissionChecker.checkSelfPermission(mContext, Manifest.permission.READ_CONTACTS)){
+            setupRandomContactView(savedInstanceState);
         } else {
-            // show a dummy view
+            // else if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), READ_CONTACTS))
+            // show a no access view as read contacts permission is required
             createNoAccessView();
-        }
-
-        return mContentView;
-    }
-
-    private void createNoAccessView() {
-        mContentView = mInflater.inflate(R.layout.fragment_permission_required, mContainer, false);
-    }
-
-    private boolean checkAndRequestPermissions(final Activity activity, final String permissionName, final int requestCode){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                && ContextCompat.checkSelfPermission(activity, permissionName) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(activity, new String[]{permissionName}, requestCode);
-            return false;
-        } else {
-            return true;
+            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, AppConstants.PERMISSIONS_REQUEST_READ_CONTACTS);
         }
     }
 
@@ -116,7 +113,7 @@ public class RandomContactFragment extends Fragment {
         switch (requestCode) {
             case AppConstants.PERMISSIONS_REQUEST_READ_CONTACTS: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    initRandomContact(null);
+                    setupRandomContactView(null);
                 } else {
                     Toast.makeText(getActivity(), R.string.str_permission_required, Toast.LENGTH_SHORT).show();
                 }
@@ -128,20 +125,29 @@ public class RandomContactFragment extends Fragment {
         }
     }
 
-    private void initRandomContact(Bundle savedInstanceState) {
-        mContentView = mInflater.inflate(R.layout.fragment_random_contact, mContainer, false);
+    private void createNoAccessView() {
+        View noAccessView = mInflater.inflate(R.layout.fragment_permission_required, mContainer, false);
+        mRandomContactContainer.addView(noAccessView);
+    }
 
-        mContext = getActivity().getBaseContext();
+    private void setupRandomContactView(Bundle savedInstanceState) {
+        View randomContactView = mInflater.inflate(R.layout.fragment_random_contact, mContainer, false);
+
+        //mContext = getActivity().getBaseContext();
         mContactManager = RandomContactManager.getInstance(mContext);
         mContactManagerProvider = (GlobalThemeChanger) getActivity();
 
-        initViews(mContentView);
+        initViews(randomContactView);
 
-        setupRecyclerView(mContentView);
+        setupRecyclerView(randomContactView);
 
         configureAnimations();
 
         setupMenu();
+
+        // If a No Permission View was displayed, replace it with the Random Contact View
+        mRandomContactContainer.removeAllViews();
+        mRandomContactContainer.addView(randomContactView);
 
         showInitialContact(savedInstanceState);
     }
@@ -174,7 +180,7 @@ public class RandomContactFragment extends Fragment {
                         return true;
                     case R.id.action_view_contact:
                         Toast.makeText(getContext(), "Opening contact in Contacts app", Toast.LENGTH_SHORT).show();
-                        Utils.showContactInAddressBook(getActivity(), getCurrentContact().getId());
+                        Utils.showContactInAddressBook(requireActivity(), getCurrentContact().getId());
                         return true;
                 }
 
@@ -192,13 +198,14 @@ public class RandomContactFragment extends Fragment {
 
     private void setupRecyclerView(View layout) {
         // Create the Recycler Adapter
-        mRecyclerAdapter = new ContactRecyclerAdapter(Collections.EMPTY_LIST,
+        mRecyclerAdapter = new ContactRecyclerAdapter(Collections.<PhoneNumberVo>emptyList(),
                 R.layout.contact_info_item,
                 getActivity());
 
-        boolean whatsAppInstalled = Utils.isPackageInstalled(AppConstants.PACKAGE_NAME_WHATSAPP,
-                getActivity().getPackageManager());
-        mRecyclerAdapter.setEnableWhatsAppIntegration(whatsAppInstalled);
+        if(null != getActivity().getPackageManager()) {
+            boolean whatsAppInstalled = Utils.isPackageInstalled(AppConstants.PACKAGE_NAME_WHATSAPP, getActivity().getPackageManager());
+            mRecyclerAdapter.setEnableWhatsAppIntegration(whatsAppInstalled);
+        }
 
         // Find the RecyclerView and set some properties
         RecyclerView recyclerView = layout.findViewById(android.R.id.list);
@@ -212,14 +219,14 @@ public class RandomContactFragment extends Fragment {
 
     private void initViews(View layout) {
         // Find some UI controls
-        mUserName = (TextView) layout.findViewById(R.id.userDisplayName);
-        mUserImage = (RoundedImageView) layout.findViewById(R.id.userProfileImage);
+        mUserName = layout.findViewById(R.id.userDisplayName);
+        mUserImage = layout.findViewById(R.id.userProfileImage);
         mUserContactedCount = layout.findViewById(R.id.userContactedCount);
         mLastContactedTime = layout.findViewById(R.id.lastContactedTime);
-        mLastContactedLayout = (LinearLayout) layout.findViewById(R.id.lastContactedLayout);
-        mContactNowText = (TextView) layout.findViewById(R.id.contactNowText);
+        mLastContactedLayout = layout.findViewById(R.id.lastContactedLayout);
+        mContactNowText = layout.findViewById(R.id.contactNowText);
         mListContainer = layout.findViewById(R.id.listContainer);
-        mFragmentToolbar = (Toolbar) layout.findViewById(R.id.toolbar2);
+        mFragmentToolbar = layout.findViewById(R.id.toolbar2);
         mToolbarExtend = layout.findViewById(R.id.toolbarExtend);
 
         // Decode the default image and cache it
@@ -231,7 +238,7 @@ public class RandomContactFragment extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         if (null != mCurrentContact) {
             outState.putString(SAVED_CONTACT_ID, mCurrentContact.getId());
