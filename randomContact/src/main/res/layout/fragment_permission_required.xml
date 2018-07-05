@@ -21,6 +21,7 @@
     <Button
         android:id="@+id/btnProvideAccess"
         android:backgroundTint="@color/colorAccent"
+        android:textColor="@color/color_almost_white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/card_margin"
