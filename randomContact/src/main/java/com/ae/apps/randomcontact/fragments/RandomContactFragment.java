@@ -17,23 +17,17 @@
 package com.ae.apps.randomcontact.fragments;
 
 import android.Manifest;
-import android.content.Context;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.PermissionChecker;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -49,12 +43,13 @@ import com.ae.apps.randomcontact.R;
 import com.ae.apps.randomcontact.adapters.ContactRecyclerAdapter;
 import com.ae.apps.randomcontact.data.GlobalThemeChanger;
 import com.ae.apps.randomcontact.managers.RandomContactManager;
+import com.ae.apps.randomcontact.permissions.PermissionCheckingFragment;
 import com.ae.apps.randomcontact.utils.AppConstants;
 import com.ae.apps.randomcontact.utils.Utils;
 
 import java.util.Collections;
 
-public class RandomContactFragment extends Fragment {
+public class RandomContactFragment extends PermissionCheckingFragment {
 
     private static final String SAVED_CONTACT_ID = "savedContactId";
 
@@ -73,76 +68,39 @@ public class RandomContactFragment extends Fragment {
     private Bitmap mDefaultUserImage;
     private ContactRecyclerAdapter mRecyclerAdapter;
     private GlobalThemeChanger mContactManagerProvider;
-    private Context mContext;
     private AeContactManager mContactManager;
     private ContactVo mCurrentContact;
 
-    private LayoutInflater mInflater;
-    private ViewGroup mRandomContactContainer;
-    private ViewGroup mContainer;
-
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mContext = context;
+    protected int getRequestCode() {
+        return AppConstants.PERMISSIONS_REQUEST_READ_CONTACTS;
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mInflater = inflater;
-        mContainer = container;
-        mRandomContactContainer = Utils.createParentLayout(mContext);
-
-        checkPermissions(savedInstanceState);
-
-        return mRandomContactContainer;
-    }
-
-    private void checkPermissions(Bundle savedInstanceState) {
-        if(PackageManager.PERMISSION_GRANTED == PermissionChecker.checkSelfPermission(mContext, Manifest.permission.READ_CONTACTS)){
-            setupRandomContactView(savedInstanceState);
-        } else {
-            // else if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), READ_CONTACTS))
-            // show a no access view as read contacts permission is required
-            createNoAccessView();
-            requestContactAccessPermission();
-        }
-    }
-
-    private void requestContactAccessPermission() {
-        requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, AppConstants.PERMISSIONS_REQUEST_READ_CONTACTS);
+    protected String[] getRequiredPermissions() {
+        return new String[]{Manifest.permission.READ_CONTACTS};
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case AppConstants.PERMISSIONS_REQUEST_READ_CONTACTS: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    setupRandomContactView(null);
-                } else {
-                    Toast.makeText(getActivity(), R.string.str_permission_required, Toast.LENGTH_SHORT).show();
-                }
-                break;
-            }
-            default: {
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-            }
-        }
+    protected void onPermissionNotGranted(int requestCode, String[] permissions, int[] grantResults) {
+        Toast.makeText(getActivity(), R.string.str_permission_required, Toast.LENGTH_SHORT).show();
     }
 
-    private void createNoAccessView() {
+    @Override
+    public View setupViewWithoutPermission() {
         View noAccessView = mInflater.inflate(R.layout.fragment_permission_required, mContainer, false);
-        Button btnProvideAcces = noAccessView.findViewById(R.id.btnProvideAccess);
-        btnProvideAcces.setOnClickListener(new View.OnClickListener(){
+        Button btnProvideAccess = noAccessView.findViewById(R.id.btnProvideAccess);
+        btnProvideAccess.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                requestContactAccessPermission();
+                requestForPermissions();
             }
         });
-        mRandomContactContainer.addView(noAccessView);
+        return noAccessView;
     }
 
-    private void setupRandomContactView(Bundle savedInstanceState) {
+    @Override
+    public View setupViewWithPermission(Bundle savedInstanceState) {
         View randomContactView = mInflater.inflate(R.layout.fragment_random_contact, mContainer, false);
 
         //mContext = getActivity().getBaseContext();
@@ -157,11 +115,9 @@ public class RandomContactFragment extends Fragment {
 
         setupMenu();
 
-        // If a No Permission View was displayed, replace it with the Random Contact View
-        mRandomContactContainer.removeAllViews();
-        mRandomContactContainer.addView(randomContactView);
-
         showInitialContact(savedInstanceState);
+
+        return randomContactView;
     }
 
     private void showInitialContact(Bundle savedInstanceState) {
