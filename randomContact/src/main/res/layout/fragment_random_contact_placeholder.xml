@@ -8,14 +8,16 @@
               android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/txt_permission_required"
+        android:id="@+id/txt_random_contact_placeholder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginTop="@dimen/margin_large"
         android:gravity="center_vertical"
         android:textAlignment="center"
-        android:text="@string/str_permission_required"
+        android:text="@string/empty_text"
+        android:drawableTop="@drawable/material_bg"
+        android:drawablePadding="@dimen/card_padding"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
 
     <Button

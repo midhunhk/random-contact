@@ -86,9 +86,20 @@ public class RandomContactFragment extends PermissionCheckingFragment {
         Toast.makeText(getActivity(), R.string.str_permission_required, Toast.LENGTH_SHORT).show();
     }
 
+    public View setupViewWithoutContacts() {
+        View noAccessView = mInflater.inflate(R.layout.fragment_random_contact_placeholder, mContainer, false);
+        TextView txtMessage = noAccessView.findViewById(R.id.txt_random_contact_placeholder);
+        txtMessage.setText(R.string.str_permission_required);
+        Button btnProvideAccess = noAccessView.findViewById(R.id.btnProvideAccess);
+        btnProvideAccess.setVisibility(View.GONE);
+        return noAccessView;
+    }
+
     @Override
     public View setupViewWithoutPermission() {
-        View noAccessView = mInflater.inflate(R.layout.fragment_permission_required, mContainer, false);
+        View noAccessView = mInflater.inflate(R.layout.fragment_random_contact_placeholder, mContainer, false);
+        TextView txtMessage = noAccessView.findViewById(R.id.txt_random_contact_placeholder);
+        txtMessage.setText(R.string.str_permission_required);
         Button btnProvideAccess = noAccessView.findViewById(R.id.btnProvideAccess);
         btnProvideAccess.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -101,21 +112,25 @@ public class RandomContactFragment extends PermissionCheckingFragment {
 
     @Override
     public View setupViewWithPermission(Bundle savedInstanceState) {
-        View randomContactView = mInflater.inflate(R.layout.fragment_random_contact, mContainer, false);
+        View randomContactView;
 
-        //mContext = getActivity().getBaseContext();
         mContactManager = RandomContactManager.getInstance(mContext);
         mContactManagerProvider = (GlobalThemeChanger) getActivity();
 
-        initViews(randomContactView);
+        if(mContactManager.getTotalContactCount() > 0){
+            randomContactView = mInflater.inflate(R.layout.fragment_random_contact, mContainer, false);
+            initViews(randomContactView);
 
-        setupRecyclerView(randomContactView);
+            setupRecyclerView(randomContactView);
 
-        configureAnimations();
+            configureAnimations();
 
-        setupMenu();
+            setupMenu();
 
-        showInitialContact(savedInstanceState);
+            showInitialContact(savedInstanceState);
+        } else {
+            randomContactView = setupViewWithoutContacts();
+        }
 
         return randomContactView;
     }
