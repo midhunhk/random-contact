@@ -19,14 +19,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -35,6 +32,7 @@ import com.ae.apps.randomcontact.adapters.ContactGroupRecyclerViewAdapter;
 import com.ae.apps.randomcontact.data.ContactGroup;
 import com.ae.apps.randomcontact.data.ContactGroupInteractionListener;
 import com.ae.apps.randomcontact.managers.ContactGroupManager;
+import com.ae.apps.randomcontact.permissions.ContactsPermissionFragment;
 import com.ae.apps.randomcontact.utils.AppConstants;
 
 import org.jetbrains.annotations.NotNull;
@@ -47,7 +45,7 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link ContactGroupInteractionListener}
  * interface.
  */
-public class ContactGroupFragment extends Fragment
+public class ContactGroupFragment extends ContactsPermissionFragment
         implements AddContactGroupDialogFragment.AddContactGroupDialogListener,
         ContactGroupInteractionListener {
 
@@ -69,9 +67,8 @@ public class ContactGroupFragment extends Fragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_contact_group, container, false);
+    protected View setupViewWithPermission(Bundle savedInstanceState) {
+        View view = mInflater.inflate(R.layout.fragment_contact_group, mContainer, false);
 
         mContactGroupManager = ContactGroupManager.getInstance(getActivity());
 
@@ -82,6 +79,11 @@ public class ContactGroupFragment extends Fragment
         setUpRecyclerView(view, selectedContactGroup);
 
         return view;
+    }
+
+    @Override
+    protected void onPermissionNotGranted(int requestCode, String[] permissions, int[] grantResults) {
+        Toast.makeText(mContext, R.string.str_permission_required, Toast.LENGTH_LONG).show();
     }
 
     private void initViews(View view, String selectedContactGroup) {

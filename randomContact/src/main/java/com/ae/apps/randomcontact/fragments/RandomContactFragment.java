@@ -16,7 +16,6 @@
 
 package com.ae.apps.randomcontact.fragments;
 
-import android.Manifest;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -43,13 +42,13 @@ import com.ae.apps.randomcontact.R;
 import com.ae.apps.randomcontact.adapters.ContactRecyclerAdapter;
 import com.ae.apps.randomcontact.data.GlobalThemeChanger;
 import com.ae.apps.randomcontact.managers.RandomContactManager;
-import com.ae.apps.randomcontact.permissions.PermissionCheckingFragment;
+import com.ae.apps.randomcontact.permissions.ContactsPermissionFragment;
 import com.ae.apps.randomcontact.utils.AppConstants;
 import com.ae.apps.randomcontact.utils.Utils;
 
 import java.util.Collections;
 
-public class RandomContactFragment extends PermissionCheckingFragment {
+public class RandomContactFragment extends ContactsPermissionFragment {
 
     private static final String SAVED_CONTACT_ID = "savedContactId";
 
@@ -71,42 +70,12 @@ public class RandomContactFragment extends PermissionCheckingFragment {
     private AeContactManager mContactManager;
     private ContactVo mCurrentContact;
 
-    @Override
-    protected int getRequestCode() {
-        return AppConstants.PERMISSIONS_REQUEST_READ_CONTACTS;
-    }
-
-    @Override
-    protected String[] getRequiredPermissions() {
-        return new String[]{Manifest.permission.READ_CONTACTS};
-    }
-
-    @Override
-    protected void onPermissionNotGranted(int requestCode, String[] permissions, int[] grantResults) {
-        Toast.makeText(getActivity(), R.string.str_permission_required, Toast.LENGTH_SHORT).show();
-    }
-
     public View setupViewWithoutContacts() {
         View noAccessView = mInflater.inflate(R.layout.fragment_random_contact_placeholder, mContainer, false);
         TextView txtMessage = noAccessView.findViewById(R.id.txt_random_contact_placeholder);
         txtMessage.setText(R.string.str_permission_required);
         Button btnProvideAccess = noAccessView.findViewById(R.id.btnProvideAccess);
         btnProvideAccess.setVisibility(View.GONE);
-        return noAccessView;
-    }
-
-    @Override
-    public View setupViewWithoutPermission() {
-        View noAccessView = mInflater.inflate(R.layout.fragment_random_contact_placeholder, mContainer, false);
-        TextView txtMessage = noAccessView.findViewById(R.id.txt_random_contact_placeholder);
-        txtMessage.setText(R.string.str_permission_required);
-        Button btnProvideAccess = noAccessView.findViewById(R.id.btnProvideAccess);
-        btnProvideAccess.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                requestForPermissions();
-            }
-        });
         return noAccessView;
     }
 
@@ -133,6 +102,11 @@ public class RandomContactFragment extends PermissionCheckingFragment {
         }
 
         return randomContactView;
+    }
+
+    @Override
+    protected void onPermissionNotGranted(int requestCode, String[] permissions, int[] grantResults) {
+        Toast.makeText(mContext, R.string.str_permission_required, Toast.LENGTH_LONG).show();
     }
 
     private void showInitialContact(Bundle savedInstanceState) {
