@@ -12,5 +12,4 @@ public interface AppConstants {
 
     String PACKAGE_NAME_WHATSAPP = "com.whatsapp";
 
-    int PERMISSIONS_REQUEST_READ_CONTACTS = 200;
 }

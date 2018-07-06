@@ -48,6 +48,9 @@ import com.ae.apps.randomcontact.utils.Utils;
 
 import java.util.Collections;
 
+/**
+ * Fragment that shows a Random Contact
+ */
 public class RandomContactFragment extends ContactsPermissionFragment {
 
     private static final String SAVED_CONTACT_ID = "savedContactId";
@@ -70,7 +73,7 @@ public class RandomContactFragment extends ContactsPermissionFragment {
     private AeContactManager mContactManager;
     private ContactVo mCurrentContact;
 
-    public View setupViewWithoutContacts() {
+    private View setupViewWithoutContacts() {
         View noAccessView = mInflater.inflate(R.layout.fragment_random_contact_placeholder, mContainer, false);
         TextView txtMessage = noAccessView.findViewById(R.id.txt_random_contact_placeholder);
         txtMessage.setText(R.string.str_permission_required);
@@ -137,7 +140,7 @@ public class RandomContactFragment extends ContactsPermissionFragment {
                         return true;
                     case R.id.action_view_contact:
                         Toast.makeText(getContext(), "Opening contact in Contacts app", Toast.LENGTH_SHORT).show();
-                        Utils.showContactInAddressBook(requireActivity(), getCurrentContact().getId());
+                        Utils.showContactInAddressBook(requireActivity(), mCurrentContact.getId());
                         return true;
                 }
 
@@ -171,7 +174,6 @@ public class RandomContactFragment extends ContactsPermissionFragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
     }
 
     private void initViews(View layout) {
@@ -266,10 +268,6 @@ public class RandomContactFragment extends ContactsPermissionFragment {
             Toast.makeText(mContext, getResources().getString(R.string.str_empty_contact_list), Toast.LENGTH_LONG)
                     .show();
         }
-    }
-
-    public ContactVo getCurrentContact() {
-        return mCurrentContact;
     }
 
 }

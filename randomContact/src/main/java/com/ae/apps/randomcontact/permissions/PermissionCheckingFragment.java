@@ -1,3 +1,18 @@
+/*
+ * Copyright 2018 Midhun Harikumar
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.ae.apps.randomcontact.permissions;
 
 import android.content.Context;
@@ -10,11 +25,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ae.apps.randomcontact.utils.AppConstants;
 import com.ae.apps.randomcontact.utils.Utils;
 
 /**
- * An abstract Fragment that can check for Runtime Permissions
+ * An abstract Fragment that can check for Runtime Permissions if your app target is above Lollipop
+ *
+ * The onCreateView method is used to check for the permission and returns an empty
+ * FrameLayout to the Activity that hosts this fragment.
+ *
+ * Based on the permission check result, the below methods would be invoked and can return
+ * the appropriate View for that scenario
+ *  {@link PermissionCheckingFragment#setupViewWithPermission} If permission is granted
+ *  {@link PermissionCheckingFragment#setupViewWithoutPermission} If permission is not granted
  */
 public abstract class PermissionCheckingFragment extends Fragment {
 
@@ -23,7 +45,7 @@ public abstract class PermissionCheckingFragment extends Fragment {
     protected Context mContext;
     private ViewGroup mMainContainer;
     private String[] mPermissionNames;
-    private int mRequestCode;
+    private static final int PERMISSION_CHECK_REQUEST_CODE = 8000;
 
     @Override
     public void onAttach(Context context) {
@@ -32,25 +54,17 @@ public abstract class PermissionCheckingFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public final View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mInflater = inflater;
         mContainer = container;
         mMainContainer = Utils.createParentLayout(mContext);
 
         mPermissionNames = getRequiredPermissions();
-        mRequestCode = getRequestCode();
 
         checkPermissions(savedInstanceState);
 
         return mMainContainer;
     }
-
-    /**
-     * The request code
-     *
-     * @return request code
-     */
-    protected abstract int getRequestCode();
 
     /**
      * Permissions that are required
@@ -113,13 +127,13 @@ public abstract class PermissionCheckingFragment extends Fragment {
     }
 
     protected void requestForPermissions() {
-        requestPermissions(mPermissionNames, mRequestCode);
+        requestPermissions(mPermissionNames, PERMISSION_CHECK_REQUEST_CODE);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
-            case AppConstants.PERMISSIONS_REQUEST_READ_CONTACTS: {
+            case PERMISSION_CHECK_REQUEST_CODE: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     onPermissionGranted(null);
                 } else {

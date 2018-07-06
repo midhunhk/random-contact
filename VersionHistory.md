@@ -3,6 +3,7 @@
 ### Version 3.2 (Blackbird)
 **RandomContact 3.2.0[Jul 2018]**
  - Target the latest API
+ - Handle scenario with no contacts
 
 ### Version 3.1 (Telephone)
 **RandomContact 3.1.0[Apr 2018]**
