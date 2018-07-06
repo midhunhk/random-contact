@@ -12,13 +12,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginTop="@dimen/margin_large"
+        android:paddingTop="@dimen/margin_large"
+        android:paddingBottom="@dimen/margin_large"
+        android:layout_marginLeft="@dimen/margin_large"
+        android:layout_marginRight="@dimen/margin_large"
+        android:padding="@dimen/padding_medium"
         android:gravity="center_vertical"
         android:textAlignment="center"
         android:text="@string/empty_text"
         android:drawableTop="@drawable/material_bg"
-        android:drawablePadding="@dimen/card_padding"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+        android:drawablePadding="@dimen/card_padding"/>
 
     <Button
         android:id="@+id/btnProvideAccess"
@@ -27,5 +30,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/card_margin"
-        android:text="@string/str_btn_provide_acces"/>
+        android:text="@string/str_btn_provide_access"/>
 </LinearLayout>
