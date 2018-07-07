@@ -195,7 +195,7 @@ public class RandomContactManager implements FilteredContactList, AeContactManag
     @NonNull
     @Override
     public List<ContactVo> getTopFrequentlyContacted(int maxResults) {
-        List<ContactVo> filteredList = Collections.EMPTY_LIST;
+        List<ContactVo> filteredList = Collections.emptyList();
         if (mContactManager.getTotalContactCount() > 0) {
             // The listToFilter would be sorted in place
             List<ContactVo> listToFilter = getAllContacts();

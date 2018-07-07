@@ -63,8 +63,8 @@ public class MainActivity extends ToolBarBaseActivity implements OnItemClickList
     }
 
     private void setupNavDrawer() {
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ListView mDrawerList = (ListView) findViewById(R.id.left_drawer_list);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        ListView mDrawerList = findViewById(R.id.left_drawer_list);
 
         // Create the list for the main fragments to be shown in the drawer
         NavDrawerListAdapter drawerListAdapter = new NavDrawerListAdapter(this, mNavFragmentManager.getNavTitles());
@@ -76,14 +76,14 @@ public class MainActivity extends ToolBarBaseActivity implements OnItemClickList
 
         displayHomeAsUp();
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this,
                 mDrawerLayout,
                 getToolBar(),
                 R.string.app_name,
                 R.string.app_name);
 
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
     }
 
