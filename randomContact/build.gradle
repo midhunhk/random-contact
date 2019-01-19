@@ -10,8 +10,8 @@ android {
         applicationId "com.ae.apps.randomcontact"
         minSdkVersion 14
         targetSdkVersion 27
-        versionCode 129
-        versionName "3.2.0"
+        versionCode 130
+        versionName "3.2.1"
     }
 
     buildTypes {
