@@ -5,7 +5,7 @@
 Random Contact is an Android app that shows the details of a random contact from your contacts list. 
 This is an experimental, fun and personal project which has been made open source.
 
-<img src="https://raw.githubusercontent.com/midhunhk/random-contact/nova/resources/artwork/nova_logo.png" alt="Codename Nova" />
+<img src="https://raw.githubusercontent.com/midhunhk/random-contact/nova/resources/artwork/nova_logo.png" alt="Codename Nova" /> codename nova
 
 ## Features
  - Designed based on material design principles
@@ -24,8 +24,8 @@ App Announcement blog entry
  - http://midhunhk.github.io/random-contact/2018/04/08/Version-3-1-Released/
 
 ## Dependencies
-Random Contact used the below dependent libraries for functioning
-- ae-apps-library (https://github.com/midhunhk/ae-apps-library)
+Random Contact uses the below dependent libraries for functioning
+- lib-aeapps (https://github.com/midhunhk/lib-aeapps)
 
 # License
 Copyright 2013-2018 Midhun Harikumar
