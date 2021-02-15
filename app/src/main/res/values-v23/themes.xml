@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+
     <style name="Theme.RandomContact" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/color_random_blue_500</item>
@@ -10,6 +11,7 @@
         <item name="colorSecondaryVariant">@color/color_radical_red_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
+        <item name="android:windowLightStatusBar">true</item>
         <item name="android:statusBarColor" tools:targetApi="l">@color/color_alabaster_white</item>
         <!-- Customize your theme here. -->
         <item name="android:colorBackground">@color/color_alabaster_white</item>
@@ -40,15 +42,4 @@
         <item name="textAppearanceOverline">@style/TextAppearance.MaterialComponents.Overline</item>
 
     </style>
-
-    <style name="Theme.RandomContact.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-    <style name="randomContactMaterialCardViewStyle" parent="Widget.MaterialComponents.CardView">
-        <item name="cardBackgroundColor">@color/white</item>
-    </style>
-    <style name="Theme.RandomContact.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="Theme.RandomContact.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

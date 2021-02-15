@@ -61,7 +61,8 @@ limitations under the License.</string>
     <string name="str_multi_contact_no_contacts">No Contacts to display</string>
 
     <!-- v3.2.0 -->
-    <string name="str_permission_required">Random Contact requires the permission to read contacts to function as designed.</string>
+    <string name="str_permission_required_title">Runtime Permission Required</string>
+    <string name="str_permission_required_desc">Random Contact requires the permission to read contacts to function as designed.</string>
     <string name="str_btn_provide_access">Provide Access</string>
     <string name="title_activity_main">MainActivity</string>
     <!-- Strings used for fragments for navigation -->
@@ -72,4 +73,6 @@ limitations under the License.</string>
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
