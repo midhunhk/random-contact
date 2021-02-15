@@ -10,7 +10,10 @@
         <item name="colorSecondaryVariant">@color/color_radical_red_200</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorSurface</item>
+        <!-- Customize your theme here. -->
+        <item name="android:colorBackground">@color/color_matterhorn_brown</item>
+        <item name="colorSurface">@color/color_matterhorn_brown</item>
         <!-- Customize your theme here. -->
         <item name="scrimBackground">@color/app_black_900_alpha_085</item>
 
