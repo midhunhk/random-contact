@@ -7,6 +7,7 @@
     tools:context=".fragments.NoAccessFragment">
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/contactsCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="?attr/colorOnPrimary"
@@ -15,38 +16,117 @@
         app:cardMaxElevation="1dp"
         app:cardUseCompatPadding="true"
         app:contentPadding="@dimen/unit_m"
-        android:layout_margin="@dimen/unit_m"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.2">
+        app:layout_constraintVertical_bias="0">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/unit_m"
+                android:paddingBottom="@dimen/unit_m">
+
+                <com.ae.apps.lib.custom.views.RoundedImageView
+                    android:id="@+id/contactImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
                 <TextView
-                    android:id="@+id/txtNoAccessTitle"
+                    android:id="@+id/contactName"
+                    style="@style/TextAppearance.MaterialComponents.Headline4"
+                    android:layout_weight=".8"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:padding="@dimen/unit_m"
+                    android:gravity="start"
+                    android:text="@string/empty_text" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <ImageButton
+                        android:id="@+id/btnRefresh"
+                        android:layout_width="@dimen/unit_xxl"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/empty_text"
+                        android:src="@drawable/ic_icon_material_refresh" />
+
+                    <ImageButton
+                        android:id="@+id/btnAddressBook"
+                        android:layout_width="@dimen/unit_xxl"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/empty_text"
+                        android:src="@drawable/ic_address_book" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/timesContactedText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/unit_m"
-                    android:gravity="center"
-                    android:text="@string/app_desc"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                    app:layout_constraintBottom_toTopOf="@+id/txtNoAccessText"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_chainStyle="spread_inside" />
+                    android:gravity="center_vertical"
+                    android:layout_alignParentStart="false"
+                    android:layout_alignParentLeft="false"
+                    android:text="@string/str_times_contacted"
+                    android:textSize="16sp" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </ScrollView>
+                <TextView
+                    android:id="@+id/timesContactedCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:text="@string/empty_count"
+                    android:textColor="?attr/colorSecondary"
+                    android:textSize="48sp" />
+            </RelativeLayout>
+
+        </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/textContactNow"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/unit_l"
+        android:gravity="start"
+        android:paddingStart="@dimen/unit_l"
+        android:paddingLeft="@dimen/unit_l"
+        android:paddingEnd="@dimen/unit_l"
+        android:paddingRight="@dimen/unit_l"
+        android:text="@string/str_contact_now"
+        android:textAlignment="viewStart"
+        android:textColor="?attr/colorSecondary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contactsCard" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/unit_l"
+        android:paddingStart="@dimen/unit_l"
+        android:paddingLeft="@dimen/unit_l"
+        android:paddingEnd="@dimen/unit_l"
+        android:paddingRight="@dimen/unit_l"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textContactNow" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

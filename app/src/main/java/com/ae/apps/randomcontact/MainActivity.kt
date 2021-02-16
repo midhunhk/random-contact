@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity(), PermissionsAwareComponent, AppRequestP
     override fun onPermissionsDenied() = showPermissionsRequiredView()
 
     override fun onPermissionsGranted() {
-        showFragment(RandomContactFragment.newInstance())
+        showFragment(RandomContactFragment.newInstance(baseContext))
     }
 
     private fun showPermissionsRequiredView(){
