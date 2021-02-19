@@ -13,6 +13,7 @@ import com.ae.apps.lib.api.contacts.types.ContactInfoFilterOptions
 import com.ae.apps.lib.api.contacts.types.ContactsDataConsumer
 import com.ae.apps.lib.common.models.ContactInfo
 import com.ae.apps.lib.common.utils.CommonUtils
+import com.ae.apps.lib.common.utils.ContactUtils.showContactInAddressBook
 import com.ae.apps.randomcontact.R
 import com.ae.apps.randomcontact.adapters.ContactRecyclerAdapter
 import com.ae.apps.randomcontact.data.RandomContactApiGatewayImpl
@@ -63,6 +64,10 @@ class RandomContactFragment : Fragment(R.layout.fragment_random_contact), Contac
     private fun setupViews(){
         binding?.btnRefresh?.setOnClickListener {
             showRandomContact()
+        }
+        binding?.btnAddressBook?.setOnClickListener {
+            Toast.makeText(requireContext(), "Opening contact in Contacts app", Toast.LENGTH_SHORT).show();
+            showContactInAddressBook(requireActivity(), currentContact?.id);
         }
     }
 
