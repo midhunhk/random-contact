@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.NoAccessFragment">
+    tools:context=".fragments.RandomContactFragment">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/contactsCard"
@@ -25,76 +25,92 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal">
+
+            <com.ae.apps.lib.custom.views.RoundedImageView
+                android:id="@+id/contactImage"
+                android:layout_marginTop="@dimen/unit_m"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:maxWidth="72dp"
+                android:maxHeight="72dp" />
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:paddingTop="@dimen/unit_m"
                 android:paddingBottom="@dimen/unit_m">
 
-                <com.ae.apps.lib.custom.views.RoundedImageView
-                    android:id="@+id/contactImage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:id="@+id/contactName"
-                    style="@style/TextAppearance.MaterialComponents.Headline4"
-                    android:layout_weight=".8"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:padding="@dimen/unit_m"
-                    android:gravity="start"
-                    android:text="@string/empty_text" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/contactName"
+                        style="@style/TextAppearance.MaterialComponents.Headline4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:gravity="start"
+                        android:padding="@dimen/unit_m"
+                        android:text="@string/empty_text" />
                     <ImageButton
                         android:id="@+id/btnRefresh"
-                        android:layout_width="@dimen/unit_xxl"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:background="?android:selectableItemBackground"
                         android:contentDescription="@string/empty_text"
-                        android:src="@drawable/ic_icon_material_refresh" />
+                        android:padding="@dimen/unit_m"
+                        android:src="@drawable/ic_refresh" />
 
                     <ImageButton
                         android:id="@+id/btnAddressBook"
-                        android:layout_width="@dimen/unit_xxl"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/unit_m"
+                        app:layout_constraintTop_toBottomOf="@+id/btnRefresh"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:background="?android:selectableItemBackground"
                         android:contentDescription="@string/empty_text"
+                        android:padding="@dimen/unit_m"
                         android:src="@drawable/ic_address_book" />
-                </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/timesContactedText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="false"
+                        android:layout_alignParentLeft="false"
+                        android:layout_centerVertical="true"
+                        android:padding="@dimen/unit_m"
+                        android:text="@string/str_times_contacted"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/timesContactedCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:text="@string/empty_count"
+                        android:textColor="?attr/colorSecondary"
+                        android:textSize="48sp"
+                        tools:ignore="RelativeOverlap" />
+                </RelativeLayout>
             </LinearLayout>
 
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical">
 
-                <TextView
-                    android:id="@+id/timesContactedText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layout_alignParentStart="false"
-                    android:layout_alignParentLeft="false"
-                    android:text="@string/str_times_contacted"
-                    android:textSize="16sp" />
 
-                <TextView
-                    android:id="@+id/timesContactedCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:text="@string/empty_count"
-                    android:textColor="?attr/colorSecondary"
-                    android:textSize="48sp" />
-            </RelativeLayout>
 
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_centerVertical="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -36,10 +38,12 @@
         android:layout_margin="3dp"
         android:layout_toLeftOf="@+id/btnCall"
         android:layout_toStartOf="@id/btnCall"
+        android:background="?android:selectableItemBackground"
         android:contentDescription="@string/empty_text"
         android:padding="5dp"
-        android:src="@drawable/ic_action_whatsapp"
-        android:text="@string/action_whatsapp_message"/>
+        android:src="@drawable/ic_whatsapp"
+        android:text="@string/action_whatsapp_message"
+        tools:ignore="RelativeOverlap" />
 
     <ImageButton
         android:id="@+id/btnCall"
@@ -48,9 +52,10 @@
         android:layout_margin="3dp"
         android:layout_toLeftOf="@+id/btnText"
         android:layout_toStartOf="@id/btnText"
+        android:background="?android:selectableItemBackground"
         android:contentDescription="@string/empty_text"
         android:padding="5dp"
-        android:src="@drawable/ic_action_call"
+        android:src="@drawable/ic_phone"
         android:text="@string/action_call"/>
 
     <ImageButton
@@ -60,10 +65,11 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
+        android:background="?android:selectableItemBackground"
         android:layout_margin="3dp"
         android:contentDescription="@string/empty_text"
         android:padding="5dp"
-        android:src="@drawable/ic_action_chat"
+        android:src="@drawable/ic_message"
         android:text="@string/action_message"/>
 
 </RelativeLayout>
