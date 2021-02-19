@@ -7,21 +7,29 @@ import com.ae.apps.lib.api.contacts.types.ContactInfoFilterOptions
 import com.ae.apps.lib.api.contacts.types.ContactInfoOptions
 import com.ae.apps.lib.api.contacts.types.ContactsDataConsumer
 import com.ae.apps.lib.common.models.ContactInfo
+import com.ae.apps.randomcontact.preferences.AppPreferences
+import com.ae.apps.randomcontact.room.AppDatabase
+import com.ae.apps.randomcontact.room.repositories.ContactGroupRepository
+import com.ae.apps.randomcontact.utils.DEFAULT_CONTACT_GROUP
 import java.util.*
 
 class RandomContactApiGatewayImpl : ContactsApiGateway, ContactsDataConsumer {
 
     private var index:Int = 0
     private lateinit var dataConsumer: ContactsDataConsumer
+    private lateinit var appDatabase:AppDatabase
 
     companion object{
         @Volatile private var INSTANCE:ContactsApiGateway? = null
         @Volatile private lateinit var contactsApi:ContactsApiGateway
+        @Volatile private lateinit var contactGroupRepository:ContactGroupRepository
+        @Volatile private lateinit var appPreferences: AppPreferences
 
-        fun getInstance(context: Context): ContactsApiGateway =
+        fun getInstance(context: Context, repository: ContactGroupRepository): ContactsApiGateway =
             INSTANCE ?: synchronized(this){
-                contactsApi = ContactsApiGatewayImpl.Builder(context)
-                    .build()
+                contactGroupRepository = repository
+                appPreferences = AppPreferences.getInstance(context)
+                contactsApi = ContactsApiGatewayImpl.Builder(context).build()
                 INSTANCE ?: RandomContactApiGatewayImpl().also { INSTANCE = it }
             }
     }
@@ -69,8 +77,17 @@ class RandomContactApiGatewayImpl : ContactsApiGateway, ContactsDataConsumer {
             return null
         }
         var randomContactId: String? = null
+
+        val selectedGroup = appPreferences.selectedContactGroup()
+        if(DEFAULT_CONTACT_GROUP == selectedGroup){
+
+        } else {
+            // TODO Stuff
+            contactGroupRepository.findContactGroupById(selectedGroup!!)
+        }
+
         index = ((index + 1) % readContactsCount.toInt())
-        randomContactId = allContacts.get(index).id
+        randomContactId = allContacts[index].id
 
         val options = ContactInfoOptions.of(true, true,
             com.ae.apps.lib.R.drawable.profile_icon_3)

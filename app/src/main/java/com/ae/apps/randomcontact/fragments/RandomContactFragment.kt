@@ -18,6 +18,8 @@ import com.ae.apps.randomcontact.R
 import com.ae.apps.randomcontact.adapters.ContactRecyclerAdapter
 import com.ae.apps.randomcontact.data.RandomContactApiGatewayImpl
 import com.ae.apps.randomcontact.databinding.FragmentRandomContactBinding
+import com.ae.apps.randomcontact.room.AppDatabase
+import com.ae.apps.randomcontact.room.repositories.ContactGroupRepository
 import com.ae.apps.randomcontact.utils.PACKAGE_NAME_WHATSAPP
 
 
@@ -32,7 +34,9 @@ class RandomContactFragment : Fragment(R.layout.fragment_random_contact), Contac
 
         fun newInstance(context: Context): RandomContactFragment =
             INSTANCE ?: synchronized(this){
-                contactsApi = RandomContactApiGatewayImpl.getInstance(context)
+                val repository = ContactGroupRepository.getInstance(
+                    AppDatabase.getInstance(context).contactGroupDao() )
+                contactsApi = RandomContactApiGatewayImpl.getInstance(context, repository)
                 INSTANCE ?: RandomContactFragment().also { INSTANCE = it }
             }
     }

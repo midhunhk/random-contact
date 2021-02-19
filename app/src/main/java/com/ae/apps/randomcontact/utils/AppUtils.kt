@@ -5,15 +5,15 @@ import android.content.Context
 import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
-import android.net.Uri.withAppendedPath
 import android.provider.ContactsContract
 import android.widget.Toast
 import com.ae.apps.lib.common.utils.ContactUtils.cleanupPhoneNumber
 
+var DEFAULT_CONTACT_GROUP = "0"
+var PACKAGE_NAME_WHATSAPP = "com.whatsapp"
 
 private const val DEFAULT_DATE_FORMAT = "MMM dd, yyyy hh:mm a"
 private const val CONTENT_CONTACTS_DATA = "content://com.android.contacts/data/"
-var PACKAGE_NAME_WHATSAPP = "com.whatsapp"
 
 /**
  * Send a WhatsAppMessage to a contact number
