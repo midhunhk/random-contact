@@ -10,6 +10,7 @@ import android.widget.Toast
 import com.ae.apps.lib.common.utils.ContactUtils.cleanupPhoneNumber
 
 var DEFAULT_CONTACT_GROUP = "0"
+var CONTACT_ID_SEPARATOR = ","
 var PACKAGE_NAME_WHATSAPP = "com.whatsapp"
 
 private const val DEFAULT_DATE_FORMAT = "MMM dd, yyyy hh:mm a"

@@ -7,9 +7,8 @@ import com.ae.apps.randomcontact.utils.DEFAULT_CONTACT_GROUP
 
 class AppPreferences private constructor(context: Context){
 
-    private val PREF_KEY_SELECTED_CONTACT_GROUP = "pref_key_selected_contact_group"
-
     companion object{
+        private val PREF_KEY_SELECTED_CONTACT_GROUP = "pref_key_selected_contact_group"
 
         @Volatile private var instance:AppPreferences? = null
         @Volatile private lateinit var preferences:SharedPreferences
@@ -29,7 +28,7 @@ class AppPreferences private constructor(context: Context){
      */
     fun selectedContactGroup(): String? {
         return preferences.getString(
-            PREF_KEY_SELECTED_CONTACT_GROUP,
+            Companion.PREF_KEY_SELECTED_CONTACT_GROUP,
             DEFAULT_CONTACT_GROUP
         )
     }
@@ -43,7 +42,7 @@ class AppPreferences private constructor(context: Context){
     fun setSelectedContactGroup(context: Context?, groupId: String?) {
         preferences
             .edit()
-            .putString(PREF_KEY_SELECTED_CONTACT_GROUP, groupId)
+            .putString(Companion.PREF_KEY_SELECTED_CONTACT_GROUP, groupId)
             .apply()
     }
 

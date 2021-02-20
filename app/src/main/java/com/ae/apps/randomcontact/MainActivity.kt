@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import com.ae.apps.lib.permissions.PermissionsAwareComponent
 import com.ae.apps.lib.permissions.RuntimePermissionChecker
 import com.ae.apps.randomcontact.fragments.AboutFragment
+import com.ae.apps.randomcontact.fragments.ManageGroupsFragment
 import com.ae.apps.randomcontact.fragments.NoAccessFragment
 import com.ae.apps.randomcontact.fragments.RandomContactFragment
 
@@ -46,6 +47,9 @@ class MainActivity : AppCompatActivity(), PermissionsAwareComponent, AppRequestP
 
         btnManageGroups = findViewById(R.id.manageGroups)
         btnManageGroups?.visibility = View.INVISIBLE
+        btnManageGroups?.setOnClickListener {
+            showFragment( ManageGroupsFragment.newInstance())
+        }
     }
 
     override fun requiredPermissions() = PERMISSIONS
