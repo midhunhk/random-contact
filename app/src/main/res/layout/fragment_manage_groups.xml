@@ -28,9 +28,11 @@
             tools:ignore="RelativeOverlap" />
 
         <ImageView
+            android:id="@+id/btnAddGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_add"
+            app:srcCompat="@drawable/ic_add_group"
+            app:tint="?attr/colorSecondaryVariant"
             android:layout_marginTop="16dp"
             android:background="?android:selectableItemBackground"
             android:layout_alignParentEnd="true"
@@ -45,6 +47,7 @@
         android:paddingLeft="@dimen/unit_l"
         android:paddingEnd="@dimen/unit_l"
         android:paddingRight="@dimen/unit_l"
+        android:textSize="@dimen/unit_l"
         android:text="@string/str_select_contact_group"/>
 
     <LinearLayout

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/unit_m"
@@ -12,22 +14,11 @@
         android:id="@+id/radioSelected"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        tools:text="@tools:sample/cities"
+        android:textSize="18sp"
         android:layout_centerInParent="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true" />
-
-    <TextView
-        android:id="@+id/txtContactGroupName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toStartOf="@+id/btnEditContactGroup"
-        android:layout_toLeftOf="@+id/btnEditContactGroup"
-        android:layout_toEndOf="@+id/radioSelected"
-        android:layout_toRightOf="@+id/radioSelected"
-        android:layout_gravity="center_vertical"
-        android:text="@string/empty_text"
-        android:textAppearance="?attr/textAppearanceListItem"
-        android:textSize="18sp" />
 
     <ImageButton
         android:id="@+id/btnEditContactGroup"
@@ -39,7 +30,8 @@
         android:contentDescription="@string/empty_text"
         android:layout_centerInParent="true"
         android:padding="@dimen/unit_s"
-        android:src="@drawable/ic_edit_group" />
+        app:tint="?attr/colorOnSurface"
+        app:srcCompat="@drawable/ic_edit_group" />
 
     <ImageButton
         android:id="@+id/btnDeleteContactGroup"
@@ -51,5 +43,6 @@
         android:contentDescription="@string/empty_text"
         android:layout_centerInParent="true"
         android:padding="@dimen/unit_s"
-        android:src="@drawable/ic_remove_group" />
+        app:tint="?attr/colorOnSurface"
+        app:srcCompat="@drawable/ic_remove_group" />
 </RelativeLayout>

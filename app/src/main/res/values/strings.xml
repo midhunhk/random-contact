@@ -3,8 +3,8 @@
     <string name="app_version">Version 4.0.0 (Nova)</string>
     <string name="app_release_date">Jul 2018</string>
     <string name="app_desc">This app displays a "Random Contact" from your contacts list. Contact an old friend today!</string>
-    <string name="app_disclaimer">The data displayed in this app are not guaranteed to be accurate and should be used as an
-        indication. All the data are retrieved from the phone\'s database and no information is shared.</string>
+    <string name="app_disclaimer">Disclaimer: Some of the data displayed in this app are not guaranteed to be accurate and should be used as an
+        indication. We respect your privacy. All the data are retrieved from the phone\'s database and no information is shared.</string>
     <string name="app_developer_info">Designed and developed at ae app labs</string>
 
     <string name="empty_text">Empty Text</string>
@@ -12,6 +12,7 @@
     <string name="empty_set">This contact does not have any phone numbers.</string>
 
     <string name="github_source_url" translatable="false">https://github.com/midhunhk/random-contact</string>
+    <string name="privacy_policy_url" translatable="false">https://ae-app-labs.github.io/privacy-policy/random-contact</string>
     <string name="github_source_visible_url" translatable="false">github.com/midhunhk/random-contact</string>
 
     <!-- menu options -->
@@ -23,7 +24,7 @@
     <string name="action_about">About</string>
     <string name="action_call">Call</string>
     <string name="action_whatsapp_message">WhatsApp</string>
-    <string name="action_license">License</string>
+    <string name="action_license">View License</string>
     <string name="action_message">Text</string>
     <string name="action_view_contact">View in Address Book</string>
 
@@ -44,25 +45,29 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.</string>
 
-    <!-- v3.0.0 -->
     <string name="str_all_contacts">All Contacts</string>
     <string name="str_create_group">Create Group</string>
     <string name="str_group_name">Contact Group Name</string>
     <string name="str_contact_group_add">Create</string>
     <string name="str_group_members">Group Members</string>
+    <string name="str_members">Members</string>
+    <string name="str_contact_group_select_members">Select</string>
     <string name="str_contact_group_add_member">Add</string>
     <string name="str_contact_group_title">Groups</string>
+    <string name="str_contact_group_name">Group Name</string>
+    <string name="str_contact_group_create_title">Create Group</string>
+    <string name="str_contact_group_edit_title">Edit Group</string>
+    <string name="str_privacy_policy">Privacy Policy</string>
     <string name="str_select_contact_group">Select a group to generate Random Contacts from.</string>
     <string name="str_empty_list_groups">No Custom Groups created</string>
+    <string name="str_empty_list_members">Select members to be part of this group.</string>
     <string name="str_contact_group_delete_title">Delete this Contact Group?</string>
     <string name="str_multi_contact_title">Select Contacts</string>
 
-    <!-- v3.1.0 -->
     <string name="str_multi_contact_continue">Continue</string>
     <string name="str_multi_contact_validation">Please select at least one contact</string>
     <string name="str_multi_contact_no_contacts">No Contacts to display</string>
 
-    <!-- v3.2.0 -->
     <string name="str_permission_required_title">Runtime Permission Required</string>
     <string name="str_permission_required_desc">Random Contact requires the permission to read contacts to function as designed.</string>
     <string name="str_btn_provide_access">Provide Access</string>

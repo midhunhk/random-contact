@@ -29,7 +29,7 @@
 
             <com.ae.apps.lib.custom.views.RoundedImageView
                 android:id="@+id/contactImage"
-                android:layout_marginTop="@dimen/unit_m"
+                android:layout_marginTop="@dimen/unit_l"
                 android:layout_width="72dp"
                 android:layout_height="72dp"
                 android:maxWidth="72dp"
@@ -47,14 +47,17 @@
                     android:layout_height="wrap_content">
                     <TextView
                         android:id="@+id/contactName"
-                        style="@style/TextAppearance.MaterialComponents.Headline4"
+                        style="@style/TextAppearance.MaterialComponents.Headline5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         android:gravity="start"
                         android:padding="@dimen/unit_m"
+                        android:layout_marginLeft="@dimen/unit_m"
+                        android:layout_marginStart="@dimen/unit_m"
                         android:text="@string/empty_text" />
+
                     <ImageButton
                         android:id="@+id/btnRefresh"
                         android:layout_width="wrap_content"
@@ -92,6 +95,8 @@
                         android:layout_alignParentLeft="false"
                         android:layout_centerVertical="true"
                         android:padding="@dimen/unit_m"
+                        android:layout_marginLeft="@dimen/unit_m"
+                        android:layout_marginStart="@dimen/unit_m"
                         android:text="@string/str_times_contacted"
                         android:textSize="20sp" />
 
@@ -141,6 +146,7 @@
         android:paddingLeft="@dimen/unit_l"
         android:paddingEnd="@dimen/unit_l"
         android:paddingRight="@dimen/unit_l"
+        tools:listitem="@layout/contact_info_item"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textContactNow" />

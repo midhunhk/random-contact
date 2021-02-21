@@ -14,6 +14,7 @@
         <!-- Customize your theme here. -->
         <item name="android:colorBackground">@color/color_matterhorn_brown</item>
         <item name="colorSurface">@color/color_matterhorn_brown</item>
+        <item name="colorOnSurface">@color/color_alabaster_white</item>
         <!-- Customize your theme here. -->
         <item name="scrimBackground">@color/app_black_900_alpha_085</item>
 

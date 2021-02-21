@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".fragments.AddContactGroupDialogFragment">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorSurface"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/colorSurface">
+
+            <ImageButton
+                android:id="@+id/btnClose"
+                android:layout_width="?attr/actionBarSize"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/empty_text"
+                android:tint="?attr/colorOnSurface"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_close" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="?attr/colorSurface"
+                android:gravity="center"
+                android:text="@string/str_contact_group_create_title"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                android:textColor="?attr/colorOnSurface"
+                app:layout_constraintEnd_toStartOf="@+id/btnSave"
+                app:layout_constraintStart_toEndOf="@+id/btnClose" />
+
+            <Button
+                android:id="@+id/btnSave"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/str_contact_group_add"
+                android:textColor="?attr/colorOnSurface"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
+        android:text="@string/str_contact_group_name"
+        android:layout_marginTop="@dimen/unit_l"
+        android:layout_marginLeft="@dimen/unit_m"
+        android:layout_marginRight="@dimen/unit_m"
+        tools:ignore="RelativeOverlap" />
+
+    <EditText
+        android:id="@+id/txtGroupName"
+        android:inputType="text"
+        android:layout_marginLeft="@dimen/unit_m"
+        android:layout_marginRight="@dimen/unit_m"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/unit_m"
+        android:layout_marginRight="@dimen/unit_m">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorSurface"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:text="@string/str_members"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+            android:textColor="?attr/colorOnSurface"/>
+
+        <Button
+            android:id="@+id/btnSelectMembers"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:text="@string/str_contact_group_select_members"
+            android:textColor="?attr/colorOnSurface"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.ae.apps.lib.custom.views.EmptyRecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            tools:listitem="@layout/contact_group_item"
+            app:layoutManager="LinearLayoutManager"/>
+
+        <RelativeLayout
+            android:id="@+id/empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/unit_m"
+            android:paddingTop="@dimen/unit_l"
+            android:visibility="gone">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="@dimen/unit_xl"
+                android:drawablePadding="@dimen/unit_m"
+                android:gravity="center"
+                android:text="@string/str_empty_list_members"/>
+        </RelativeLayout>
+    </FrameLayout>
+
+</LinearLayout>

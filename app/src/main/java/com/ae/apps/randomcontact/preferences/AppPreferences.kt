@@ -5,10 +5,10 @@ import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import com.ae.apps.randomcontact.utils.DEFAULT_CONTACT_GROUP
 
-class AppPreferences private constructor(context: Context){
+class AppPreferences {
 
     companion object{
-        private val PREF_KEY_SELECTED_CONTACT_GROUP = "pref_key_selected_contact_group"
+        private const val PREF_KEY_SELECTED_CONTACT_GROUP = "pref_key_selected_contact_group"
 
         @Volatile private var instance:AppPreferences? = null
         @Volatile private lateinit var preferences:SharedPreferences
@@ -16,7 +16,7 @@ class AppPreferences private constructor(context: Context){
         fun getInstance(context: Context):AppPreferences =
             instance?: synchronized(this){
                 preferences = PreferenceManager.getDefaultSharedPreferences(context)
-                instance ?: AppPreferences(context).also { instance = it }
+                instance ?: AppPreferences().also { instance = it }
             }
 
     }
@@ -28,7 +28,7 @@ class AppPreferences private constructor(context: Context){
      */
     fun selectedContactGroup(): String? {
         return preferences.getString(
-            Companion.PREF_KEY_SELECTED_CONTACT_GROUP,
+            PREF_KEY_SELECTED_CONTACT_GROUP,
             DEFAULT_CONTACT_GROUP
         )
     }
@@ -36,13 +36,12 @@ class AppPreferences private constructor(context: Context){
     /**
      * Sets the selected contact group
      *
-     * @param context context
      * @param groupId groupId
      */
-    fun setSelectedContactGroup(context: Context?, groupId: String?) {
+    fun setSelectedContactGroup(groupId: String?) {
         preferences
             .edit()
-            .putString(Companion.PREF_KEY_SELECTED_CONTACT_GROUP, groupId)
+            .putString(PREF_KEY_SELECTED_CONTACT_GROUP, groupId)
             .apply()
     }
 
