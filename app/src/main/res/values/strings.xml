@@ -49,6 +49,7 @@ limitations under the License.</string>
     <string name="str_create_group">Create Group</string>
     <string name="str_group_name">Contact Group Name</string>
     <string name="str_contact_group_add">Create</string>
+    <string name="str_contact_group_update">Update</string>
     <string name="str_group_members">Group Members</string>
     <string name="str_members">Members</string>
     <string name="str_contact_group_select_members">Select</string>

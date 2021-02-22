@@ -24,8 +24,8 @@ import com.ae.apps.randomcontact.activities.MultiContactPickerActivity
 import com.ae.apps.randomcontact.adapters.GroupMemberRecyclerAdapter
 import com.ae.apps.randomcontact.data.RandomContactApiGatewayImpl
 import com.ae.apps.randomcontact.listeners.ContactGroupInteractionListener
+import com.ae.apps.randomcontact.listeners.GroupMemberInteractionListener
 import com.ae.apps.randomcontact.room.entities.ContactGroup
-import com.ae.apps.randomcontact.room.repositories.ContactGroupRepository
 import com.ae.apps.randomcontact.utils.CONTACT_ID_SEPARATOR
 
 /**
@@ -37,19 +37,18 @@ class AddContactGroupDialogFragment(
     private val interactionListener: ContactGroupInteractionListener,
     private val contactGroupToUpdate: ContactGroup? = null
 ) :
-    AppCompatDialogFragment() {
+    AppCompatDialogFragment(), GroupMemberInteractionListener {
 
     private lateinit var btnClose: Button
     private lateinit var btnSave: Button
     private lateinit var btnSelect: Button
     private lateinit var txtGroupName: EditText
-    private lateinit var selectedContactIdStr: String
     private lateinit var contactsApi: ContactsApiGateway
+    private var selectedContactIdStr: String = ""
     private var selectedContactInfoList: MutableList<ContactInfo> = mutableListOf()
     private var viewAdapter: GroupMemberRecyclerAdapter? = null
 
     companion object {
-        private const val MULTI_CONTACT_PICKER_RESULT = 2001
 
         @JvmStatic
         fun newInstance(
@@ -79,24 +78,27 @@ class AddContactGroupDialogFragment(
 
         contactGroupToUpdate?.let { it ->
             // If there is a contactGroupId to edit
-            // TODO Update text on btnSave to "Update"
+            btnSave.setText(R.string.str_contact_group_update)
 
             // Populate the details on the UI
             txtGroupName.setText(it.name)
-            populateContactInfo(it.selectedContacts)
+            selectedContactIdStr = it.selectedContacts
+            selectedContactInfoList = populateContactInfo()
         }
     }
 
-    private fun populateContactInfo(tempSelectedContacts: String) {
-        val selectedContactIds = tempSelectedContacts.split(CONTACT_ID_SEPARATOR)
+    private fun populateContactInfo(): MutableList<ContactInfo> {
+        val selectedContactIds = selectedContactIdStr.split(CONTACT_ID_SEPARATOR)
+        val tempList: MutableList<ContactInfo> = mutableListOf()
         selectedContactIds.forEach {
-            selectedContactInfoList.add(contactsApi.getContactInfo(it))
+            tempList.add(contactsApi.getContactInfo(it))
         }
+        return tempList
     }
 
     private fun setupRecyclerView(view: View) {
         val recyclerView = view.findViewById<RecyclerView>(R.id.list)
-        viewAdapter = GroupMemberRecyclerAdapter(selectedContactInfoList)
+        viewAdapter = GroupMemberRecyclerAdapter(this, selectedContactInfoList)
         recyclerView.adapter = viewAdapter
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.itemAnimator = DefaultItemAnimator()
@@ -107,31 +109,32 @@ class AddContactGroupDialogFragment(
             requireContext(),
             MultiContactPickerActivity::class.java
         )
-        multiContactPickerIntent.putExtra(
-            MultiContactPickerConstants.PRESELECTED_CONTACT_IDS,
-            selectedContactIdStr
-        )
+        if (selectedContactIdStr.isNotEmpty()) {
+            multiContactPickerIntent.putExtra(
+                MultiContactPickerConstants.PRESELECTED_CONTACT_IDS,
+                selectedContactIdStr
+            )
+        }
         val startForResult =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 if (it.resultCode == Activity.RESULT_OK) {
                     if (it.data != null) {
-                        val selectedContactIds2 =
+                        val selectedContactIds =
                             it.data!!.getStringExtra(MultiContactPickerConstants.RESULT_CONTACT_IDS)!!
-                        Toast.makeText(requireContext(), selectedContactIds2, Toast.LENGTH_LONG)
+                        Toast.makeText(requireContext(), selectedContactIds, Toast.LENGTH_LONG)
                             .show()
 
                         // TODO Verify this
-                        selectedContactInfoList.clear()
-                        populateContactInfo(selectedContactIds2)
+                        selectedContactIdStr = selectedContactIds
+                        selectedContactInfoList = populateContactInfo()
+                        viewAdapter?.setList(selectedContactInfoList)
                     }
                 }
             }
         startForResult.launch(multiContactPickerIntent)
     }
 
-    override fun getTheme(): Int {
-        return R.style.DialogTheme
-    }
+    override fun getTheme(): Int = R.style.DialogTheme
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -147,7 +150,7 @@ class AddContactGroupDialogFragment(
         btnSave.setOnClickListener {
             try {
                 val contactGroup = validateContactGroup()
-                if(contactGroupToUpdate != null){
+                if (contactGroupToUpdate != null) {
                     // Update the validated contact group with the existing contactGroup id
                     // if this is the update flow
                     contactGroup.id = it.id
@@ -158,7 +161,7 @@ class AddContactGroupDialogFragment(
 
                 dismiss()
             } catch (e: ContactGroupValidationException) {
-                Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -168,21 +171,35 @@ class AddContactGroupDialogFragment(
             throw ContactGroupValidationException("Please enter group name")
         }
 
-        val builder = StringBuilder()
-        for (contactInfo in selectedContactInfoList) {
-            builder.append(contactInfo.id)
-                .append(CONTACT_ID_SEPARATOR)
-        }
+        val builder = convertToSelectedContactString()
 
         if (builder.isEmpty()) {
             throw ContactGroupValidationException("Please select contacts for this group")
         }
-        builder.deleteCharAt(builder.lastIndexOf(CONTACT_ID_SEPARATOR))
 
         return ContactGroup(
             name = txtGroupName.text.toString(),
             selectedContacts = builder.toString()
         )
+    }
+
+    private fun convertToSelectedContactString(): StringBuilder {
+        val builder = StringBuilder()
+        for (contactInfo in selectedContactInfoList) {
+            builder.append(contactInfo.id)
+                .append(CONTACT_ID_SEPARATOR)
+        }
+        builder.deleteCharAt(builder.lastIndexOf(CONTACT_ID_SEPARATOR))
+        return builder
+    }
+
+    override fun onGroupMemberRemoved(contactId: String) {
+        val index = selectedContactInfoList.indexOfFirst { it.id.equals(contactId) }
+        selectedContactInfoList.removeAt(index)
+
+        selectedContactIdStr = convertToSelectedContactString().toString()
+
+        viewAdapter?.setList(selectedContactInfoList)
     }
 
     /**
