@@ -15,7 +15,7 @@ import com.ae.apps.lib.common.models.ContactInfo
 import com.ae.apps.lib.common.utils.CommonUtils
 import com.ae.apps.lib.common.utils.ContactUtils.showContactInAddressBook
 import com.ae.apps.randomcontact.R
-import com.ae.apps.randomcontact.adapters.ContactRecyclerAdapter
+import com.ae.apps.randomcontact.adapters.ContactDetailsRecyclerAdapter
 import com.ae.apps.randomcontact.data.RandomContactApiGatewayImpl
 import com.ae.apps.randomcontact.databinding.FragmentRandomContactBinding
 import com.ae.apps.randomcontact.room.AppDatabase
@@ -34,16 +34,14 @@ class RandomContactFragment : Fragment(R.layout.fragment_random_contact), Contac
 
         fun newInstance(context: Context): RandomContactFragment =
             INSTANCE ?: synchronized(this){
-                val repository = ContactGroupRepository.getInstance(
-                    AppDatabase.getInstance(context).contactGroupDao() )
-                contactsApi = RandomContactApiGatewayImpl.getInstance(context, repository)
+                contactsApi = RandomContactApiGatewayImpl.getInstance(context)
                 INSTANCE ?: RandomContactFragment().also { INSTANCE = it }
             }
     }
 
     private var currentContact:ContactInfo? = null
     private var binding: FragmentRandomContactBinding? = null
-    private lateinit var recyclerAdapter: ContactRecyclerAdapter
+    private lateinit var recyclerAdapter: ContactDetailsRecyclerAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -81,7 +79,7 @@ class RandomContactFragment : Fragment(R.layout.fragment_random_contact), Contac
             whatsAppInstalled = CommonUtils.isPackageInstalled(PACKAGE_NAME_WHATSAPP, context)
         }
 
-        recyclerAdapter = ContactRecyclerAdapter(
+        recyclerAdapter = ContactDetailsRecyclerAdapter(
             emptyList(),
             requireContext(),
             R.layout.contact_info_item,

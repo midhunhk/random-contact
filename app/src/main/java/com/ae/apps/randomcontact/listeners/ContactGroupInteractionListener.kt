@@ -8,6 +8,11 @@ import com.ae.apps.randomcontact.room.entities.ContactGroup
 interface ContactGroupInteractionListener {
 
     /**
+     * Invoked when a contact group is added
+     */
+    fun onContactGroupAdded(contactGroup: ContactGroup)
+
+    /**
      * Invoked when a contact group is selected
      */
     fun onContactGroupSelected(item: ContactGroup)
@@ -20,5 +25,5 @@ interface ContactGroupInteractionListener {
     /**
      * Invoked when a contact group has been updated
      */
-    fun onContactGroupUpdated(item: ContactGroup)
+    fun onContactGroupUpdated(originalItem:ContactGroup, updatedItem: ContactGroup)
 }

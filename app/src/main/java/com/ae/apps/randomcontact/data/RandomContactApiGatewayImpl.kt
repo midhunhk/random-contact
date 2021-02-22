@@ -8,6 +8,7 @@ import com.ae.apps.lib.api.contacts.types.ContactInfoOptions
 import com.ae.apps.lib.api.contacts.types.ContactsDataConsumer
 import com.ae.apps.lib.common.models.ContactInfo
 import com.ae.apps.randomcontact.preferences.AppPreferences
+import com.ae.apps.randomcontact.room.AppDatabase
 import com.ae.apps.randomcontact.room.repositories.ContactGroupRepository
 import com.ae.apps.randomcontact.utils.CONTACT_ID_SEPARATOR
 import com.ae.apps.randomcontact.utils.DEFAULT_CONTACT_GROUP
@@ -31,9 +32,11 @@ class RandomContactApiGatewayImpl : ContactsApiGateway, ContactsDataConsumer {
         @Volatile
         private lateinit var appPreferences: AppPreferences
 
-        fun getInstance(context: Context, repository: ContactGroupRepository): ContactsApiGateway =
+        fun getInstance(context: Context): ContactsApiGateway =
             INSTANCE ?: synchronized(this) {
-                contactGroupRepository = repository
+                contactGroupRepository = ContactGroupRepository.getInstance(
+                    AppDatabase.getInstance(context).contactGroupDao()
+                )
                 appPreferences = AppPreferences.getInstance(context)
                 contactsApi = ContactsApiGatewayImpl.Builder(context).build()
                 INSTANCE ?: RandomContactApiGatewayImpl().also { INSTANCE = it }

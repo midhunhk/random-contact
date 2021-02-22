@@ -83,8 +83,7 @@ class ManageGroupsFragment : Fragment(), ContactGroupInteractionListener {
 
         val createButton = view.findViewById<View>(R.id.btnAddGroup)
         createButton.setOnClickListener {
-            val dialogFragment = AddContactGroupDialogFragment.newInstance(contactGroupRepository)
-
+            val dialogFragment = AddContactGroupDialogFragment.newInstance(this)
             dialogFragment.show(parentFragmentManager, "addContactGroupDialog")
         }
     }
@@ -99,8 +98,12 @@ class ManageGroupsFragment : Fragment(), ContactGroupInteractionListener {
         contactGroupRepository.deleteContactGroup(item)
     }
 
-    override fun onContactGroupUpdated(item: ContactGroup){
-        contactGroupRepository.updateContactGroup(item)
+    override fun onContactGroupAdded(contactGroup: ContactGroup) {
+        contactGroupRepository.createContactGroup(contactGroup)
+    }
+
+    override fun onContactGroupUpdated(originalItem: ContactGroup, updatedItem:ContactGroup){
+        contactGroupRepository.updateContactGroup(updatedItem)
     }
 
 }

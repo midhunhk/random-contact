@@ -16,13 +16,13 @@ import com.ae.apps.randomcontact.utils.sendWhatsAppMessage
 /**
  *
  */
-class ContactRecyclerAdapter(
+class ContactDetailsRecyclerAdapter(
     private var items: List<PhoneNumberInfo>,
     private var context: Context,
     private val layoutResourceId: Int,
     private val enableWhatsAppIntegration: Boolean = false
 ):
-    RecyclerView.Adapter<ContactRecyclerAdapter.ViewHolder>() {
+    RecyclerView.Adapter<ContactDetailsRecyclerAdapter.ViewHolder>() {
 
     fun setList(items: List<PhoneNumberInfo>) {
         this.items = items

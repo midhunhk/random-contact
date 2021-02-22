@@ -113,9 +113,9 @@
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            tools:listitem="@layout/contact_group_item"
+            android:layout_marginLeft="@dimen/unit_m"
+            android:layout_marginRight="@dimen/unit_m"
+            tools:listitem="@layout/group_member_item"
             app:layoutManager="LinearLayoutManager"/>
 
         <RelativeLayout

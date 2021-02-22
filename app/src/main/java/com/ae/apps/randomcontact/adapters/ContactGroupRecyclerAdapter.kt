@@ -9,11 +9,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ae.apps.randomcontact.R
 import com.ae.apps.randomcontact.room.entities.ContactGroup
 
-public class ContactGroupRecyclerAdapter (private val items: List<ContactGroup>):
+public class ContactGroupRecyclerAdapter (private var items: List<ContactGroup>):
     RecyclerView.Adapter<ContactGroupRecyclerAdapter.ViewHolder>() {
 
     private var selectedGroupId:String? = null
     private var lastChecked:RadioButton? = null
+
+    fun setList(items: List<ContactGroup>){
+        this.items = items
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(parent.context)
