@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -101,6 +102,8 @@ class ManageGroupsFragment : Fragment(), ContactGroupInteractionListener {
     }
 
     private fun checkIfDefaultContactGroupSelected(selectedContactGroup: String) {
+        Toast.makeText(requireContext(),
+            "checkIfDefaultContactGroupSelected$selectedContactGroup", Toast.LENGTH_SHORT).show()
         if (DEFAULT_CONTACT_GROUP == selectedContactGroup) {
             allContactsRadio.isSelected = true
             allContactsRadio.isChecked = true
@@ -119,6 +122,7 @@ class ManageGroupsFragment : Fragment(), ContactGroupInteractionListener {
         allContactsRadio.isSelected = false
         allContactsRadio.isChecked = false
         appPreferences.setSelectedContactGroup(contactGroup.id.toString())
+        Toast.makeText(requireContext(), "Selected group id " + contactGroup.id, Toast.LENGTH_SHORT).show()
     }
 
     override fun editContactGroup(contactGroup: ContactGroup) {

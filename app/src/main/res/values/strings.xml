@@ -45,7 +45,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.</string>
 
-    <string name="str_all_contacts">All Contacts</string>
+    <string name="str_all_contacts">ALL CONTACTS</string>
     <string name="str_create_group">Create Group</string>
     <string name="str_group_name">Contact Group Name</string>
     <string name="str_contact_group_add">Create</string>

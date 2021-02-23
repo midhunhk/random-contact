@@ -19,7 +19,8 @@ class RandomContactApiGatewayImpl(private val contactGroupRepository: ContactGro
                                   private val appPreferences: AppPreferences
                                   ) : ContactsApiGateway, ContactsDataConsumer {
     private var index: Int = 0
-    private lateinit var dataConsumer: ContactsDataConsumer
+    private var dataConsumer: ContactsDataConsumer? = null
+    private var isContactsRead = false
 
     companion object {
 
@@ -45,7 +46,13 @@ class RandomContactApiGatewayImpl(private val contactGroupRepository: ContactGro
     ) {
         // Store the consumer and invoke the onContactsRead on it after our own initialization
         dataConsumer = consumer
-        contactsApi.initializeAsync(options, this)
+        if(isContactsRead){
+            dataConsumer?.let {
+                it.onContactsRead()
+            }
+        } else {
+            contactsApi.initializeAsync(options, this)
+        }
     }
 
     override fun onContactsRead() {
@@ -63,7 +70,9 @@ class RandomContactApiGatewayImpl(private val contactGroupRepository: ContactGro
             index = Random().nextInt(totalContactCount.toInt())
         }
 
-        dataConsumer.onContactsRead()
+        dataConsumer?.onContactsRead()
+
+        isContactsRead = true
     }
 
     override fun getAllContacts(): List<ContactInfo> = contactsApi.allContacts

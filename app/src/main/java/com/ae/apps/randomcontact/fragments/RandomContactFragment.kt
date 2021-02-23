@@ -18,10 +18,9 @@ import com.ae.apps.randomcontact.R
 import com.ae.apps.randomcontact.adapters.ContactDetailsRecyclerAdapter
 import com.ae.apps.randomcontact.contacts.RandomContactApiGatewayImpl
 import com.ae.apps.randomcontact.databinding.FragmentRandomContactBinding
-import com.ae.apps.randomcontact.room.AppDatabase
-import com.ae.apps.randomcontact.room.repositories.ContactGroupRepository
 import com.ae.apps.randomcontact.utils.PACKAGE_NAME_WHATSAPP
-
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 
 /**
  * A simple [Fragment] subclass.
@@ -29,6 +28,8 @@ import com.ae.apps.randomcontact.utils.PACKAGE_NAME_WHATSAPP
 class RandomContactFragment : Fragment(R.layout.fragment_random_contact), ContactsDataConsumer {
 
     companion object {
+        private const val SAVED_CONTACT_ID = "savedContactId"
+
         private lateinit var contactsApi: ContactsApiGateway
         @Volatile private var INSTANCE: RandomContactFragment? = null
 
@@ -54,6 +55,7 @@ class RandomContactFragment : Fragment(R.layout.fragment_random_contact), Contac
         // Initialize the random contact api
         contactsApi.initializeAsync(ContactInfoFilterOptions.of(true), this)
     }
+
     override fun onContactsRead() {
         showRandomContact()
     }
@@ -95,16 +97,25 @@ class RandomContactFragment : Fragment(R.layout.fragment_random_contact), Contac
     }
 
     private fun showRandomContact(){
-        val randomContact:ContactInfo? = contactsApi.randomContact
-        if(null == randomContact){
-            Toast.makeText(
-                context,
-                resources.getString(R.string.str_empty_contact_list),
-                Toast.LENGTH_LONG
-            ).show();
-        } else {
-            displayContact(randomContact)
+        // Running the getRandomNumber() method in a background thread
+        // as we may need to access the database if a custom group is selected
+        doAsync {
+            val randomContact:ContactInfo? = contactsApi.randomContact
+            if(null == randomContact){
+                uiThread {
+                    Toast.makeText(
+                        context,
+                        resources.getString(R.string.str_empty_contact_list),
+                        Toast.LENGTH_LONG
+                    ).show();
+                }
+            } else {
+                uiThread {
+                    displayContact(randomContact)
+                }
+            }
         }
+
     }
 
     private fun displayContact(contactInfo: ContactInfo) {
@@ -116,6 +127,23 @@ class RandomContactFragment : Fragment(R.layout.fragment_random_contact), Contac
         recyclerAdapter.setList(phoneNumbersList)
 
         currentContact = contactInfo
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        savedInstanceState?.let {
+            val savedContactId = savedInstanceState!!.getString(SAVED_CONTACT_ID)
+            contactsApi.let {
+                currentContact = it.getContactInfo(savedContactId)
+            }
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        currentContact?.let{
+            outState.putString(SAVED_CONTACT_ID, it.id)
+        }
+        super.onSaveInstanceState(outState)
     }
 
 }
