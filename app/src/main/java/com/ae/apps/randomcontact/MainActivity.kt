@@ -32,12 +32,12 @@ class MainActivity : AppCompatActivity(), PermissionsAwareComponent, AppRequestP
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        setupBottomNavigation()
+        bottomNavigationView.visibility = View.GONE
+
         // Check for permissions first and display the appropriate screen
         permissionChecker = RuntimePermissionChecker(this)
         permissionChecker.checkPermissions()
-
-        setupBottomNavigation()
-        bottomNavigationView.visibility = View.GONE
     }
 
     private fun setupBottomNavigation() {

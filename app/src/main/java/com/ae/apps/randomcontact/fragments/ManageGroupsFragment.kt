@@ -49,7 +49,12 @@ class ManageGroupsFragment : Fragment(R.layout.fragment_manage_groups),
         viewModel = ViewModelProviders.of(this, factory).get(ContactGroupViewModel::class.java)
         viewAdapter = ContactGroupRecyclerAdapter(this, Collections.emptyList())
         appPreferences = AppPreferences.getInstance(requireContext())
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initViews(view, appPreferences.selectedContactGroup()!!)
+        setUpRecyclerView(view)
         viewModel.getAllContactGroups()
             .observe(viewLifecycleOwner, {
                 kotlin.run {
@@ -59,12 +64,6 @@ class ManageGroupsFragment : Fragment(R.layout.fragment_manage_groups),
                     checkIfDefaultContactGroupSelected(selectedContactGroup)
                 }
             })
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initViews(view, appPreferences.selectedContactGroup()!!)
-        setUpRecyclerView(view)
     }
 
     private fun setUpRecyclerView(view: View) {

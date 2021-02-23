@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorSurface"
     android:orientation="vertical"
     tools:context=".fragments.AboutFragment">
 
@@ -20,9 +19,8 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_gravity="start"
-            android:layout_margin="4dip"
+            android:paddingTop="@dimen/unit_m"
             android:contentDescription="@string/empty_text"
-            android:padding="@dimen/unit_s"
             android:src="@drawable/ic_app_icon" />
 
         <TextView
@@ -62,6 +60,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="18sp"
         android:padding="@dimen/unit_l"
         android:text="@string/app_disclaimer" />
 
