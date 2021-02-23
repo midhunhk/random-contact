@@ -55,7 +55,7 @@ limitations under the License.</string>
     <string name="str_contact_group_select_members">Select</string>
     <string name="str_contact_group_add_member">Add</string>
     <string name="str_contact_group_title">Groups</string>
-    <string name="str_contact_group_name">Group Name</string>
+    <string name="str_contact_group_name">Enter Group Name</string>
     <string name="str_contact_group_create_title">Create Group</string>
     <string name="str_contact_group_edit_title">Edit Group</string>
     <string name="str_privacy_policy">Privacy Policy</string>
@@ -69,7 +69,7 @@ limitations under the License.</string>
     <string name="str_multi_contact_validation">Please select at least one contact</string>
     <string name="str_multi_contact_no_contacts">No Contacts to display</string>
 
-    <string name="str_permission_required_title">Runtime Permission Required</string>
+    <string name="str_permission_required_title">Permission Required</string>
     <string name="str_permission_required_desc">Random Contact requires the permission to read contacts to function as designed.</string>
     <string name="str_btn_provide_access">Provide Access</string>
 </resources>

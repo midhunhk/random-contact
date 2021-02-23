@@ -52,41 +52,35 @@
 
                 <Button
                     android:id="@+id/btnSave"
-                    style="@style/Widget.AppCompat.Button.Colored"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="@string/str_contact_group_add"
+                    android:layout_marginRight="@dimen/unit_l"
                     android:textColor="?attr/colorOnSurface"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="@dimen/unit_l" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.appcompat.widget.Toolbar>
 
-        <TextView
-            style="@style/TextAppearance.MaterialComponents.Headline6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/unit_m"
-            android:layout_marginTop="@dimen/unit_xl"
-            android:layout_marginRight="@dimen/unit_m"
-            android:text="@string/str_contact_group_name"
-            tools:ignore="RelativeOverlap" />
-
-        <EditText
-            android:id="@+id/txtGroupName"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="?attr/colorSecondaryVariant"
-            android:layout_marginLeft="@dimen/unit_m"
-            android:layout_marginRight="@dimen/unit_m"
-            android:inputType="text" />
+            android:hint="@string/str_contact_group_name"
+            android:layout_margin="@dimen/unit_l">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtGroupName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/unit_xl"
-            android:layout_marginLeft="@dimen/unit_m"
-            android:layout_marginRight="@dimen/unit_m">
+            android:layout_marginLeft="@dimen/unit_l"
+            android:layout_marginRight="@dimen/unit_l">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -102,15 +96,14 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSelectMembers"
-                style="@style/Widget.AppCompat.Button.Colored"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                app:backgroundTint="?attr/colorSecondary"
                 android:gravity="center"
                 android:text="@string/str_contact_group_select_members"
-                android:textColor="?attr/colorOnSurface"
+                android:textColor="?attr/colorPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:ignore="RelativeOverlap" />
         </RelativeLayout>
@@ -124,8 +117,8 @@
                 android:id="@+id/list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/unit_m"
-                android:layout_marginRight="@dimen/unit_m"
+                android:layout_marginLeft="@dimen/unit_l"
+                android:layout_marginRight="@dimen/unit_l"
                 app:layoutManager="LinearLayoutManager"
                 tools:listitem="@layout/group_member_item" />
 
