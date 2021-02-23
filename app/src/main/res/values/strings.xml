@@ -59,10 +59,13 @@ limitations under the License.</string>
     <string name="str_contact_group_create_title">Create Group</string>
     <string name="str_contact_group_edit_title">Edit Group</string>
     <string name="str_privacy_policy">Privacy Policy</string>
-    <string name="str_select_contact_group">Select a group to generate Random Contacts from.</string>
-    <string name="str_empty_list_groups">No Custom Groups created</string>
+    <string name="str_select_contact_group">Select a group to generate Random Contacts from, or create a new contact group.</string>
+    <string name="str_empty_list_groups">No Custom Groups created so far.</string>
+    <string name="str_empty_list_create">Create a new group with this button.</string>
     <string name="str_empty_list_members">Select members to be part of this group.</string>
     <string name="str_contact_group_delete_title">Delete this Contact Group?</string>
+    <string name="str_dialog_delete">Delete</string>
+    <string name="str_dialog_cancel">Cancel</string>
     <string name="str_multi_contact_title">Select Contacts</string>
 
     <string name="str_multi_contact_continue">Continue</string>

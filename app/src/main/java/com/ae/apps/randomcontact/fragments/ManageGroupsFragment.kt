@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.ae.apps.lib.custom.views.EmptyRecyclerView
 import com.ae.apps.randomcontact.R
 import com.ae.apps.randomcontact.adapters.ContactGroupRecyclerAdapter
 import com.ae.apps.randomcontact.listeners.ContactGroupInteractionListener
@@ -18,7 +19,9 @@ import com.ae.apps.randomcontact.room.repositories.ContactGroupRepository
 import com.ae.apps.randomcontact.room.viewmodels.ContactGroupViewModel
 import com.ae.apps.randomcontact.room.viewmodels.ContactGroupViewModelFactory
 import com.ae.apps.randomcontact.utils.DEFAULT_CONTACT_GROUP
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.*
+
 
 /**
  * A simple [Fragment] subclass.
@@ -30,6 +33,7 @@ class ManageGroupsFragment : Fragment(R.layout.fragment_manage_groups),
     private lateinit var allContactsRadio: RadioButton
     private lateinit var appPreferences: AppPreferences
     private lateinit var viewModel: ContactGroupViewModel
+    private lateinit var emptyView:View
 
     companion object {
         /**
@@ -66,13 +70,6 @@ class ManageGroupsFragment : Fragment(R.layout.fragment_manage_groups),
             })
     }
 
-    private fun setUpRecyclerView(view: View) {
-        val recyclerView = view.findViewById<RecyclerView>(R.id.list)
-        recyclerView.adapter = viewAdapter
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.itemAnimator = DefaultItemAnimator()
-    }
-
     private fun initViews(view: View, selectedContactGroup: String) {
         allContactsRadio = view.findViewById(R.id.radioAllContacts)
 
@@ -82,13 +79,27 @@ class ManageGroupsFragment : Fragment(R.layout.fragment_manage_groups),
             appPreferences.setSelectedContactGroup(DEFAULT_CONTACT_GROUP)
         }
 
+        emptyView = view.findViewById(R.id.empty_view)
+
         checkIfDefaultContactGroupSelected(selectedContactGroup)
 
         val createButton = view.findViewById<View>(R.id.btnAddGroup)
         createButton.setOnClickListener {
-            val dialogFragment = AddContactGroupDialogFragment.newInstance(this)
-            dialogFragment.show(childFragmentManager, "addContactGroupDialog")
+            launchContactGroupDialog()
         }
+
+        val createGroupAlt = view.findViewById<View>(R.id.btnAddGroupEmptyView)
+        createGroupAlt.setOnClickListener {
+            launchContactGroupDialog()
+        }
+    }
+
+    private fun setUpRecyclerView(view: View) {
+        val recyclerView = view.findViewById<RecyclerView>(R.id.list) as EmptyRecyclerView
+        recyclerView.adapter = viewAdapter
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.itemAnimator = DefaultItemAnimator()
+        recyclerView.setEmptyView(emptyView)
     }
 
     private fun checkIfDefaultContactGroupSelected(selectedContactGroup: String) {
@@ -104,6 +115,7 @@ class ManageGroupsFragment : Fragment(R.layout.fragment_manage_groups),
 
     override fun onContactGroupUpdated(originalItem: ContactGroup, updatedItem: ContactGroup) {
         viewModel.updateContactGroup(updatedItem)
+        //viewAdapter?.notifyDataSetChanged()
     }
 
     override fun selectContactGroup(contactGroup: ContactGroup) {
@@ -113,12 +125,38 @@ class ManageGroupsFragment : Fragment(R.layout.fragment_manage_groups),
     }
 
     override fun editContactGroup(contactGroup: ContactGroup) {
+        launchContactGroupDialog(contactGroup)
+    }
+
+    private fun launchContactGroupDialog(contactGroup: ContactGroup? = null){
         val dialogFragment = AddContactGroupDialogFragment.newInstance(this, contactGroup)
         dialogFragment.show(childFragmentManager, "addContactGroupDialog")
     }
 
     override fun deleteContactGroup(contactGroup: ContactGroup) {
-        viewModel.deleteContactGroup(contactGroup)
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(resources.getString(R.string.str_contact_group_delete_title))
+            .setNegativeButton(resources.getString(R.string.str_dialog_cancel)) { dialog, _ ->
+                // Respond to negative button press
+                dialog.dismiss()
+            }
+            .setPositiveButton(resources.getString(R.string.str_dialog_delete)) { dialog, _ ->
+                // Respond to positive button press
+                processContactGroupRemoval(contactGroup)
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun processContactGroupRemoval(item: ContactGroup) {
+        // Remove the contact group item from the database
+        viewModel.deleteContactGroup(item)
+
+        // Make the All Contacts radio checked if the deleted item was previously selected
+        if (appPreferences.selectedContactGroup()!! == (item.id.toString())) {
+            checkIfDefaultContactGroupSelected(DEFAULT_CONTACT_GROUP)
+            appPreferences.setSelectedContactGroup(DEFAULT_CONTACT_GROUP)
+        }
     }
 
 }

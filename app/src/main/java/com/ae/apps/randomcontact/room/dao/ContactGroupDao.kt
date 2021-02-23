@@ -10,7 +10,7 @@ interface ContactGroupDao {
     fun getAll(): List<ContactGroup>
 
     @Query("SELECT * from custom_contact_group where _id = :groupId")
-    fun getContactGroupById(groupId:Int): ContactGroup
+    fun getContactGroupById(groupId: Int): ContactGroup
 
     @Insert
     fun insert(contactGroup: ContactGroup)

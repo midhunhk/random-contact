@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -31,6 +30,7 @@ import com.ae.apps.randomcontact.listeners.GroupMemberInteractionListener
 import com.ae.apps.randomcontact.room.entities.ContactGroup
 import com.ae.apps.randomcontact.utils.CONTACT_ID_SEPARATOR
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputEditText
 
 /**
  * A simple [Fragment] subclass.
@@ -46,7 +46,7 @@ class AddContactGroupDialogFragment(
     private lateinit var btnClose: AppCompatImageButton
     private lateinit var btnSave: Button
     private lateinit var btnSelect: Button
-    private lateinit var txtGroupName: EditText
+    private lateinit var txtGroupName: TextInputEditText
     private lateinit var coordinatorLayout: CoordinatorLayout
     private lateinit var contactsApi: ContactsApiGateway
     private lateinit var startForResult:ActivityResultLauncher<Intent>
@@ -71,15 +71,6 @@ class AddContactGroupDialogFragment(
                     if (it.data != null) {
                         val selectedContactIds =
                             it.data!!.getStringExtra(MultiContactPickerConstants.RESULT_CONTACT_IDS)!!
-                        Toast.makeText(requireContext(), selectedContactIds, Toast.LENGTH_LONG)
-                            .show()
-                        Snackbar.make(
-                            coordinatorLayout,
-                            selectedContactIds,
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-
-                        // TODO Verify this
                         selectedContactIdStr = selectedContactIds
                         selectedContactInfoList = populateContactInfo()
                         viewAdapter?.setList(selectedContactInfoList)
@@ -169,7 +160,7 @@ class AddContactGroupDialogFragment(
                 if (contactGroupToUpdate != null) {
                     // Update the validated contact group with the existing contactGroup id
                     // if this is the update flow
-                    contactGroup.id = it.id
+                    contactGroup.id = contactGroupToUpdate.id
                     interactionListener.onContactGroupUpdated(contactGroupToUpdate, contactGroup)
                 } else {
                     interactionListener.onContactGroupAdded(contactGroup)

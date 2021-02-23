@@ -23,7 +23,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
-            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:gravity="center_vertical"
             style="@style/TextAppearance.MaterialComponents.Headline6"
             android:textAllCaps="true"
             android:textColor="?attr/colorSecondary"
@@ -36,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:gravity="center"
+            android:padding="@dimen/unit_m"
             android:background="?android:selectableItemBackground"
             android:contentDescription="@string/empty_text"
             app:srcCompat="@drawable/ic_add_group"
@@ -79,10 +80,13 @@
             app:layoutManager="LinearLayoutManager"
             tools:listitem="@layout/contact_group_item" />
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/empty_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical"
+            android:background="?attr/colorSurface"
             android:layout_margin="@dimen/unit_m"
             android:paddingTop="@dimen/unit_l"
             android:visibility="gone">
@@ -90,12 +94,30 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:layout_marginTop="@dimen/unit_xl"
-                android:drawablePadding="@dimen/unit_m"
                 android:gravity="center"
                 android:text="@string/str_empty_list_groups" />
-        </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/unit_m"
+                android:text="@string/str_empty_list_create" />
+
+            <ImageView
+                android:id="@+id/btnAddGroupEmptyView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/unit_m"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/unit_xl"
+                android:background="?android:selectableItemBackground"
+                android:contentDescription="@string/empty_text"
+                app:srcCompat="@drawable/ic_add_group"
+                app:tint="?attr/colorSecondary" />
+
+        </LinearLayout>
     </FrameLayout>
 
 </LinearLayout>
