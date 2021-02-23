@@ -7,15 +7,19 @@ import android.widget.ImageButton
 import android.widget.RadioButton
 import androidx.recyclerview.widget.RecyclerView
 import com.ae.apps.randomcontact.R
+import com.ae.apps.randomcontact.listeners.ContactGroupInteractionListener
 import com.ae.apps.randomcontact.room.entities.ContactGroup
 
-public class ContactGroupRecyclerAdapter (private var items: List<ContactGroup>):
+public class ContactGroupRecyclerAdapter(
+    private val listener: ContactGroupInteractionListener,
+    private var items: List<ContactGroup>
+) :
     RecyclerView.Adapter<ContactGroupRecyclerAdapter.ViewHolder>() {
 
-    private var selectedGroupId:String? = null
-    private var lastChecked:RadioButton? = null
+    private var selectedGroupId: String? = null
+    private var lastChecked: RadioButton? = null
 
-    fun setList(items: List<ContactGroup>){
+    fun setList(items: List<ContactGroup>) {
         this.items = items
         notifyDataSetChanged()
     }
@@ -27,23 +31,25 @@ public class ContactGroupRecyclerAdapter (private var items: List<ContactGroup>)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.item =  items[position]
+        holder.item = items[position]
         holder.radioButton.text = holder.item!!.name
 
         holder.radioButton.setOnClickListener {
-            val radioButton:RadioButton = it as RadioButton
-            if(lastChecked != null && lastChecked != radioButton){
+            val radioButton: RadioButton = it as RadioButton
+            if (lastChecked != null && lastChecked != radioButton) {
                 lastChecked?.isChecked = false
             }
             lastChecked = radioButton
+
+            listener.selectContactGroup(holder.item!!)
         }
 
         holder.editButton.setOnClickListener {
-
+            listener.editContactGroup(holder.item!!)
         }
 
         holder.deleteButton.setOnClickListener {
-
+            listener.deleteContactGroup(holder.item!!)
         }
 
         if (null != selectedGroupId && selectedGroupId!! == holder.item!!.id.toString()) {
@@ -62,7 +68,7 @@ public class ContactGroupRecyclerAdapter (private var items: List<ContactGroup>)
 
     override fun getItemCount(): Int = items.size
 
-    class ViewHolder internal constructor(private val view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder internal constructor(view: View) : RecyclerView.ViewHolder(view) {
         val radioButton: RadioButton = view.findViewById(R.id.radioSelected)
         val deleteButton: ImageButton = view.findViewById(R.id.btnDeleteContactGroup)
         val editButton: ImageButton = view.findViewById(R.id.btnEditContactGroup)

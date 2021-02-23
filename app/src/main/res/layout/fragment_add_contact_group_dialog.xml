@@ -16,7 +16,8 @@
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorSurface"
+            android:background="?attr/colorSecondary"
+            app:contentInsetStart="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -66,7 +67,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/unit_m"
-            android:layout_marginTop="@dimen/unit_l"
+            android:layout_marginTop="@dimen/unit_xl"
             android:layout_marginRight="@dimen/unit_m"
             android:text="@string/str_contact_group_name"
             tools:ignore="RelativeOverlap" />
@@ -75,6 +76,7 @@
             android:id="@+id/txtGroupName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="?attr/colorSecondaryVariant"
             android:layout_marginLeft="@dimen/unit_m"
             android:layout_marginRight="@dimen/unit_m"
             android:inputType="text" />
@@ -82,6 +84,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/unit_xl"
             android:layout_marginLeft="@dimen/unit_m"
             android:layout_marginRight="@dimen/unit_m">
 
@@ -97,22 +100,25 @@
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                 android:textColor="?attr/colorOnSurface" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSelectMembers"
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
+                app:backgroundTint="?attr/colorSecondary"
                 android:gravity="center"
                 android:text="@string/str_contact_group_select_members"
                 android:textColor="?attr/colorOnSurface"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:ignore="RelativeOverlap" />
         </RelativeLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/unit_m">
 
             <com.ae.apps.lib.custom.views.EmptyRecyclerView
                 android:id="@+id/list"

@@ -13,17 +13,22 @@ interface ContactGroupInteractionListener {
     fun onContactGroupAdded(contactGroup: ContactGroup)
 
     /**
-     * Invoked when a contact group is selected
-     */
-    fun onContactGroupSelected(item: ContactGroup)
-
-    /**
-     * Invoked when a contact group is to be deleted
-     */
-    fun onContactGroupDeleted(item: ContactGroup)
-
-    /**
      * Invoked when a contact group has been updated
      */
     fun onContactGroupUpdated(originalItem:ContactGroup, updatedItem: ContactGroup)
+
+    /**
+     * Invoked when a contact group is selected
+     */
+    fun selectContactGroup(contactGroup:ContactGroup)
+
+    /**
+     * Invoked when a contact group is selected for update
+     */
+    fun editContactGroup(contactGroup:ContactGroup)
+
+    /**
+     * Invoked when a contact group is selected for delete
+     */
+    fun deleteContactGroup(contactGroup:ContactGroup)
 }

@@ -73,6 +73,11 @@ class AddContactGroupDialogFragment(
                             it.data!!.getStringExtra(MultiContactPickerConstants.RESULT_CONTACT_IDS)!!
                         Toast.makeText(requireContext(), selectedContactIds, Toast.LENGTH_LONG)
                             .show()
+                        Snackbar.make(
+                            coordinatorLayout,
+                            selectedContactIds,
+                            Snackbar.LENGTH_SHORT
+                        ).show()
 
                         // TODO Verify this
                         selectedContactIdStr = selectedContactIds

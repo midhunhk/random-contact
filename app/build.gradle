@@ -75,6 +75,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation "androidx.preference:preference-ktx:1.1.1"
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2'
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
 
     def room_version = "2.2.6"
     implementation "androidx.room:room-runtime:$room_version"
@@ -87,6 +88,7 @@ dependencies {
     implementation "com.github.midhunhk.lib-aeapps:contacts-api:$libAeAppsVersion"
     implementation "com.github.midhunhk.lib-aeapps:multi-contact:$libAeAppsVersion"
     implementation "com.github.midhunhk.lib-aeapps:utilities:$libAeAppsVersion"
+    implementation 'com.github.ae-app-labs:lib-anko-async:v0.10.8-rc.02'
 
     // Testing dependencies
     testImplementation 'junit:junit:4.13.2'
