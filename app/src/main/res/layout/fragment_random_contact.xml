@@ -67,6 +67,7 @@
                         android:background="?android:selectableItemBackground"
                         android:contentDescription="@string/empty_text"
                         android:padding="@dimen/unit_m"
+                        android:tint="?attr/colorOnSurface"
                         app:srcCompat="@drawable/ic_refresh" />
 
                     <ImageButton
@@ -79,6 +80,7 @@
                         android:background="?android:selectableItemBackground"
                         android:contentDescription="@string/empty_text"
                         android:padding="@dimen/unit_m"
+                        android:tint="?attr/colorOnSurface"
                         app:srcCompat="@drawable/ic_address_book" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

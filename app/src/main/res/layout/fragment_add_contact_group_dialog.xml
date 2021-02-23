@@ -45,6 +45,7 @@
                     android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="@string/str_contact_group_create_title"
+                    android:textAllCaps="true"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                     android:textColor="?attr/colorOnSurface"
                     app:layout_constraintEnd_toStartOf="@+id/btnSave"

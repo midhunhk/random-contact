@@ -12,4 +12,16 @@
         <item name="android:windowIsFloating">false</item>
         <item name="android:background">@android:color/transparent</item>
     </style>
+
+    <style name="Theme.RandomContact.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="randomContactMaterialCardViewStyle" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">@color/white</item>
+    </style>
+    <style name="Theme.RandomContact.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.RandomContact.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
-    <style name="Theme.RandomContact2" parent="Theme.RandomContact">
-        <item name="colorOnSurface">@color/color_matterhorn_brown</item>
+    <style name="Theme.RandomContact" parent="Theme.RandomContact.Base">
         <!-- Status bar color. -->
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>

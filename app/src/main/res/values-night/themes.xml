@@ -2,24 +2,23 @@
     <!-- Base application theme. -->
     <style name="Theme.RandomContact" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/color_random_blue_200</item>
-        <item name="colorPrimaryVariant">@color/color_random_blue_700</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimary">@color/color_random_blue_500</item>
+        <item name="colorPrimaryVariant">@color/color_random_blue_900</item>
+        <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/color_radical_red_200</item>
-        <item name="colorSecondaryVariant">@color/color_radical_red_200</item>
+        <item name="colorSecondary">@color/color_radical_red_300</item>
+        <item name="colorSecondaryVariant">@color/color_radical_red_300</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorSurface</item>
-        <!-- Customize your theme here. -->
+        <!-- Window background of the app -->
         <item name="android:colorBackground">@color/color_matterhorn_brown</item>
-        <item name="colorSurface">@color/color_matterhorn_brown</item>
+        <!-- color for sheets of material like cards and bottom sheets -->
+        <item name="colorSurface">@color/color_charcoal</item>
         <item name="colorOnSurface">@color/color_alabaster_white</item>
         <!-- Customize your theme here. -->
         <item name="scrimBackground">@color/app_black_900_alpha_085</item>
-
         <item name="elevationOverlayEnabled">true</item>
-
         <item name="android:windowLightStatusBar" tools:ignore="NewApi">false</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
     </style>
