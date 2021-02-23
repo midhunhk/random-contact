@@ -18,17 +18,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 /**
  * Entry point to the application
  */
-class MainActivity : AppCompatActivity(), PermissionsAwareComponent, AppRequestPermission  {
+class MainActivity : AppCompatActivity(), PermissionsAwareComponent, AppRequestPermission {
 
     companion object {
         private const val PERMISSION_CHECK_REQUEST_CODE = 8000
-        private const val BACK_STACK_ROOT_TAG = "root_fragment"
         private val PERMISSIONS: Array<String> = arrayOf(Manifest.permission.READ_CONTACTS)
     }
 
     private lateinit var permissionChecker: RuntimePermissionChecker
     private lateinit var bottomNavigationView: BottomNavigationView
-    private var btnManageGroups:View? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,15 +35,18 @@ class MainActivity : AppCompatActivity(), PermissionsAwareComponent, AppRequestP
         // Check for permissions first and display the appropriate screen
         permissionChecker = RuntimePermissionChecker(this)
         permissionChecker.checkPermissions()
+
+        setupBottomNavigation()
+        bottomNavigationView.visibility = View.GONE
     }
 
-    private fun setupBottomNavigation(){
+    private fun setupBottomNavigation() {
         bottomNavigationView = findViewById(R.id.bottom_navigation)
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
-            when {
-                item.itemId == R.id.action_manage_group -> showFragment(ManageGroupsFragment.newInstance())
-                item.itemId == R.id.action_random_contact -> showFragment(RandomContactFragment.newInstance(this))
-                item.itemId == R.id.action_about -> showFragment(AboutFragment.newInstance())
+            when (item.itemId) {
+                R.id.action_manage_group -> showFragment(ManageGroupsFragment.newInstance())
+                R.id.action_random_contact -> showFragment(RandomContactFragment.getInstance(this))
+                R.id.action_about -> showFragment(AboutFragment.newInstance())
             }
             true
         }
@@ -62,15 +63,14 @@ class MainActivity : AppCompatActivity(), PermissionsAwareComponent, AppRequestP
     override fun onPermissionsDenied() = showPermissionsRequiredView()
 
     override fun onPermissionsGranted() {
-        // Show manage groups button
-        btnManageGroups?.visibility = View.VISIBLE
-
-        setupBottomNavigation()
+        // Show bottom navigation bar and load the Random contact fragment
+        bottomNavigationView.visibility = View.VISIBLE
         bottomNavigationView.selectedItemId = R.id.action_random_contact
-        showFragment(RandomContactFragment.newInstance(baseContext))
+
+        showFragment(RandomContactFragment.getInstance(baseContext))
     }
 
-    private fun showPermissionsRequiredView(){
+    private fun showPermissionsRequiredView() {
         showFragment(NoAccessFragment.newInstance())
     }
 
@@ -94,6 +94,7 @@ class MainActivity : AppCompatActivity(), PermissionsAwareComponent, AppRequestP
             }
         }
     }
+
     private fun showFragment(fragment: Fragment) {
         supportFragmentManager
             .beginTransaction()

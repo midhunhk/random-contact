@@ -1,6 +1,5 @@
 package com.ae.apps.randomcontact.fragments
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +22,6 @@ class NoAccessFragment : Fragment() {
     private lateinit var permissionsAwareContext: AppRequestPermission
 
     private var _binding: FragmentNoAccessBinding? = null
-
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
@@ -33,11 +31,10 @@ class NoAccessFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentNoAccessBinding.inflate(inflater, container, false)
-        val view = binding.root
         binding.btnRequestPermissions.setOnClickListener {
             permissionsAwareContext.invokeRequestPermissions()
         }
-        return view
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

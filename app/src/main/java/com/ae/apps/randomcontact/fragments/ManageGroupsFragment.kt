@@ -1,11 +1,8 @@
 package com.ae.apps.randomcontact.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.RadioButton
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -26,7 +23,8 @@ import java.util.*
 /**
  * A simple [Fragment] subclass.
  */
-class ManageGroupsFragment : Fragment(), ContactGroupInteractionListener {
+class ManageGroupsFragment : Fragment(R.layout.fragment_manage_groups),
+    ContactGroupInteractionListener {
 
     private var viewAdapter: ContactGroupRecyclerAdapter? = null
     private lateinit var allContactsRadio: RadioButton
@@ -50,18 +48,7 @@ class ManageGroupsFragment : Fragment(), ContactGroupInteractionListener {
         val factory = ContactGroupViewModelFactory(contactGroupRepository)
         viewModel = ViewModelProviders.of(this, factory).get(ContactGroupViewModel::class.java)
         viewAdapter = ContactGroupRecyclerAdapter(this, Collections.emptyList())
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_manage_groups, container, false)
         appPreferences = AppPreferences.getInstance(requireContext())
-
-
-        initViews(view, appPreferences.selectedContactGroup()!!)
-        setUpRecyclerView(view)
 
         viewModel.getAllContactGroups()
             .observe(viewLifecycleOwner, {
@@ -72,8 +59,12 @@ class ManageGroupsFragment : Fragment(), ContactGroupInteractionListener {
                     checkIfDefaultContactGroupSelected(selectedContactGroup)
                 }
             })
+    }
 
-        return view
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initViews(view, appPreferences.selectedContactGroup()!!)
+        setUpRecyclerView(view)
     }
 
     private fun setUpRecyclerView(view: View) {
@@ -102,8 +93,6 @@ class ManageGroupsFragment : Fragment(), ContactGroupInteractionListener {
     }
 
     private fun checkIfDefaultContactGroupSelected(selectedContactGroup: String) {
-        Toast.makeText(requireContext(),
-            "checkIfDefaultContactGroupSelected$selectedContactGroup", Toast.LENGTH_SHORT).show()
         if (DEFAULT_CONTACT_GROUP == selectedContactGroup) {
             allContactsRadio.isSelected = true
             allContactsRadio.isChecked = true
@@ -122,7 +111,6 @@ class ManageGroupsFragment : Fragment(), ContactGroupInteractionListener {
         allContactsRadio.isSelected = false
         allContactsRadio.isChecked = false
         appPreferences.setSelectedContactGroup(contactGroup.id.toString())
-        Toast.makeText(requireContext(), "Selected group id " + contactGroup.id, Toast.LENGTH_SHORT).show()
     }
 
     override fun editContactGroup(contactGroup: ContactGroup) {

@@ -9,7 +9,6 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimaryVariant"
         app:cardCornerRadius="@dimen/unit_m"
         app:cardElevation="2dp"
         app:cardMaxElevation="1dp"

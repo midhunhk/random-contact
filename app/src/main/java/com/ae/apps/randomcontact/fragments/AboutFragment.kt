@@ -3,9 +3,7 @@ package com.ae.apps.randomcontact.fragments
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.ae.apps.lib.common.utils.DialogUtils
 import com.ae.apps.randomcontact.R
@@ -14,22 +12,18 @@ import com.ae.apps.randomcontact.R
 /**
  * A simple [Fragment] subclass.
  */
-class AboutFragment : Fragment() {
+class AboutFragment : Fragment(R.layout.fragment_about) {
 
-    companion object{
+    companion object {
         fun newInstance() = AboutFragment()
     }
 
-    private var viewSource:View? = null
-    private var viewLicense:View? = null
+    private var viewSource: View? = null
+    private var viewLicense: View? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val rootView = inflater.inflate(R.layout.fragment_about, container, false)
-        setupViews(rootView)
-        return rootView
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupViews(view)
     }
 
     private fun setupViews(rootView: View) {
@@ -44,8 +38,10 @@ class AboutFragment : Fragment() {
         }
 
         viewLicense?.setOnClickListener {
-            DialogUtils.showMaterialInfoDialog(context, R.string.action_license, R.string.str_license,
-                android.R.string.ok)
+            DialogUtils.showMaterialInfoDialog(
+                context, R.string.action_license, R.string.str_license,
+                android.R.string.ok
+            )
         }
     }
 
