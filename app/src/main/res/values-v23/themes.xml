@@ -13,6 +13,7 @@
         <!-- Status bar color. -->
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:statusBarColor" tools:targetApi="l">@color/color_alabaster_white</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <!-- Customize your theme here. -->
         <item name="android:colorBackground">@color/color_alabaster_white</item>
         <item name="colorSurface">@color/color_alabaster_white</item>

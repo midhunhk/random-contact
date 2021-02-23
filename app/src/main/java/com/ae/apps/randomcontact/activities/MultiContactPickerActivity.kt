@@ -6,7 +6,7 @@ import com.ae.apps.lib.api.contacts.ContactsApiGateway
 import com.ae.apps.lib.common.models.ContactInfo
 import com.ae.apps.lib.multicontact.MultiContactBaseActivity
 import com.ae.apps.randomcontact.R
-import com.ae.apps.randomcontact.data.RandomContactApiGatewayImpl
+import com.ae.apps.randomcontact.contacts.RandomContactApiGatewayImpl
 import java.util.*
 
 

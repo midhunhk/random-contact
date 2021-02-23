@@ -1,4 +1,4 @@
-package com.ae.apps.randomcontact.data
+package com.ae.apps.randomcontact.contacts
 
 import android.content.Context
 import com.ae.apps.lib.api.contacts.ContactsApiGateway
@@ -14,32 +14,24 @@ import com.ae.apps.randomcontact.utils.CONTACT_ID_SEPARATOR
 import com.ae.apps.randomcontact.utils.DEFAULT_CONTACT_GROUP
 import java.util.*
 
-class RandomContactApiGatewayImpl : ContactsApiGateway, ContactsDataConsumer {
-
+class RandomContactApiGatewayImpl(private val contactGroupRepository: ContactGroupRepository,
+                                  private val contactsApi: ContactsApiGateway,
+                                  private val appPreferences: AppPreferences
+                                  ) : ContactsApiGateway, ContactsDataConsumer {
     private var index: Int = 0
     private lateinit var dataConsumer: ContactsDataConsumer
 
     companion object {
+
         @Volatile
         private var INSTANCE: ContactsApiGateway? = null
 
-        @Volatile
-        private lateinit var contactsApi: ContactsApiGateway
-
-        @Volatile
-        private lateinit var contactGroupRepository: ContactGroupRepository
-
-        @Volatile
-        private lateinit var appPreferences: AppPreferences
-
         fun getInstance(context: Context): ContactsApiGateway =
             INSTANCE ?: synchronized(this) {
-                contactGroupRepository = ContactGroupRepository.getInstance(
-                    AppDatabase.getInstance(context).contactGroupDao()
-                )
-                appPreferences = AppPreferences.getInstance(context)
-                contactsApi = ContactsApiGatewayImpl.Builder(context).build()
-                INSTANCE ?: RandomContactApiGatewayImpl().also { INSTANCE = it }
+                val cgRepo = ContactGroupRepository.getInstance(AppDatabase.getInstance(context).contactGroupDao())
+                val appPreferences = AppPreferences.getInstance(context)
+                val contactsApi = ContactsApiGatewayImpl.Builder(context).build()
+                INSTANCE ?: RandomContactApiGatewayImpl(cgRepo, contactsApi, appPreferences).also { INSTANCE = it }
             }
     }
 

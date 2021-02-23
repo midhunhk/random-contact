@@ -82,13 +82,13 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/unit_m"
+        android:padding="@dimen/unit_l"
         android:text="@string/app_desc"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/unit_m"
+        android:padding="@dimen/unit_l"
         android:text="@string/app_disclaimer"/>
 
     <Button
@@ -101,7 +101,10 @@
         app:icon="@drawable/icon_github"
         app:iconTint="?attr/colorOnSurface"
         android:gravity="center_vertical"
-        android:padding="@dimen/unit_s"
+        android:paddingStart="@dimen/unit_l"
+        android:paddingLeft="@dimen/unit_l"
+        android:paddingEnd="@dimen/unit_l"
+        android:paddingRight="@dimen/unit_l"
         android:text="@string/github_source_visible_url"
         android:textAllCaps="false"/>
 
@@ -115,7 +118,10 @@
         app:iconTint="?attr/colorOnSurface"
         android:textColor="?attr/colorOnSurface"
         android:gravity="center_vertical"
-        android:padding="@dimen/unit_s"
+        android:paddingStart="@dimen/unit_l"
+        android:paddingLeft="@dimen/unit_l"
+        android:paddingEnd="@dimen/unit_l"
+        android:paddingRight="@dimen/unit_l"
         android:text="@string/action_license"
         android:textAllCaps="false"/>
 
@@ -129,7 +135,10 @@
         app:iconTint="?attr/colorOnSurface"
         android:textColor="?attr/colorOnSurface"
         android:gravity="center_vertical"
-        android:padding="@dimen/unit_s"
+        android:paddingStart="@dimen/unit_l"
+        android:paddingLeft="@dimen/unit_l"
+        android:paddingEnd="@dimen/unit_l"
+        android:paddingRight="@dimen/unit_l"
         android:text="@string/str_privacy_policy"
         android:textAllCaps="false"/>
 

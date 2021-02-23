@@ -13,6 +13,7 @@ import com.ae.apps.randomcontact.fragments.AboutFragment
 import com.ae.apps.randomcontact.fragments.ManageGroupsFragment
 import com.ae.apps.randomcontact.fragments.NoAccessFragment
 import com.ae.apps.randomcontact.fragments.RandomContactFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 /**
  * Entry point to the application
@@ -26,29 +27,27 @@ class MainActivity : AppCompatActivity(), PermissionsAwareComponent, AppRequestP
     }
 
     private lateinit var permissionChecker: RuntimePermissionChecker
+    private lateinit var bottomNavigationView: BottomNavigationView
     private var btnManageGroups:View? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        setUpToolbar()
-
         // Check for permissions first and display the appropriate screen
         permissionChecker = RuntimePermissionChecker(this)
         permissionChecker.checkPermissions()
     }
 
-    private fun setUpToolbar() {
-        val appInfo = findViewById<View>(R.id.appInfo)
-        appInfo.setOnClickListener {
-            showFragment(AboutFragment.newInstance())
-        }
-
-        btnManageGroups = findViewById(R.id.manageGroups)
-        btnManageGroups?.visibility = View.INVISIBLE
-        btnManageGroups?.setOnClickListener {
-            showFragment( ManageGroupsFragment.newInstance())
+    private fun setupBottomNavigation(){
+        bottomNavigationView = findViewById(R.id.bottom_navigation)
+        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+            when {
+                item.itemId == R.id.action_manage_group -> showFragment(ManageGroupsFragment.newInstance())
+                item.itemId == R.id.action_random_contact -> showFragment(RandomContactFragment.newInstance(this))
+                item.itemId == R.id.action_about -> showFragment(AboutFragment.newInstance())
+            }
+            true
         }
     }
 
@@ -66,6 +65,8 @@ class MainActivity : AppCompatActivity(), PermissionsAwareComponent, AppRequestP
         // Show manage groups button
         btnManageGroups?.visibility = View.VISIBLE
 
+        setupBottomNavigation()
+        bottomNavigationView.selectedItemId = R.id.action_random_contact
         showFragment(RandomContactFragment.newInstance(baseContext))
     }
 
@@ -97,7 +98,6 @@ class MainActivity : AppCompatActivity(), PermissionsAwareComponent, AppRequestP
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.fragmentContainer, fragment)
-            .addToBackStack(BACK_STACK_ROOT_TAG)
             .commitAllowingStateLoss()
     }
 

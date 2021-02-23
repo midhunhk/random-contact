@@ -10,8 +10,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.appcompat.widget.AppCompatImageButton
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,11 +25,12 @@ import com.ae.apps.lib.multicontact.MultiContactPickerConstants
 import com.ae.apps.randomcontact.R
 import com.ae.apps.randomcontact.activities.MultiContactPickerActivity
 import com.ae.apps.randomcontact.adapters.GroupMemberRecyclerAdapter
-import com.ae.apps.randomcontact.data.RandomContactApiGatewayImpl
+import com.ae.apps.randomcontact.contacts.RandomContactApiGatewayImpl
 import com.ae.apps.randomcontact.listeners.ContactGroupInteractionListener
 import com.ae.apps.randomcontact.listeners.GroupMemberInteractionListener
 import com.ae.apps.randomcontact.room.entities.ContactGroup
 import com.ae.apps.randomcontact.utils.CONTACT_ID_SEPARATOR
+import com.google.android.material.snackbar.Snackbar
 
 /**
  * A simple [Fragment] subclass.
@@ -39,11 +43,13 @@ class AddContactGroupDialogFragment(
 ) :
     AppCompatDialogFragment(), GroupMemberInteractionListener {
 
-    private lateinit var btnClose: Button
+    private lateinit var btnClose: AppCompatImageButton
     private lateinit var btnSave: Button
     private lateinit var btnSelect: Button
     private lateinit var txtGroupName: EditText
+    private lateinit var coordinatorLayout: CoordinatorLayout
     private lateinit var contactsApi: ContactsApiGateway
+    private lateinit var startForResult:ActivityResultLauncher<Intent>
     private var selectedContactIdStr: String = ""
     private var selectedContactInfoList: MutableList<ContactInfo> = mutableListOf()
     private var viewAdapter: GroupMemberRecyclerAdapter? = null
@@ -55,6 +61,26 @@ class AddContactGroupDialogFragment(
             interactionListener: ContactGroupInteractionListener,
             contactGroup: ContactGroup? = null
         ) = AddContactGroupDialogFragment(interactionListener, contactGroup)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        startForResult =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                if (it.resultCode == Activity.RESULT_OK) {
+                    if (it.data != null) {
+                        val selectedContactIds =
+                            it.data!!.getStringExtra(MultiContactPickerConstants.RESULT_CONTACT_IDS)!!
+                        Toast.makeText(requireContext(), selectedContactIds, Toast.LENGTH_LONG)
+                            .show()
+
+                        // TODO Verify this
+                        selectedContactIdStr = selectedContactIds
+                        selectedContactInfoList = populateContactInfo()
+                        viewAdapter?.setList(selectedContactInfoList)
+                    }
+                }
+            }
     }
 
     override fun onCreateView(
@@ -75,6 +101,7 @@ class AddContactGroupDialogFragment(
         btnSave = view.findViewById(R.id.btnSave)
         btnSelect = view.findViewById(R.id.btnSelectMembers)
         txtGroupName = view.findViewById(R.id.txtGroupName)
+        coordinatorLayout = view.findViewById(R.id.addContactGroupCoordinatorLayout)
 
         contactGroupToUpdate?.let { it ->
             // If there is a contactGroupId to edit
@@ -115,22 +142,6 @@ class AddContactGroupDialogFragment(
                 selectedContactIdStr
             )
         }
-        val startForResult =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                if (it.resultCode == Activity.RESULT_OK) {
-                    if (it.data != null) {
-                        val selectedContactIds =
-                            it.data!!.getStringExtra(MultiContactPickerConstants.RESULT_CONTACT_IDS)!!
-                        Toast.makeText(requireContext(), selectedContactIds, Toast.LENGTH_LONG)
-                            .show()
-
-                        // TODO Verify this
-                        selectedContactIdStr = selectedContactIds
-                        selectedContactInfoList = populateContactInfo()
-                        viewAdapter?.setList(selectedContactInfoList)
-                    }
-                }
-            }
         startForResult.launch(multiContactPickerIntent)
     }
 
@@ -161,7 +172,11 @@ class AddContactGroupDialogFragment(
 
                 dismiss()
             } catch (e: ContactGroupValidationException) {
-                Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
+                Snackbar.make(
+                    coordinatorLayout,
+                    e.message.toString(),
+                    Snackbar.LENGTH_SHORT
+                ).show()
             }
         }
     }
@@ -189,7 +204,9 @@ class AddContactGroupDialogFragment(
             builder.append(contactInfo.id)
                 .append(CONTACT_ID_SEPARATOR)
         }
-        builder.deleteCharAt(builder.lastIndexOf(CONTACT_ID_SEPARATOR))
+        if(builder.isNotEmpty()) {
+            builder.deleteCharAt(builder.lastIndexOf(CONTACT_ID_SEPARATOR))
+        }
         return builder
     }
 

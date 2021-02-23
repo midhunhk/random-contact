@@ -16,7 +16,7 @@ import com.ae.apps.lib.common.utils.CommonUtils
 import com.ae.apps.lib.common.utils.ContactUtils.showContactInAddressBook
 import com.ae.apps.randomcontact.R
 import com.ae.apps.randomcontact.adapters.ContactDetailsRecyclerAdapter
-import com.ae.apps.randomcontact.data.RandomContactApiGatewayImpl
+import com.ae.apps.randomcontact.contacts.RandomContactApiGatewayImpl
 import com.ae.apps.randomcontact.databinding.FragmentRandomContactBinding
 import com.ae.apps.randomcontact.room.AppDatabase
 import com.ae.apps.randomcontact.room.repositories.ContactGroupRepository
