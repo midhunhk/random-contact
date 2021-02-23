@@ -50,8 +50,8 @@ class ContactDetailsRecyclerAdapter(
         }
 
         holder.btnCall.setOnClickListener {
-            // MobileNetworkUtils.callContact(context, contactNo)
-            // TODO Update in lib-aeapps
+            // MobileNetworkUtils.dialContact(context, contactNo)
+            // TODO Use Updated method from next version of lib-aeapps
             val intent = Intent(Intent.ACTION_DIAL)
             intent.data = Uri.parse("tel:$contactNo")
             context.startActivity(intent)

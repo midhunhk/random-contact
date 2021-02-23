@@ -16,8 +16,6 @@ class MultiContactPickerActivity : MultiContactBaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
-
-        customize()
     }
 
     override fun contactsList(): MutableList<ContactInfo> {
@@ -41,8 +39,4 @@ class MultiContactPickerActivity : MultiContactBaseActivity() {
     }
 
     override fun getLayoutResourceId(): Int = R.layout.activity_multi_contact_picker
-
-    fun customize(){
-        // TODO
-    }
 }
