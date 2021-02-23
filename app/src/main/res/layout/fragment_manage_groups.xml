@@ -20,12 +20,14 @@
         android:paddingRight="@dimen/unit_l">
 
         <TextView
-            style="@style/TextAppearance.MaterialComponents.Headline6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:gravity="center"
+            style="@style/TextAppearance.MaterialComponents.Headline6"
+            android:textAllCaps="true"
+            android:textColor="?attr/colorSecondary"
             android:text="@string/str_contact_group_title"
             tools:ignore="RelativeOverlap" />
 
@@ -39,7 +41,7 @@
             android:background="?android:selectableItemBackground"
             android:contentDescription="@string/empty_text"
             app:srcCompat="@drawable/ic_add_group"
-            app:tint="?attr/colorSecondaryVariant" />
+            app:tint="?attr/colorSecondary" />
     </RelativeLayout>
 
     <TextView
@@ -52,7 +54,7 @@
         android:layout_marginBottom="@dimen/unit_l"
         android:textColor="?attr/colorOnSecondary"
         android:text="@string/str_select_contact_group"
-        android:textSize="20dp" />
+        android:textSize="20sp" />
 
     <RadioButton
         android:id="@+id/radioAllContacts"
@@ -60,6 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
+        android:textAllCaps="true"
         android:text="@string/str_all_contacts"
         android:textStyle="bold" />
 

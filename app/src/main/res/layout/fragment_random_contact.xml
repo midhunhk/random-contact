@@ -108,7 +108,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:text="@string/empty_count"
-                        android:textColor="?attr/colorSecondaryVariant"
+                        android:textColor="?attr/colorSecondary"
                         android:textSize="48sp"
                         tools:ignore="RelativeOverlap" />
                 </RelativeLayout>
@@ -133,7 +133,8 @@
         android:paddingRight="@dimen/unit_l"
         android:text="@string/str_contact_now"
         android:textAlignment="viewStart"
-        android:textColor="?attr/colorSecondaryVariant"
+        android:textAllCaps="true"
+        android:textColor="?attr/colorSecondary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/contactsCard" />
 

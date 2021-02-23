@@ -2,11 +2,11 @@
     <!-- Base application theme. -->
     <style name="Theme.RandomContact" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/color_random_blue_500</item>
+        <item name="colorPrimary">@color/color_random_blue</item>
         <item name="colorPrimaryVariant">@color/color_random_blue_700</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/color_radical_red_200</item>
+        <item name="colorSecondary">@color/color_radical_red</item>
         <item name="colorSecondaryVariant">@color/color_radical_red_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->

@@ -2,11 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/unit_m"
-    android:layout_marginEnd="@dimen/unit_m"
-    android:layout_marginRight="@dimen/unit_m"
     android:layout_centerVertical="true"
     android:paddingTop="@dimen/unit_s">
 
@@ -14,24 +11,27 @@
         android:id="@+id/radioSelected"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="@tools:sample/cities"
-        android:textSize="18sp"
-        android:layout_centerInParent="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true"
+        android:layout_toStartOf="@+id/btnEditContactGroup"
+        android:layout_toLeftOf="@+id/btnEditContactGroup"
+        android:textSize="18sp"
+        tools:text="@tools:sample/cities" />
 
     <ImageButton
         android:id="@+id/btnEditContactGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:layout_toStartOf="@+id/btnDeleteContactGroup"
         android:layout_toLeftOf="@+id/btnDeleteContactGroup"
         android:background="@android:color/transparent"
         android:contentDescription="@string/empty_text"
-        android:layout_centerInParent="true"
         android:padding="@dimen/unit_s"
-        app:tint="?attr/colorOnSurface"
-        app:srcCompat="@drawable/ic_edit_group" />
+        android:layout_marginRight="@dimen/unit_l"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_edit_group"
+        app:tint="?attr/colorOnSurface" />
 
     <ImageButton
         android:id="@+id/btnDeleteContactGroup"
@@ -39,10 +39,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
         android:background="@android:color/transparent"
         android:contentDescription="@string/empty_text"
-        android:layout_centerInParent="true"
         android:padding="@dimen/unit_s"
-        app:tint="?attr/colorOnSurface"
-        app:srcCompat="@drawable/ic_remove_group" />
+        app:srcCompat="@drawable/ic_remove_group"
+        app:tint="?attr/colorOnSurface" />
+
 </RelativeLayout>

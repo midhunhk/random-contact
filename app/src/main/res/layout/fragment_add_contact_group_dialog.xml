@@ -54,20 +54,19 @@
                     android:id="@+id/btnSave"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/unit_l"
+                    android:layout_marginRight="@dimen/unit_l"
                     android:gravity="center"
                     android:text="@string/str_contact_group_add"
-                    android:layout_marginRight="@dimen/unit_l"
-                    android:textColor="?attr/colorOnSurface"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="@dimen/unit_l" />
+                    app:layout_constraintEnd_toEndOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.appcompat.widget.Toolbar>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/str_contact_group_name"
-            android:layout_margin="@dimen/unit_l">
+            android:layout_margin="@dimen/unit_l"
+            android:hint="@string/str_contact_group_name">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/txtGroupName"
@@ -83,6 +82,7 @@
             android:layout_marginRight="@dimen/unit_l">
 
             <TextView
+                style="@style/TextAppearance.MaterialComponents.Headline6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -91,8 +91,8 @@
                 android:background="?attr/colorSurface"
                 android:gravity="center"
                 android:text="@string/str_members"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                android:textColor="?attr/colorOnSurface" />
+                android:textAllCaps="true"
+                android:textColor="?attr/colorSecondary" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSelectMembers"
