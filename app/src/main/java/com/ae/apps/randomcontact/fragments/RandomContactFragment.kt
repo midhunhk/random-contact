@@ -107,13 +107,6 @@ class RandomContactFragment : Fragment(R.layout.fragment_random_contact), Contac
         return false
     }
 
-    fun isPackageInstalled(context: Context, packageName: String?): Boolean {
-        val packageManager = context.packageManager
-        val intent = packageManager.getLaunchIntentForPackage(packageName!!) ?: return false
-        val list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
-        return list.isNotEmpty()
-    }
-
     private fun showRandomContact(){
         // Running the getRandomNumber() method in a background thread
         // as we may need to access the database if a custom group is selected

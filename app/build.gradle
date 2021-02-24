@@ -12,7 +12,7 @@ android {
         applicationId "com.ae.apps.randomcontact"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 131
+        versionCode 132
         versionName "4.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

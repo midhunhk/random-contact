@@ -7,6 +7,7 @@ import com.ae.apps.lib.api.contacts.types.ContactInfoFilterOptions
 import com.ae.apps.lib.api.contacts.types.ContactInfoOptions
 import com.ae.apps.lib.api.contacts.types.ContactsDataConsumer
 import com.ae.apps.lib.common.models.ContactInfo
+import com.ae.apps.lib.common.models.PhoneNumberInfo
 import com.ae.apps.randomcontact.preferences.AppPreferences
 import com.ae.apps.randomcontact.room.AppDatabase
 import com.ae.apps.randomcontact.room.repositories.ContactGroupRepository
@@ -99,8 +100,32 @@ class RandomContactApiGatewayImpl(private val contactGroupRepository: ContactGro
             true, true,
             com.ae.apps.lib.R.drawable.profile_icon_3
         )
-        return getContactInfo(randomContactId, options)
+
+        val randomContactInfo = getContactInfo(randomContactId, options)
+        removeDuplicatePhoneNumbers(randomContactInfo)
+        return randomContactInfo
     }
+
+    private fun removeDuplicatePhoneNumbers(contactInfo: ContactInfo) {
+        val allPhoneNumbers = contactInfo.phoneNumbersList
+        val uniquePhoneNumbers:MutableList<PhoneNumberInfo> = mutableListOf()
+        allPhoneNumbers.forEach { phoneNumberInfo ->
+            if (uniquePhoneNumbers.isEmpty()){
+                uniquePhoneNumbers.add(phoneNumberInfo)
+            } else {
+                val format = removeFormatting(phoneNumberInfo.phoneNumber)
+                val test = uniquePhoneNumbers.filter { it.phoneType == phoneNumberInfo.phoneType && format == removeFormatting(it.phoneNumber) }
+                if(test.isEmpty()){
+                    uniquePhoneNumbers.add(phoneNumberInfo)
+                }
+            }
+        }
+        contactInfo.phoneNumbersList = uniquePhoneNumbers
+    }
+
+    private fun removeFormatting(text:String) = text.replace(" ", "")
+            .replace("+", "")
+            .replace("-","")
 
     override fun getContactInfo(contactId: String): ContactInfo = contactsApi.getContactInfo(
         contactId
