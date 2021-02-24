@@ -20,6 +20,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
 
     private var viewSource: View? = null
     private var viewLicense: View? = null
+    private var viewPrivacyPolicy: View? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -29,8 +30,11 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
     private fun setupViews(rootView: View) {
         viewSource = rootView.findViewById(R.id.viewSourceCode)
         viewLicense = rootView.findViewById(R.id.viewLicense)
+        viewPrivacyPolicy = rootView.findViewById(R.id.viewPrivacyPolicy)
 
         viewSource?.setOnClickListener {
+            // TODO use from lib-aeapps
+            // CommonUtils.launchWebPage()
             val url = getString(R.string.github_source_url)
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = Uri.parse(url)
@@ -42,6 +46,13 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
                 context, R.string.action_license, R.string.str_license,
                 android.R.string.ok
             )
+        }
+
+        viewPrivacyPolicy?.setOnClickListener {
+            val url = getString(R.string.privacy_policy_url)
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(url)
+            startActivity(intent)
         }
     }
 

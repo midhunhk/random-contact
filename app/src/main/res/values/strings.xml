@@ -5,7 +5,7 @@
     <string name="app_desc">This app displays a "Random Contact" from your contacts list. Contact an old friend today!</string>
     <string name="app_disclaimer">Disclaimer: Some of the data displayed in this app are not guaranteed to be accurate and should be used as an
         indication. We respect your privacy. All the data are retrieved from the phone\'s database and no information is shared.</string>
-    <string name="app_developer_info">Designed and developed at ae app labs</string>
+    <string name="app_developer_info">Designed and developed by ae app labs</string>
 
     <string name="empty_text">Empty Text</string>
     <string name="empty_count">0</string>
@@ -13,7 +13,6 @@
 
     <string name="github_source_url" translatable="false">https://github.com/midhunhk/random-contact</string>
     <string name="privacy_policy_url" translatable="false">https://ae-app-labs.github.io/privacy-policy/random-contact</string>
-    <string name="github_source_visible_url" translatable="false">github.com/midhunhk/random-contact</string>
 
     <!-- Actions -->
     <string name="action_settings">Settings</string>
@@ -25,6 +24,7 @@
     <string name="action_call">Call</string>
     <string name="action_whatsapp_message">WhatsApp</string>
     <string name="action_license">View License</string>
+    <string name="action_source">View Source</string>
     <string name="action_message">Text</string>
     <string name="action_view_contact">View in Address Book</string>
 
