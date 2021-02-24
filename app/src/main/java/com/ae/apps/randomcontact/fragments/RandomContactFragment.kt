@@ -1,10 +1,9 @@
 package com.ae.apps.randomcontact.fragments
 
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -14,7 +13,6 @@ import com.ae.apps.lib.api.contacts.ContactsApiGateway
 import com.ae.apps.lib.api.contacts.types.ContactInfoFilterOptions
 import com.ae.apps.lib.api.contacts.types.ContactsDataConsumer
 import com.ae.apps.lib.common.models.ContactInfo
-import com.ae.apps.lib.common.utils.CommonUtils
 import com.ae.apps.lib.common.utils.ContactUtils.showContactInAddressBook
 import com.ae.apps.randomcontact.R
 import com.ae.apps.randomcontact.adapters.ContactDetailsRecyclerAdapter
@@ -23,6 +21,7 @@ import com.ae.apps.randomcontact.databinding.FragmentRandomContactBinding
 import com.ae.apps.randomcontact.utils.PACKAGE_NAME_WHATSAPP
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
+
 
 /**
  * A simple [Fragment] subclass.
@@ -78,7 +77,9 @@ class RandomContactFragment : Fragment(R.layout.fragment_random_contact), Contac
     private fun setupRecyclerView(){
         var whatsAppInstalled = false
         if (null != requireActivity().packageManager) {
-            whatsAppInstalled = CommonUtils.isPackageInstalled(PACKAGE_NAME_WHATSAPP, context)
+            // whatsAppInstalled = CommonUtils.isPackageInstalled(PACKAGE_NAME_WHATSAPP, context)
+            // TODO Use CommonUtils.checkIfPackageIsInstalled()
+            whatsAppInstalled = appInstalledOrNot(PACKAGE_NAME_WHATSAPP)
         }
 
         recyclerAdapter = ContactDetailsRecyclerAdapter(
@@ -96,6 +97,23 @@ class RandomContactFragment : Fragment(R.layout.fragment_random_contact), Contac
         recyclerView.itemAnimator = DefaultItemAnimator()
     }
 
+    private fun appInstalledOrNot(uri: String): Boolean {
+        val pm: PackageManager = requireActivity().packageManager
+        try {
+            pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES)
+            return true
+        } catch (e: PackageManager.NameNotFoundException) {
+        }
+        return false
+    }
+
+    fun isPackageInstalled(context: Context, packageName: String?): Boolean {
+        val packageManager = context.packageManager
+        val intent = packageManager.getLaunchIntentForPackage(packageName!!) ?: return false
+        val list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
+        return list.isNotEmpty()
+    }
+
     private fun showRandomContact(){
         // Running the getRandomNumber() method in a background thread
         // as we may need to access the database if a custom group is selected
@@ -103,8 +121,10 @@ class RandomContactFragment : Fragment(R.layout.fragment_random_contact), Contac
             val randomContact:ContactInfo? = contactsApi.randomContact
             if(null == randomContact){
                 uiThread {
-                    Toast.makeText(context,resources.getString(R.string.str_empty_contact_list),
-                        Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        context, resources.getString(R.string.str_empty_contact_list),
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             } else {
                 uiThread {
