@@ -1,7 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.RandomContact" parent="Theme.RandomContact.Base">
-
     </style>
 
     <style name="Theme.RandomContact.Base" parent="Theme.MaterialComponents.DayNight.NoActionBar">
