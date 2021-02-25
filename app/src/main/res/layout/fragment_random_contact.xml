@@ -14,7 +14,7 @@
         app:cardElevation="2dp"
         app:cardMaxElevation="1dp"
         app:cardUseCompatPadding="true"
-        app:contentPadding="@dimen/unit_m"
+        app:contentPadding="@dimen/unit_l"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -22,7 +22,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/unit_l"
+            android:paddingBottom="@dimen/unit_l">
 
             <com.ae.apps.lib.custom.views.RoundedImageView
                 android:id="@+id/contactImage"
@@ -39,14 +41,18 @@
                 style="@style/TextAppearance.MaterialComponents.Headline5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/unit_m"
+                android:layout_marginLeft="@dimen/unit_l"
+                android:layout_marginStart="@dimen/unit_l"
+                android:layout_marginRight="@dimen/unit_l"
+                android:layout_marginEnd="@dimen/unit_l"
                 android:gravity="start"
                 android:padding="@dimen/unit_m"
                 android:text="@string/empty_text"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btnRefresh"
                 app:layout_constraintStart_toEndOf="@+id/contactImage"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                 />
 
             <ImageButton
                 android:id="@+id/btnRefresh"

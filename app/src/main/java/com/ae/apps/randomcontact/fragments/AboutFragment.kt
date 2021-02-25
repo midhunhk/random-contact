@@ -3,10 +3,10 @@ package com.ae.apps.randomcontact.fragments
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.View
 import androidx.fragment.app.Fragment
 import com.ae.apps.lib.common.utils.DialogUtils
 import com.ae.apps.randomcontact.R
+import com.ae.apps.randomcontact.databinding.FragmentAboutBinding
 
 
 /**
@@ -18,21 +18,17 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         fun newInstance() = AboutFragment()
     }
 
-    private var viewSource: View? = null
-    private var viewLicense: View? = null
-    private var viewPrivacyPolicy: View? = null
+    private lateinit var binding: FragmentAboutBinding
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setupViews(view)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        binding = FragmentAboutBinding.inflate(layoutInflater)
+        setupViews()
     }
 
-    private fun setupViews(rootView: View) {
-        viewSource = rootView.findViewById(R.id.viewSourceCode)
-        viewLicense = rootView.findViewById(R.id.viewLicense)
-        viewPrivacyPolicy = rootView.findViewById(R.id.viewPrivacyPolicy)
-
-        viewSource?.setOnClickListener {
+    private fun setupViews() {
+        binding.viewSourceCode.setOnClickListener {
             // TODO use from lib-aeapps
             // CommonUtils.launchWebPage()
             val url = getString(R.string.github_source_url)
@@ -41,14 +37,14 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
             startActivity(intent)
         }
 
-        viewLicense?.setOnClickListener {
+        binding.viewLicense.setOnClickListener {
             DialogUtils.showMaterialInfoDialog(
                 context, R.string.action_license, R.string.str_license,
                 android.R.string.ok
             )
         }
 
-        viewPrivacyPolicy?.setOnClickListener {
+        binding.viewPrivacyPolicy.setOnClickListener {
             val url = getString(R.string.privacy_policy_url)
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = Uri.parse(url)

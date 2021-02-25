@@ -1,40 +1,44 @@
 package com.ae.apps.randomcontact.room.viewmodels
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.viewModelScope
+import com.ae.apps.randomcontact.room.AppDatabase
 import com.ae.apps.randomcontact.room.entities.ContactGroup
 import com.ae.apps.randomcontact.room.repositories.ContactGroupRepository
-import org.jetbrains.anko.doAsync
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class ContactGroupViewModel(private val repository: ContactGroupRepository) : ViewModel(){
+class ContactGroupViewModel(application: Application) : AndroidViewModel(application){
 
-    private var contactGroups:MutableLiveData<List<ContactGroup>> = MutableLiveData()
+    private val contactGroups: LiveData<List<ContactGroup>>
+    private val repository: ContactGroupRepository
 
     fun getAllContactGroups() = contactGroups
 
     init {
-        doAsync {
-            readAllContactGroups()
+        val contactGroupDao = AppDatabase.getInstance(application).contactGroupDao()
+        repository = ContactGroupRepository.getInstance(contactGroupDao)
+        contactGroups = repository.getAllContactGroups()
+    }
+
+    fun createContactGroup(contactGroup:ContactGroup){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.createContactGroup(contactGroup)
         }
     }
 
-    private fun readAllContactGroups(){
-        contactGroups.postValue(repository.getAllContactGroups())
+    fun updateContactGroup(contactGroup: ContactGroup) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.updateContactGroup(contactGroup)
+        }
     }
 
-    fun createContactGroup(contactGroup:ContactGroup) = doAsync {
-        repository.createContactGroup(contactGroup)
-        readAllContactGroups()
-    }
-
-    fun updateContactGroup(contactGroup: ContactGroup) = doAsync {
-        repository.updateContactGroup(contactGroup)
-        readAllContactGroups()
-    }
-
-    fun deleteContactGroup(contactGroup: ContactGroup) = doAsync {
-        repository.deleteContactGroup(contactGroup)
-        readAllContactGroups()
+    fun deleteContactGroup(contactGroup: ContactGroup) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteContactGroup(contactGroup)
+        }
     }
 
 }

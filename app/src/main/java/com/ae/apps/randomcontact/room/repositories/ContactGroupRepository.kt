@@ -1,5 +1,6 @@
 package com.ae.apps.randomcontact.room.repositories
 
+import androidx.lifecycle.LiveData
 import com.ae.apps.randomcontact.room.dao.ContactGroupDao
 import com.ae.apps.randomcontact.room.entities.ContactGroup
 import kotlinx.coroutines.CoroutineScope
@@ -18,16 +19,16 @@ class ContactGroupRepository private constructor(private val dao:ContactGroupDao
             }
     }
 
-    fun getAllContactGroups(): List<ContactGroup> = dao.getAll()
+    fun getAllContactGroups(): LiveData<List<ContactGroup>> = dao.getAll()
 
     // Id is stored in the database as an Integer inorder to apply AutoIncrement
     // But it is stored in Preferences as a String, so inorder to maintain backwards compatibility,
     // we are converting to an int here
     fun findContactGroupById(contactId:String):ContactGroup = dao.getContactGroupById(contactId.toInt())
 
-    fun createContactGroup(contactGroup:ContactGroup) = dao.insert(contactGroup)
+    suspend fun createContactGroup(contactGroup:ContactGroup) = dao.insert(contactGroup)
 
-    fun updateContactGroup(contactGroup: ContactGroup) = dao.update(contactGroup)
+    suspend fun updateContactGroup(contactGroup: ContactGroup) = dao.update(contactGroup)
 
-    fun deleteContactGroup(contactGroup: ContactGroup) = dao.delete(contactGroup)
+    suspend fun deleteContactGroup(contactGroup: ContactGroup) = dao.delete(contactGroup)
 }
