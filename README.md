@@ -1,12 +1,12 @@
 # Random Contact
 
-<img alt="Random Contact" src="/resources/promotional/feature_graphic_v2.png" width="820"/>  
+<img alt="Random Contact" src="https://raw.githubusercontent.com/midhunhk/random-contact/nova/resources/v4/artwork/feature_graphic_v4.0.png" width="820"/>  
 [![Build Status](https://travis-ci.org/midhunhk/random-contact.svg?branch=main)](https://travis-ci.org/midhunhk/random-contact)  
 
 Random Contact is an Android app that shows the details of a random contact from your contacts list. 
 This is an experimental, fun and personal project which has been made open source.
 
-<img src="https://raw.githubusercontent.com/midhunhk/random-contact/nova/resources/artwork/nova_logo.png" alt="Codename Nova" /> codename nova
+<img src="https://raw.githubusercontent.com/midhunhk/random-contact/nova/resources/v4/artwork/nova_logo.png" alt="Codename Nova" /> codename nova
 
 ## Features
  - Designed based on material design principles
@@ -16,7 +16,7 @@ This is an experimental, fun and personal project which has been made open sourc
 ## Play Store
 The latest version of Random Contact is available in [Google Play Store](https://play.google.com/store/apps/details?id=com.ae.apps.randomcontact)
 
-<img alt="screenshot" src="/resources/promotional/screen-random-contact.png" />
+<img alt="screenshot" src="https://raw.githubusercontent.com/midhunhk/random-contact/nova/resources/v4/screenshots/device-2021-02-24-204443.png" width="250" /> <img alt="screenshot" src="https://raw.githubusercontent.com/midhunhk/random-contact/nova/resources/v4/screenshots/device-2021-02-24-205552.png" width="250" />
 
 ## Web Resources
 App Announcement blog entry
