@@ -1,6 +1,7 @@
 # Random Contact
 
 <img alt="Random Contact" src="https://raw.githubusercontent.com/midhunhk/random-contact/nova/resources/v4/artwork/feature_graphic_v4.0.png" width="820"/>  
+
 [![Build Status](https://travis-ci.org/midhunhk/random-contact.svg?branch=main)](https://travis-ci.org/midhunhk/random-contact)  
 
 Random Contact is an Android app that shows the details of a random contact from your contacts list. 
