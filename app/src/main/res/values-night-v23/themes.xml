@@ -6,4 +6,9 @@
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
+
+    <style name="outlineButtonStyle" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:backgroundTint">?attr/colorSurface</item>
+    </style>
+
 </resources>

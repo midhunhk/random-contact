@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.RadioButton
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,11 +13,8 @@ import com.ae.apps.randomcontact.R
 import com.ae.apps.randomcontact.adapters.ContactGroupRecyclerAdapter
 import com.ae.apps.randomcontact.listeners.ContactGroupInteractionListener
 import com.ae.apps.randomcontact.preferences.AppPreferences
-import com.ae.apps.randomcontact.room.AppDatabase
 import com.ae.apps.randomcontact.room.entities.ContactGroup
-import com.ae.apps.randomcontact.room.repositories.ContactGroupRepository
 import com.ae.apps.randomcontact.room.viewmodels.ContactGroupViewModel
-import com.ae.apps.randomcontact.room.viewmodels.ContactGroupViewModelFactory
 import com.ae.apps.randomcontact.utils.DEFAULT_CONTACT_GROUP
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.*
@@ -33,7 +30,7 @@ class ManageGroupsFragment : Fragment(R.layout.fragment_manage_groups),
     private lateinit var allContactsRadio: RadioButton
     private lateinit var appPreferences: AppPreferences
     private lateinit var viewModel: ContactGroupViewModel
-    private lateinit var emptyView:View
+    private lateinit var emptyView: View
 
     companion object {
         /**
@@ -46,12 +43,7 @@ class ManageGroupsFragment : Fragment(R.layout.fragment_manage_groups),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val contactGroupRepository = ContactGroupRepository.getInstance(
-            AppDatabase.getInstance(requireContext()).contactGroupDao()
-        )
-        val factory = ContactGroupViewModelFactory(contactGroupRepository)
-        viewModel = ViewModelProviders.of(this, factory).get(ContactGroupViewModel::class.java)
-        viewAdapter = ContactGroupRecyclerAdapter(this, Collections.emptyList())
+        viewAdapter = ContactGroupRecyclerAdapter(this)
         appPreferences = AppPreferences.getInstance(requireContext())
     }
 
@@ -59,10 +51,11 @@ class ManageGroupsFragment : Fragment(R.layout.fragment_manage_groups),
         super.onViewCreated(view, savedInstanceState)
         initViews(view, appPreferences.selectedContactGroup()!!)
         setUpRecyclerView(view)
+        viewModel = ViewModelProvider(this).get(ContactGroupViewModel::class.java)
         viewModel.getAllContactGroups()
-            .observe(viewLifecycleOwner, {
+            .observe(viewLifecycleOwner, { contactGroups ->
                 kotlin.run {
-                    viewAdapter?.setList(it!!)
+                    viewAdapter?.setList(contactGroups)
                     val selectedContactGroup = appPreferences.selectedContactGroup()!!
                     viewAdapter?.setSelectedGroupId(selectedContactGroup)
                     checkIfDefaultContactGroupSelected(selectedContactGroup)
@@ -128,7 +121,7 @@ class ManageGroupsFragment : Fragment(R.layout.fragment_manage_groups),
         launchContactGroupDialog(contactGroup)
     }
 
-    private fun launchContactGroupDialog(contactGroup: ContactGroup? = null){
+    private fun launchContactGroupDialog(contactGroup: ContactGroup? = null) {
         val dialogFragment = AddContactGroupDialogFragment.newInstance(this, contactGroup)
         dialogFragment.show(childFragmentManager, "addContactGroupDialog")
     }

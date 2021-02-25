@@ -9,10 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ae.apps.randomcontact.R
 import com.ae.apps.randomcontact.listeners.ContactGroupInteractionListener
 import com.ae.apps.randomcontact.room.entities.ContactGroup
+import java.util.*
 
 public class ContactGroupRecyclerAdapter(
     private val listener: ContactGroupInteractionListener,
-    private var items: List<ContactGroup>
+    private var items: List<ContactGroup> = Collections.emptyList()
 ) :
     RecyclerView.Adapter<ContactGroupRecyclerAdapter.ViewHolder>() {
 

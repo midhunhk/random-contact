@@ -43,14 +43,12 @@ class RandomContactApiGatewayImpl(private val contactGroupRepository: ContactGro
 
     override fun initializeAsync(
         options: ContactInfoFilterOptions?,
-        consumer: ContactsDataConsumer
+        consumer: ContactsDataConsumer?
     ) {
         // Store the consumer and invoke the onContactsRead on it after our own initialization
         dataConsumer = consumer
         if(isContactsRead){
-            dataConsumer?.let {
-                it.onContactsRead()
-            }
+            dataConsumer?.onContactsRead()
         } else {
             contactsApi.initializeAsync(options, this)
         }

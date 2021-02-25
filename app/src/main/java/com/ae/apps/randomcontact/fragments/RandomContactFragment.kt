@@ -130,7 +130,6 @@ class RandomContactFragment : Fragment(R.layout.fragment_random_contact), Contac
     private fun displayContact(contactInfo: ContactInfo) {
         binding?.contactName?.text  = contactInfo.name
         binding?.contactImage?.setImageBitmap(contactInfo.picture)
-        binding?.timesContactedCount?.text = contactInfo.timesContacted
 
         val phoneNumbersList = contactInfo.phoneNumbersList
         recyclerAdapter.setList(phoneNumbersList)

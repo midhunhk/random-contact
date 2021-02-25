@@ -13,6 +13,7 @@
         android:contentDescription="@string/app_name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:tint="?attr/colorSecondary"
         app:srcCompat="@drawable/ic_random_contact_logo" />
 
 </androidx.appcompat.widget.Toolbar>
