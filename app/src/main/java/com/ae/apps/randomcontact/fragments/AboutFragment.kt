@@ -1,12 +1,12 @@
 package com.ae.apps.randomcontact.fragments
 
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.Fragment
 import com.ae.apps.lib.common.utils.CommonUtils
 import com.ae.apps.lib.common.utils.DialogUtils
 import com.ae.apps.randomcontact.R
 import com.ae.apps.randomcontact.databinding.FragmentAboutBinding
-
 
 /**
  * A simple [Fragment] subclass.
@@ -19,10 +19,9 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
 
     private lateinit var binding: FragmentAboutBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        binding = FragmentAboutBinding.inflate(layoutInflater)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding = FragmentAboutBinding.bind(view)
         setupViews()
     }
 
