@@ -7,7 +7,6 @@ import com.ae.apps.lib.api.contacts.types.ContactInfoFilterOptions
 import com.ae.apps.lib.api.contacts.types.ContactInfoOptions
 import com.ae.apps.lib.api.contacts.types.ContactsDataConsumer
 import com.ae.apps.lib.common.models.ContactInfo
-import com.ae.apps.lib.common.models.PhoneNumberInfo
 import com.ae.apps.randomcontact.preferences.AppPreferences
 import com.ae.apps.randomcontact.room.AppDatabase
 import com.ae.apps.randomcontact.room.repositories.ContactGroupRepository
@@ -15,10 +14,11 @@ import com.ae.apps.randomcontact.utils.CONTACT_ID_SEPARATOR
 import com.ae.apps.randomcontact.utils.DEFAULT_CONTACT_GROUP
 import java.util.*
 
-class RandomContactApiGatewayImpl(private val contactGroupRepository: ContactGroupRepository,
-                                  private val contactsApi: ContactsApiGateway,
-                                  private val appPreferences: AppPreferences
-                                  ) : ContactsApiGateway, ContactsDataConsumer {
+class RandomContactApiGatewayImpl(
+    private val contactGroupRepository: ContactGroupRepository,
+    private val contactsApi: ContactsApiGateway,
+    private val appPreferences: AppPreferences
+) : ContactsApiGateway, ContactsDataConsumer {
     private var index: Int = 0
     private var dataConsumer: ContactsDataConsumer? = null
     private var isContactsRead = false
@@ -30,10 +30,16 @@ class RandomContactApiGatewayImpl(private val contactGroupRepository: ContactGro
 
         fun getInstance(context: Context): ContactsApiGateway =
             INSTANCE ?: synchronized(this) {
-                val cgRepo = ContactGroupRepository.getInstance(AppDatabase.getInstance(context).contactGroupDao())
+                val cgRepo = ContactGroupRepository.getInstance(
+                    AppDatabase.getInstance(context).contactGroupDao()
+                )
                 val appPreferences = AppPreferences.getInstance(context)
                 val contactsApi = ContactsApiGatewayImpl.Builder(context).build()
-                INSTANCE ?: RandomContactApiGatewayImpl(cgRepo, contactsApi, appPreferences).also { INSTANCE = it }
+                INSTANCE ?: RandomContactApiGatewayImpl(
+                    cgRepo,
+                    contactsApi,
+                    appPreferences
+                ).also { INSTANCE = it }
             }
     }
 
@@ -47,7 +53,7 @@ class RandomContactApiGatewayImpl(private val contactGroupRepository: ContactGro
     ) {
         // Store the consumer and invoke the onContactsRead on it after our own initialization
         dataConsumer = consumer
-        if(isContactsRead){
+        if (isContactsRead) {
             dataConsumer?.onContactsRead()
         } else {
             contactsApi.initializeAsync(options, this)
@@ -94,40 +100,17 @@ class RandomContactApiGatewayImpl(private val contactGroupRepository: ContactGro
             randomContactId = subList[Random().nextInt(subList.size)]
         }
 
-        val options = ContactInfoOptions.of(
-            true, true,
-            com.ae.apps.lib.R.drawable.profile_icon_3
-        )
+        val options = ContactInfoOptions.Builder()
+            .includePhoneDetails(true)
+            .includeContactPicture(true)
+            .defaultContactPicture(com.ae.apps.lib.R.drawable.profile_icon_3)
+            .filterDuplicatePhoneNumbers(true)
+            .build()
 
-        val randomContactInfo = getContactInfo(randomContactId, options)
-        removeDuplicatePhoneNumbers(randomContactInfo)
-        return randomContactInfo
+        return getContactInfo(randomContactId, options)
     }
 
-    private fun removeDuplicatePhoneNumbers(contactInfo: ContactInfo) {
-        val allPhoneNumbers = contactInfo.phoneNumbersList
-        val uniquePhoneNumbers:MutableList<PhoneNumberInfo> = mutableListOf()
-        allPhoneNumbers.forEach { phoneNumberInfo ->
-            if (uniquePhoneNumbers.isEmpty()){
-                uniquePhoneNumbers.add(phoneNumberInfo)
-            } else {
-                val format = removeFormatting(phoneNumberInfo.phoneNumber)
-                val test = uniquePhoneNumbers.filter { it.phoneType == phoneNumberInfo.phoneType && format == removeFormatting(it.phoneNumber) }
-                if(test.isEmpty()){
-                    uniquePhoneNumbers.add(phoneNumberInfo)
-                }
-            }
-        }
-        contactInfo.phoneNumbersList = uniquePhoneNumbers
-    }
-
-    private fun removeFormatting(text:String) = text.replace(" ", "")
-            .replace("+", "")
-            .replace("-","")
-
-    override fun getContactInfo(contactId: String): ContactInfo = contactsApi.getContactInfo(
-        contactId
-    )
+    override fun getContactInfo(contactId: String): ContactInfo = contactsApi.getContactInfo(contactId)
 
     override fun getContactInfo(contactId: String?, options: ContactInfoOptions?): ContactInfo =
         contactsApi.getContactInfo(
@@ -136,13 +119,8 @@ class RandomContactApiGatewayImpl(private val contactGroupRepository: ContactGro
         )
 
     override fun getContactIdFromRawContact(contactId: String?): String =
-        contactsApi.getContactIdFromRawContact(
-            contactId
-        )
+        contactsApi.getContactIdFromRawContact(contactId)
 
-    override fun getContactIdFromAddress(address: String?): String =
-        contactsApi.getContactIdFromAddress(
-            address
-        )
+    override fun getContactIdFromAddress(address: String?): String = contactsApi.getContactIdFromAddress(address)
 
 }
