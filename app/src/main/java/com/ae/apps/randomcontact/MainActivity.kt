@@ -10,7 +10,9 @@ import com.ae.apps.randomcontact.fragments.AboutFragment
 import com.ae.apps.randomcontact.fragments.ManageGroupsFragment
 import com.ae.apps.randomcontact.fragments.NoAccessFragment
 import com.ae.apps.randomcontact.fragments.RandomContactFragment
+import com.ae.apps.randomcontact.preferences.AppPreferences
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.bottomsheet.BottomSheetDialog
 
 /**
  * Entry point to the application
@@ -23,6 +25,7 @@ class MainActivity : AbstractPermissionsAwareActivity(), PermissionsAwareCompone
     }
 
     private lateinit var bottomNavigationView: BottomNavigationView
+    private lateinit var bottomSheetDialog: BottomSheetDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +58,22 @@ class MainActivity : AbstractPermissionsAwareActivity(), PermissionsAwareCompone
         bottomNavigationView.selectedItemId = R.id.action_random_contact
 
         showFragment(RandomContactFragment.getInstance(baseContext))
+        showMessageAsBottomSheet()
+    }
+
+    private fun showMessageAsBottomSheet() {
+        val appPreferences = AppPreferences.getInstance(this)
+        if(!appPreferences.getBooleanPref(AppPreferences.PREF_KEY_VERSION_4_REDESIGN_MSG_SHOWN, false)) {
+            val bottomSheetLayout = layoutInflater.inflate(R.layout.bottom_sheet_dialog, null)
+            val messageCloseButton = bottomSheetLayout.findViewById<View>(R.id.btnMessageClose)
+            messageCloseButton.setOnClickListener {
+                bottomSheetDialog.dismiss()
+                appPreferences.setBooleanPref(AppPreferences.PREF_KEY_VERSION_4_REDESIGN_MSG_SHOWN, true)
+            }
+            bottomSheetDialog = BottomSheetDialog(this)
+            bottomSheetDialog.setContentView(bottomSheetLayout)
+            bottomSheetDialog.show()
+        }
     }
 
     override fun showPermissionsRequiredView() {

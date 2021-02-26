@@ -10,6 +10,8 @@ class AppPreferences {
     companion object{
         private const val PREF_KEY_SELECTED_CONTACT_GROUP = "pref_key_selected_contact_group"
 
+        const val PREF_KEY_VERSION_4_REDESIGN_MSG_SHOWN = "pref_key_version_4_redesign_msg_shown"
+
         @Volatile private var instance:AppPreferences? = null
         @Volatile private lateinit var preferences:SharedPreferences
 
@@ -18,7 +20,6 @@ class AppPreferences {
                 preferences = PreferenceManager.getDefaultSharedPreferences(context)
                 instance ?: AppPreferences().also { instance = it }
             }
-
     }
 
     /**
@@ -26,23 +27,24 @@ class AppPreferences {
      *
      * @return selected contact group id
      */
-    fun selectedContactGroup(): String? {
-        return preferences.getString(
-            PREF_KEY_SELECTED_CONTACT_GROUP,
-            DEFAULT_CONTACT_GROUP
-        )
-    }
+    fun selectedContactGroup() = preferences.getString(
+        PREF_KEY_SELECTED_CONTACT_GROUP,
+        DEFAULT_CONTACT_GROUP)!!
 
     /**
      * Sets the selected contact group
      *
      * @param groupId groupId
      */
-    fun setSelectedContactGroup(groupId: String?) {
-        preferences
-            .edit()
-            .putString(PREF_KEY_SELECTED_CONTACT_GROUP, groupId)
-            .apply()
-    }
+    fun setSelectedContactGroup(groupId: String) = preferences
+        .edit()
+        .putString(PREF_KEY_SELECTED_CONTACT_GROUP, groupId)
+        .apply()
+
+    fun setBooleanPref(key:String, value:Boolean) = preferences.edit()
+        .putBoolean(key, value)
+        .apply()
+
+    fun getBooleanPref(key:String, defaultValue:Boolean) = preferences.getBoolean(key, defaultValue)
 
 }

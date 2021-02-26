@@ -1,10 +1,9 @@
 <resources>
     <string name="app_name">Random Contact</string>
     <string name="app_version">Version 4.0.0 (Nova)</string>
-    <string name="app_release_date">Jul 2018</string>
+    <string name="app_release_date">Mar 2021</string>
     <string name="app_desc">This app displays a "Random Contact" from your contacts list. Contact an old friend today!</string>
-    <string name="app_disclaimer">Disclaimer: Some of the data displayed in this app are not guaranteed to be accurate and should be used as an
-        indication. We respect your privacy. All the data are retrieved from the phone\'s database and no information is shared.</string>
+    <string name="app_disclaimer">This is an open source project designed and developed in my free time. \nAll the contact data shown are retrieved from the device and not processed, stored or shared by the app.</string>
     <string name="app_developer_info">Designed and developed by ae app labs</string>
 
     <string name="empty_text">Empty Text</string>
@@ -66,11 +65,21 @@ limitations under the License.</string>
     <string name="str_contact_group_delete_title">Delete this Contact Group?</string>
     <string name="str_dialog_delete">Delete</string>
     <string name="str_dialog_cancel">Cancel</string>
+    <string name="str_dialog_ok">OK</string>
     <string name="str_multi_contact_title">Select Contacts</string>
-
     <string name="str_multi_contact_continue">Continue</string>
     <string name="str_multi_contact_validation">Please select at least one contact</string>
     <string name="str_multi_contact_no_contacts">No Contacts to display</string>
+    <string name="str_bottom_message_title">Major Update</string>
+
+    <string name="str_bottom_message_content">
+        <li>Version 4.0 (Nova)</li>\n
+        <li>Completely redesigned from the ground up</li>\n
+        <li>Edit groups feature added</li>\n
+        <li>Improved performance and stability</li>\n
+        <li>Removed Contacted details as they were made obsolete by Google</li>\n
+        <li>Thank you for your support</li>
+    </string>
 
     <string name="str_permission_required_title">Permission Required</string>
     <string name="str_permission_required_desc">Random Contact requires the permission to read contacts to function as designed.</string>
