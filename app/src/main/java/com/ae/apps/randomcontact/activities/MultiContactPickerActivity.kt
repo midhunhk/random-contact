@@ -31,7 +31,7 @@ class MultiContactPickerActivity : MultiContactBaseActivity() {
                 if (null == o1?.name) return -1
                 if (null == o2?.name) return 1
 
-                return o1.name.compareTo(o2.name)
+                return o1.name.toLowerCase(Locale.ROOT).compareTo(o2.name.toLowerCase(Locale.ROOT))
             }
         })
 
