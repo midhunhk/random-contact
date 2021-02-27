@@ -49,14 +49,14 @@ class ManageGroupsFragment : Fragment(R.layout.fragment_manage_groups),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViews(view, appPreferences.selectedContactGroup()!!)
+        initViews(view, appPreferences.selectedContactGroup())
         setUpRecyclerView(view)
         viewModel = ViewModelProvider(this).get(ContactGroupViewModel::class.java)
         viewModel.getAllContactGroups()
             .observe(viewLifecycleOwner, { contactGroups ->
                 kotlin.run {
                     viewAdapter?.setList(contactGroups)
-                    val selectedContactGroup = appPreferences.selectedContactGroup()!!
+                    val selectedContactGroup = appPreferences.selectedContactGroup()
                     viewAdapter?.setSelectedGroupId(selectedContactGroup)
                     checkIfDefaultContactGroupSelected(selectedContactGroup)
                 }
@@ -146,7 +146,7 @@ class ManageGroupsFragment : Fragment(R.layout.fragment_manage_groups),
         viewModel.deleteContactGroup(item)
 
         // Make the All Contacts radio checked if the deleted item was previously selected
-        if (appPreferences.selectedContactGroup()!! == (item.id.toString())) {
+        if (appPreferences.selectedContactGroup() == (item.id.toString())) {
             checkIfDefaultContactGroupSelected(DEFAULT_CONTACT_GROUP)
             appPreferences.setSelectedContactGroup(DEFAULT_CONTACT_GROUP)
         }

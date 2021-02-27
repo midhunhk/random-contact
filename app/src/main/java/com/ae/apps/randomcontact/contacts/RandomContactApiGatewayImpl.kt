@@ -95,7 +95,7 @@ class RandomContactApiGatewayImpl(
             index = ((index + 1) % readContactsCount.toInt())
             randomContactId = allContacts[index].id
         } else {
-            val contactGroup = contactGroupRepository.findContactGroupById(selectedGroup!!)
+            val contactGroup = contactGroupRepository.findContactGroupById(selectedGroup)
             val subList: List<String> = contactGroup.selectedContacts.split(CONTACT_ID_SEPARATOR)
             randomContactId = subList[Random().nextInt(subList.size)]
         }
