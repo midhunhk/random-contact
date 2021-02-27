@@ -84,4 +84,5 @@ limitations under the License.</string>
     <string name="str_permission_required_title">Permission Required</string>
     <string name="str_permission_required_desc">Random Contact requires the permission to read contacts to function as designed.</string>
     <string name="str_btn_provide_access">Provide Access</string>
+    <string name="str_in_app_update_error">An error occured during In-App Update</string>
 </resources>
