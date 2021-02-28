@@ -5,11 +5,18 @@ import com.ae.apps.randomcontact.room.repositories.ContactGroupRepository
 import com.ae.apps.randomcontact.room.repositories.ContactGroupTestRepository
 import org.junit.Assert
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.ExpectedException
 
 class ContactGroupViewModelTest {
     private lateinit var  repository: ContactGroupRepository
     private lateinit var contactGroups: ArrayList<ContactGroup>
+
+
+    @get:Rule
+    val exceptionRule = ExpectedException.none()
+
     @Before
     fun setUp(){
         contactGroups = ArrayList<ContactGroup>()

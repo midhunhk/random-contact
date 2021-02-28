@@ -9,13 +9,14 @@ import com.ae.apps.lib.api.contacts.types.ContactsDataConsumer
 import com.ae.apps.lib.common.models.ContactInfo
 import com.ae.apps.randomcontact.preferences.AppPreferences
 import com.ae.apps.randomcontact.room.AppDatabase
+import com.ae.apps.randomcontact.room.repositories.ContactGroupRepository
 import com.ae.apps.randomcontact.room.repositories.ContactGroupRepositoryImpl
 import com.ae.apps.randomcontact.utils.CONTACT_ID_SEPARATOR
 import com.ae.apps.randomcontact.utils.DEFAULT_CONTACT_GROUP
 import java.util.*
 
 class RandomContactApiGatewayImpl(
-    private val contactGroupRepositoryImpl: ContactGroupRepositoryImpl,
+    private val contactGroupRepository: ContactGroupRepository,
     private val contactsApi: ContactsApiGateway,
     private val appPreferences: AppPreferences
 ) : ContactsApiGateway, ContactsDataConsumer {
@@ -95,7 +96,7 @@ class RandomContactApiGatewayImpl(
             index = ((index + 1) % readContactsCount.toInt())
             randomContactId = allContacts[index].id
         } else {
-            val contactGroup = contactGroupRepositoryImpl.findContactGroupById(selectedGroup)
+            val contactGroup = contactGroupRepository.findContactGroupById(selectedGroup)
             val subList: List<String> = contactGroup.selectedContacts.split(CONTACT_ID_SEPARATOR)
             randomContactId = subList[Random().nextInt(subList.size)]
         }
