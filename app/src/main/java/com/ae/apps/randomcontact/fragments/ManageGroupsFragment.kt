@@ -13,12 +13,13 @@ import com.ae.apps.randomcontact.R
 import com.ae.apps.randomcontact.adapters.ContactGroupRecyclerAdapter
 import com.ae.apps.randomcontact.listeners.ContactGroupInteractionListener
 import com.ae.apps.randomcontact.preferences.AppPreferences
+import com.ae.apps.randomcontact.room.AppDatabase
 import com.ae.apps.randomcontact.room.entities.ContactGroup
+import com.ae.apps.randomcontact.room.repositories.ContactGroupRepositoryImpl
 import com.ae.apps.randomcontact.room.viewmodels.ContactGroupViewModel
+import com.ae.apps.randomcontact.room.viewmodels.ContactGroupViewModelFactory
 import com.ae.apps.randomcontact.utils.DEFAULT_CONTACT_GROUP
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import java.util.*
-
 
 /**
  * A simple [Fragment] subclass.
@@ -51,7 +52,11 @@ class ManageGroupsFragment : Fragment(R.layout.fragment_manage_groups),
         super.onViewCreated(view, savedInstanceState)
         initViews(view, appPreferences.selectedContactGroup())
         setUpRecyclerView(view)
-        viewModel = ViewModelProvider(this).get(ContactGroupViewModel::class.java)
+        val contactGroupDao = AppDatabase.getInstance(requireContext()).contactGroupDao()
+        val repository = ContactGroupRepositoryImpl.getInstance(contactGroupDao)
+        val viewModelFactory = ContactGroupViewModelFactory(repository)
+        viewModel = ViewModelProvider(this, viewModelFactory)
+            .get(ContactGroupViewModel::class.java)
         viewModel.getAllContactGroups()
             .observe(viewLifecycleOwner, { contactGroups ->
                 kotlin.run {
