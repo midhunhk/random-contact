@@ -32,6 +32,7 @@
                 android:layout_height="72dp"
                 android:maxWidth="72dp"
                 android:maxHeight="72dp"
+                android:src="@drawable/profile_icon_3"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
