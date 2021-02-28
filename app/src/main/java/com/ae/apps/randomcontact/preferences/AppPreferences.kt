@@ -2,6 +2,7 @@ package com.ae.apps.randomcontact.preferences
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import com.ae.apps.randomcontact.utils.DEFAULT_CONTACT_GROUP
 
@@ -36,14 +37,13 @@ class AppPreferences {
      *
      * @param groupId groupId
      */
-    fun setSelectedContactGroup(groupId: String) = preferences
-        .edit()
-        .putString(PREF_KEY_SELECTED_CONTACT_GROUP, groupId)
-        .apply()
+    fun setSelectedContactGroup(groupId: String) = preferences.edit {
+        putString(PREF_KEY_SELECTED_CONTACT_GROUP, groupId)
+    }
 
-    fun setBooleanPref(key:String, value:Boolean) = preferences.edit()
-        .putBoolean(key, value)
-        .apply()
+    fun setBooleanPref(key:String, value:Boolean) = preferences.edit{
+        putBoolean(key, value)
+    }
 
     fun getBooleanPref(key:String, defaultValue:Boolean) = preferences.getBoolean(key, defaultValue)
 

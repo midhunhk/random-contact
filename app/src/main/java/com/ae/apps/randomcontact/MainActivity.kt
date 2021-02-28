@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.ae.apps.lib.permissions.AbstractPermissionsAwareActivity
 import com.ae.apps.lib.permissions.PermissionsAwareComponent
@@ -13,6 +12,9 @@ import com.ae.apps.randomcontact.fragments.ManageGroupsFragment
 import com.ae.apps.randomcontact.fragments.NoAccessFragment
 import com.ae.apps.randomcontact.fragments.RandomContactFragment
 import com.ae.apps.randomcontact.preferences.AppPreferences
+import com.ae.apps.randomcontact.utils.hide
+import com.ae.apps.randomcontact.utils.show
+import com.ae.apps.randomcontact.utils.showShortToast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import eu.dkaratzas.android.inapp.update.Constants
@@ -37,7 +39,7 @@ class MainActivity : AbstractPermissionsAwareActivity(), PermissionsAwareCompone
         setContentView(R.layout.activity_main)
 
         setupBottomNavigation()
-        bottomNavigationView.visibility = View.GONE
+        bottomNavigationView.hide()
 
         // Check for permissions first and display the appropriate screen
         checkPermissions()
@@ -59,7 +61,7 @@ class MainActivity : AbstractPermissionsAwareActivity(), PermissionsAwareCompone
 
     override fun onPermissionsGranted() {
         // Show bottom navigation bar and load the Random contact fragment
-        bottomNavigationView.visibility = View.VISIBLE
+        bottomNavigationView.show()
         bottomNavigationView.selectedItemId = R.id.action_random_contact
 
         showFragment(RandomContactFragment.getInstance(baseContext))
@@ -107,7 +109,7 @@ class MainActivity : AbstractPermissionsAwareActivity(), PermissionsAwareCompone
     }
 
     override fun onInAppUpdateError(code: Int, error: Throwable?) {
-        Toast.makeText(this, R.string.str_in_app_update_error, Toast.LENGTH_SHORT).show()
+        showShortToast(R.string.str_in_app_update_error)
     }
 
     override fun onInAppUpdateStatus(status: InAppUpdateStatus?) {
