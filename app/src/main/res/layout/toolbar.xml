@@ -7,13 +7,34 @@
     android:minHeight="?attr/actionBarSize"
     app:contentInsetStart="0dp">
 
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/app_name"
+        android:layout_alignParentStart="true"
+        app:srcCompat="@drawable/ic_header_design_start"
+        android:layout_alignParentLeft="true" />
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:contentDescription="@string/app_name"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_centerVertical="true"
         app:tint="?attr/colorSecondary"
         app:srcCompat="@drawable/ic_random_contact_logo" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/app_name"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        app:srcCompat="@drawable/ic_header_design_end" />
+
+</RelativeLayout>
 
 </androidx.appcompat.widget.Toolbar>
