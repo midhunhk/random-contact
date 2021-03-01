@@ -7,6 +7,10 @@ import com.ae.apps.lib.common.models.ContactInfo
 import com.ae.apps.lib.multicontact.MultiContactBaseActivity
 import com.ae.apps.randomcontact.R
 import com.ae.apps.randomcontact.contacts.RandomContactApiGatewayImpl
+import com.ae.apps.randomcontact.contacts.RandomContactsApiGatewayFactory
+import com.ae.apps.randomcontact.preferences.AppPreferences
+import com.ae.apps.randomcontact.room.AppDatabase
+import com.ae.apps.randomcontact.room.repositories.ContactGroupRepositoryImpl
 import java.util.*
 
 
@@ -20,7 +24,12 @@ class MultiContactPickerActivity : MultiContactBaseActivity() {
 
     override fun contactsList(): MutableList<ContactInfo> {
         if (null == contactsApiGateway) {
-            contactsApiGateway = RandomContactApiGatewayImpl.getInstance(this)
+            val repo = ContactGroupRepositoryImpl.getInstance(
+                AppDatabase.getInstance(this).contactGroupDao()
+            )
+            val factory = RandomContactsApiGatewayFactory()
+            val appPreferences = AppPreferences.getInstance(this)
+            contactsApiGateway = RandomContactApiGatewayImpl.getInstance(this, repo, factory, appPreferences)
         }
         val list = contactsApiGateway!!.allContacts
         // Sort the contacts based on name

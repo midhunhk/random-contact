@@ -20,10 +20,14 @@ import com.ae.apps.randomcontact.R
 import com.ae.apps.randomcontact.activities.MultiContactPickerActivity
 import com.ae.apps.randomcontact.adapters.GroupMemberRecyclerAdapter
 import com.ae.apps.randomcontact.contacts.RandomContactApiGatewayImpl
+import com.ae.apps.randomcontact.contacts.RandomContactsApiGatewayFactory
 import com.ae.apps.randomcontact.databinding.FragmentAddContactGroupDialogBinding
 import com.ae.apps.randomcontact.listeners.ContactGroupInteractionListener
 import com.ae.apps.randomcontact.listeners.GroupMemberInteractionListener
+import com.ae.apps.randomcontact.preferences.AppPreferences
+import com.ae.apps.randomcontact.room.AppDatabase
 import com.ae.apps.randomcontact.room.entities.ContactGroup
+import com.ae.apps.randomcontact.room.repositories.ContactGroupRepositoryImpl
 import com.ae.apps.randomcontact.utils.CONTACT_ID_SEPARATOR
 import com.google.android.material.snackbar.Snackbar
 
@@ -74,7 +78,13 @@ class AddContactGroupDialogFragment(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        contactsApi = RandomContactApiGatewayImpl.getInstance(requireContext())
+        val context = requireContext()
+        val repo = ContactGroupRepositoryImpl.getInstance(
+            AppDatabase.getInstance(context).contactGroupDao()
+        )
+        val factory = RandomContactsApiGatewayFactory()
+        val appPreferences = AppPreferences.getInstance(context)
+        contactsApi = RandomContactApiGatewayImpl.getInstance(context, repo, factory, appPreferences)
         binding = FragmentAddContactGroupDialogBinding.inflate(layoutInflater)
 
         initViews()
