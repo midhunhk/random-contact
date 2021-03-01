@@ -30,17 +30,18 @@ class RandomContactFragment : Fragment(R.layout.fragment_random_contact), Contac
 
     companion object {
         private lateinit var contactsApi: ContactsApiGateway
-        @Volatile private var INSTANCE: RandomContactFragment? = null
+        @Volatile
+        private var INSTANCE: RandomContactFragment? = null
 
         fun getInstance(context: Context): RandomContactFragment =
-            INSTANCE ?: synchronized(this){
+            INSTANCE ?: synchronized(this) {
                 contactsApi = RandomContactApiGatewayImpl.getInstance(context)
                 INSTANCE ?: RandomContactFragment().also { INSTANCE = it }
             }
     }
 
-    private var currentContact:ContactInfo? = null
-    private var binding: FragmentRandomContactBinding? = null
+    private var currentContact: ContactInfo? = null
+    private lateinit var binding: FragmentRandomContactBinding
     private lateinit var recyclerAdapter: ContactDetailsRecyclerAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,22 +60,17 @@ class RandomContactFragment : Fragment(R.layout.fragment_random_contact), Contac
         showRandomContact()
     }
 
-    override fun onDestroyView() {
-        binding = null
-        super.onDestroyView()
-    }
-
-    private fun setupViews(){
-        binding?.btnRefresh?.setOnClickListener {
+    private fun setupViews() {
+        binding.btnRefresh.setOnClickListener {
             showRandomContact()
         }
-        binding?.btnAddressBook?.setOnClickListener {
+        binding.btnAddressBook.setOnClickListener {
             Toast.makeText(requireContext(), "Opening contact in Contacts app", Toast.LENGTH_SHORT).show()
             showContactInAddressBook(requireActivity(), currentContact?.id)
         }
     }
 
-    private fun setupRecyclerView(){
+    private fun setupRecyclerView() {
         var whatsAppInstalled = false
         if (null != requireActivity().packageManager) {
             // whatsAppInstalled = CommonUtils.isPackageInstalled(PACKAGE_NAME_WHATSAPP, context)
@@ -89,7 +85,7 @@ class RandomContactFragment : Fragment(R.layout.fragment_random_contact), Contac
             whatsAppInstalled
         )
 
-        val recyclerView:RecyclerView =  binding?.list!!
+        val recyclerView: RecyclerView = binding.list
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = recyclerAdapter
         val linearLayoutManager = LinearLayoutManager(requireContext())
@@ -107,12 +103,12 @@ class RandomContactFragment : Fragment(R.layout.fragment_random_contact), Contac
         return false
     }
 
-    private fun showRandomContact(){
+    private fun showRandomContact() {
         // Running the getRandomNumber() method in a background thread
         // as we may need to access the database if a custom group is selected
         doAsync {
-            val randomContact:ContactInfo? = contactsApi.randomContact
-            if(null == randomContact){
+            val randomContact: ContactInfo? = contactsApi.randomContact
+            if (null == randomContact) {
                 uiThread {
                     Toast.makeText(
                         context, resources.getString(R.string.str_empty_contact_list),
@@ -128,8 +124,8 @@ class RandomContactFragment : Fragment(R.layout.fragment_random_contact), Contac
     }
 
     private fun displayContact(contactInfo: ContactInfo) {
-        binding?.contactName?.text  = contactInfo.name
-        binding?.contactImage?.setImageBitmap(contactInfo.picture)
+        binding.contactName.text = contactInfo.name
+        binding.contactImage.setImageBitmap(contactInfo.picture)
 
         val phoneNumbersList = contactInfo.phoneNumbersList
         recyclerAdapter.setList(phoneNumbersList)

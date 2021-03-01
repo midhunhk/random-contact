@@ -7,16 +7,12 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDialogFragment
-import androidx.appcompat.widget.AppCompatImageButton
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.ae.apps.lib.api.contacts.ContactsApiGateway
 import com.ae.apps.lib.common.models.ContactInfo
 import com.ae.apps.lib.multicontact.MultiContactPickerConstants
@@ -24,12 +20,12 @@ import com.ae.apps.randomcontact.R
 import com.ae.apps.randomcontact.activities.MultiContactPickerActivity
 import com.ae.apps.randomcontact.adapters.GroupMemberRecyclerAdapter
 import com.ae.apps.randomcontact.contacts.RandomContactApiGatewayImpl
+import com.ae.apps.randomcontact.databinding.FragmentAddContactGroupDialogBinding
 import com.ae.apps.randomcontact.listeners.ContactGroupInteractionListener
 import com.ae.apps.randomcontact.listeners.GroupMemberInteractionListener
 import com.ae.apps.randomcontact.room.entities.ContactGroup
 import com.ae.apps.randomcontact.utils.CONTACT_ID_SEPARATOR
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.TextInputEditText
 
 /**
  * A simple [Fragment] subclass.
@@ -42,13 +38,9 @@ class AddContactGroupDialogFragment(
 ) :
     AppCompatDialogFragment(), GroupMemberInteractionListener {
 
-    private lateinit var btnClose: AppCompatImageButton
-    private lateinit var btnSave: Button
-    private lateinit var btnSelect: Button
-    private lateinit var txtGroupName: TextInputEditText
-    private lateinit var coordinatorLayout: CoordinatorLayout
     private lateinit var contactsApi: ContactsApiGateway
     private lateinit var startForResult:ActivityResultLauncher<Intent>
+    private lateinit var binding:FragmentAddContactGroupDialogBinding
     private var selectedContactIdStr: String = ""
     private var selectedContactInfoList: MutableList<ContactInfo> = mutableListOf()
     private var viewAdapter: GroupMemberRecyclerAdapter? = null
@@ -81,29 +73,23 @@ class AddContactGroupDialogFragment(
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_add_contact_group_dialog, container, false)
+    ): View {
         contactsApi = RandomContactApiGatewayImpl.getInstance(requireContext())
+        binding = FragmentAddContactGroupDialogBinding.inflate(layoutInflater)
 
-        initViews(view)
-        setupRecyclerView(view)
+        initViews()
+        setupRecyclerView()
 
-        return view
+        return binding.root
     }
 
-    private fun initViews(view: View) {
-        btnClose = view.findViewById(R.id.btnClose)
-        btnSave = view.findViewById(R.id.btnSave)
-        btnSelect = view.findViewById(R.id.btnSelectMembers)
-        txtGroupName = view.findViewById(R.id.txtGroupName)
-        coordinatorLayout = view.findViewById(R.id.addContactGroupCoordinatorLayout)
-
+    private fun initViews() {
         contactGroupToUpdate?.let { it ->
             // If there is a contactGroupId to edit
-            btnSave.setText(R.string.str_contact_group_update)
+            binding.btnSave.setText(R.string.str_contact_group_update)
 
             // Populate the details on the UI
-            txtGroupName.setText(it.name)
+            binding.txtGroupName.setText(it.name)
             selectedContactIdStr = it.selectedContacts
             selectedContactInfoList = populateContactInfo()
         }
@@ -118,8 +104,8 @@ class AddContactGroupDialogFragment(
         return tempList
     }
 
-    private fun setupRecyclerView(view: View) {
-        val recyclerView = view.findViewById<RecyclerView>(R.id.list)
+    private fun setupRecyclerView() {
+        val recyclerView = binding.list
         viewAdapter = GroupMemberRecyclerAdapter(this, selectedContactInfoList)
         recyclerView.adapter = viewAdapter
         recyclerView.layoutManager = LinearLayoutManager(context)
@@ -145,15 +131,15 @@ class AddContactGroupDialogFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        btnSelect.setOnClickListener {
+        binding.btnSelectMembers.setOnClickListener {
             startMultiContactPicker()
         }
 
-        btnClose.setOnClickListener {
+        binding.btnClose.setOnClickListener {
             dismiss()
         }
 
-        btnSave.setOnClickListener {
+        binding.btnSave.setOnClickListener {
             try {
                 val contactGroup = validateContactGroup()
                 if (contactGroupToUpdate != null) {
@@ -168,7 +154,7 @@ class AddContactGroupDialogFragment(
                 dismiss()
             } catch (e: ContactGroupValidationException) {
                 Snackbar.make(
-                    coordinatorLayout,
+                    binding.addContactGroupCoordinatorLayout,
                     e.message.toString(),
                     Snackbar.LENGTH_SHORT
                 ).show()
@@ -177,7 +163,7 @@ class AddContactGroupDialogFragment(
     }
 
     private fun validateContactGroup(): ContactGroup {
-        if (TextUtils.isEmpty(txtGroupName.text.toString())) {
+        if (TextUtils.isEmpty(binding.txtGroupName.text.toString())) {
             throw ContactGroupValidationException("Please enter group name")
         }
 
@@ -188,7 +174,7 @@ class AddContactGroupDialogFragment(
         }
 
         return ContactGroup(
-            name = txtGroupName.text.toString(),
+            name = binding.txtGroupName.text.toString(),
             selectedContacts = builder.toString()
         )
     }

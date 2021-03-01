@@ -20,17 +20,14 @@ class NoAccessFragment : Fragment() {
     }
 
     private lateinit var permissionsAwareContext: AppRequestPermission
-
-    private var _binding: FragmentNoAccessBinding? = null
-    // This property is only valid between onCreateView and onDestroyView.
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentNoAccessBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentNoAccessBinding.inflate(inflater, container, false)
+    ): View {
+        binding = FragmentNoAccessBinding.inflate(inflater, container, false)
         binding.btnRequestPermissions.setOnClickListener {
             permissionsAwareContext.invokeRequestPermissions()
         }
@@ -44,11 +41,6 @@ class NoAccessFragment : Fragment() {
         } catch (ex: ClassCastException) {
             throw IllegalAccessException("Parent ${activity.toString()} must implement AppRequestPermission interface")
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
 }

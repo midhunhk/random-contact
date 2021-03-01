@@ -7,6 +7,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import com.ae.apps.lib.permissions.AbstractPermissionsAwareActivity
 import com.ae.apps.lib.permissions.PermissionsAwareComponent
+import com.ae.apps.randomcontact.databinding.ActivityMainBinding
 import com.ae.apps.randomcontact.fragments.AboutFragment
 import com.ae.apps.randomcontact.fragments.ManageGroupsFragment
 import com.ae.apps.randomcontact.fragments.NoAccessFragment
@@ -33,10 +34,12 @@ class MainActivity : AbstractPermissionsAwareActivity(), PermissionsAwareCompone
 
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var bottomSheetDialog: BottomSheetDialog
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         setupBottomNavigation()
         bottomNavigationView.hide()
@@ -46,7 +49,7 @@ class MainActivity : AbstractPermissionsAwareActivity(), PermissionsAwareCompone
     }
 
     private fun setupBottomNavigation() {
-        bottomNavigationView = findViewById(R.id.bottom_navigation)
+        bottomNavigationView = binding.bottomNavigation
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.action_manage_group -> showFragment(ManageGroupsFragment.newInstance())
