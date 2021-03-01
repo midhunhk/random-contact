@@ -17,11 +17,14 @@ import com.ae.apps.lib.common.utils.ContactUtils.showContactInAddressBook
 import com.ae.apps.randomcontact.R
 import com.ae.apps.randomcontact.adapters.ContactDetailsRecyclerAdapter
 import com.ae.apps.randomcontact.contacts.RandomContactApiGatewayImpl
+import com.ae.apps.randomcontact.contacts.RandomContactsApiGatewayFactory
 import com.ae.apps.randomcontact.databinding.FragmentRandomContactBinding
+import com.ae.apps.randomcontact.preferences.AppPreferences
+import com.ae.apps.randomcontact.room.AppDatabase
+import com.ae.apps.randomcontact.room.repositories.ContactGroupRepositoryImpl
 import com.ae.apps.randomcontact.utils.PACKAGE_NAME_WHATSAPP
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
-
 
 /**
  * A simple [Fragment] subclass.
@@ -35,7 +38,12 @@ class RandomContactFragment : Fragment(R.layout.fragment_random_contact), Contac
 
         fun getInstance(context: Context): RandomContactFragment =
             INSTANCE ?: synchronized(this) {
-                contactsApi = RandomContactApiGatewayImpl.getInstance(context)
+                val repo = ContactGroupRepositoryImpl.getInstance(
+                    AppDatabase.getInstance(context).contactGroupDao()
+                )
+                val factory = RandomContactsApiGatewayFactory()
+                val appPreferences = AppPreferences.getInstance(context)
+                contactsApi = RandomContactApiGatewayImpl.getInstance(context, repo, factory, appPreferences)
                 INSTANCE ?: RandomContactFragment().also { INSTANCE = it }
             }
     }

@@ -2,15 +2,13 @@ package com.ae.apps.randomcontact.contacts
 
 import android.content.Context
 import com.ae.apps.lib.api.contacts.ContactsApiGateway
-import com.ae.apps.lib.api.contacts.impl.ContactsApiGatewayImpl
 import com.ae.apps.lib.api.contacts.types.ContactInfoFilterOptions
 import com.ae.apps.lib.api.contacts.types.ContactInfoOptions
+import com.ae.apps.lib.api.contacts.types.ContactsApiGatewayFactory
 import com.ae.apps.lib.api.contacts.types.ContactsDataConsumer
 import com.ae.apps.lib.common.models.ContactInfo
 import com.ae.apps.randomcontact.preferences.AppPreferences
-import com.ae.apps.randomcontact.room.AppDatabase
 import com.ae.apps.randomcontact.room.repositories.ContactGroupRepository
-import com.ae.apps.randomcontact.room.repositories.ContactGroupRepositoryImpl
 import com.ae.apps.randomcontact.utils.CONTACT_ID_SEPARATOR
 import com.ae.apps.randomcontact.utils.DEFAULT_CONTACT_GROUP
 import java.util.*
@@ -29,15 +27,16 @@ class RandomContactApiGatewayImpl(
         @Volatile
         private var INSTANCE: ContactsApiGateway? = null
 
-        fun getInstance(context: Context): ContactsApiGateway =
+        fun getInstance(
+            context: Context,
+            contactsGroupRepo: ContactGroupRepository,
+            contactsApiFactory: ContactsApiGatewayFactory,
+            appPreferences: AppPreferences
+        ): ContactsApiGateway =
             INSTANCE ?: synchronized(this) {
-                val cgRepo = ContactGroupRepositoryImpl.getInstance(
-                    AppDatabase.getInstance(context).contactGroupDao()
-                )
-                val appPreferences = AppPreferences.getInstance(context)
-                val contactsApi = ContactsApiGatewayImpl.Builder(context).build()
+                val contactsApi = contactsApiFactory.getContactsApiGateway(context)
                 INSTANCE ?: RandomContactApiGatewayImpl(
-                    cgRepo,
+                    contactsGroupRepo,
                     contactsApi,
                     appPreferences
                 ).also { INSTANCE = it }
