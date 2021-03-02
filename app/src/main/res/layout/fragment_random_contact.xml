@@ -36,7 +36,7 @@
                     android:layout_height="72dp"
                     android:maxWidth="72dp"
                     android:maxHeight="72dp"
-                    android:layout_marginTop="@dimen/unit_l"
+                    android:layout_marginTop="@dimen/unit_xl"
                     android:layout_marginBottom="@dimen/unit_l"
                     android:src="@drawable/profile_icon_3"
                     app:layout_constraintBottom_toBottomOf="parent"
