@@ -1,123 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".fragments.ManageGroupsFragment">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:layout_marginTop="@dimen/unit_l"
-        android:layout_marginBottom="@dimen/unit_l"
-        android:paddingStart="@dimen/unit_l"
-        android:paddingLeft="@dimen/unit_l"
-        android:paddingEnd="@dimen/unit_l"
-        android:paddingRight="@dimen/unit_l">
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/txtManageGroups"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_centerInParent="true"
+            android:layout_marginTop="@dimen/unit_l"
+            android:layout_marginBottom="@dimen/unit_l"
             android:gravity="center_vertical"
-            style="@style/TextAppearance.MaterialComponents.Headline6"
-            android:textAllCaps="true"
-            android:textColor="?attr/colorSecondary"
-            android:text="@string/str_contact_group_title"
-            tools:ignore="RelativeOverlap" />
-
-        <ImageView
-            android:id="@+id/btnAddGroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:padding="@dimen/unit_m"
-            android:background="?android:selectableItemBackground"
-            android:contentDescription="@string/empty_text"
-            app:srcCompat="@drawable/ic_add_group"
-            app:tint="?attr/colorSecondary" />
-    </RelativeLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingStart="@dimen/unit_l"
-        android:paddingLeft="@dimen/unit_l"
-        android:paddingEnd="@dimen/unit_l"
-        android:paddingRight="@dimen/unit_l"
-        android:layout_marginBottom="@dimen/unit_l"
-        android:text="@string/str_select_contact_group"
-        android:textSize="20sp" />
-
-    <RadioButton
-        android:id="@+id/radioAllContacts"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:textAllCaps="true"
-        android:text="@string/str_all_contacts"
-        android:textStyle="bold" />
-
-    <FrameLayout
-        android:id="@+id/contactGroupListContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <com.ae.apps.lib.custom.views.EmptyRecyclerView
-            android:id="@+id/list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            app:layoutManager="LinearLayoutManager"
-            tools:listitem="@layout/contact_group_item" />
-
-        <LinearLayout
-            android:id="@+id/empty_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_gravity="center_vertical"
-            android:background="?attr/colorSurface"
-            android:layout_margin="@dimen/unit_m"
-            android:paddingTop="@dimen/unit_l"
-            android:visibility="gone">
+            android:paddingStart="@dimen/unit_l"
+            android:paddingLeft="@dimen/unit_l"
+            android:paddingEnd="@dimen/unit_l"
+            android:paddingRight="@dimen/unit_l">
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/unit_xl"
-                android:gravity="center"
-                android:text="@string/str_empty_list_groups" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="@dimen/unit_m"
-                android:text="@string/str_empty_list_create" />
-
-            <ImageView
-                android:id="@+id/btnAddGroupEmptyView"
+                android:id="@+id/txtManageGroups"
+                style="@style/TextAppearance.MaterialComponents.Headline6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/unit_m"
-                android:layout_gravity="center"
-                android:layout_marginBottom="@dimen/unit_xl"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:gravity="center_vertical"
+                android:text="@string/str_contact_group_title"
+                android:textAllCaps="true"
+                android:textColor="?attr/colorSecondary"
+                tools:ignore="RelativeOverlap" />
+
+            <ImageView
+                android:id="@+id/btnAddGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
                 android:background="?android:selectableItemBackground"
                 android:contentDescription="@string/empty_text"
+                android:padding="@dimen/unit_m"
                 app:srcCompat="@drawable/ic_add_group"
                 app:tint="?attr/colorSecondary" />
+        </RelativeLayout>
 
-        </LinearLayout>
-    </FrameLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/unit_l"
+            android:paddingStart="@dimen/unit_l"
+            android:paddingLeft="@dimen/unit_l"
+            android:paddingEnd="@dimen/unit_l"
+            android:paddingRight="@dimen/unit_l"
+            android:text="@string/str_select_contact_group"
+            android:textSize="20sp" />
 
-</LinearLayout>
+        <RadioButton
+            android:id="@+id/radioAllContacts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/str_all_contacts"
+            android:textAllCaps="true"
+            android:textStyle="bold" />
+
+        <FrameLayout
+            android:id="@+id/contactGroupListContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.ae.apps.lib.custom.views.EmptyRecyclerView
+                android:id="@+id/list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                app:layoutManager="LinearLayoutManager"
+                tools:listitem="@layout/contact_group_item" />
+
+            <LinearLayout
+                android:id="@+id/empty_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="@dimen/unit_m"
+                android:background="?attr/colorSurface"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/unit_l"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/unit_xl"
+                    android:gravity="center"
+                    android:text="@string/str_empty_list_groups" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="@dimen/unit_m"
+                    android:text="@string/str_empty_list_create" />
+
+                <ImageView
+                    android:id="@+id/btnAddGroupEmptyView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="@dimen/unit_xl"
+                    android:background="?android:selectableItemBackground"
+                    android:contentDescription="@string/empty_text"
+                    android:padding="@dimen/unit_m"
+                    app:srcCompat="@drawable/ic_add_group"
+                    app:tint="?attr/colorSecondary" />
+
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+
+</ScrollView>
