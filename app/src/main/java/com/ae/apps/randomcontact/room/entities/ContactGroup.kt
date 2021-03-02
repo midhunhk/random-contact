@@ -17,17 +17,3 @@ data class ContactGroup(
     var name: String,
     @ColumnInfo(name = "contact_ids")
     var selectedContacts: String)
-
-/*
-
-@Entity(tableName = "student")
-data class Student(
-    val name: String,
-    val age: Int,
-    val gpa: Double,
-    val isSingle: Boolean
-) {
-    @PrimaryKey(autoGenerate = true)
-    var id: Long? = null
-}
- */

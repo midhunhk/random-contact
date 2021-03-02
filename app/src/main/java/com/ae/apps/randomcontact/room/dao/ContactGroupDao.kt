@@ -13,7 +13,7 @@ interface ContactGroupDao {
     @Query("SELECT * from custom_contact_group where _id = :groupId")
     fun getContactGroupById(groupId: Int): ContactGroup
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(contactGroup: ContactGroup)
 
     @Update
