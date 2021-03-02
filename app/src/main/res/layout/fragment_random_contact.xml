@@ -27,8 +27,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/unit_l"
-                android:paddingBottom="@dimen/unit_l">
+                android:paddingTop="@dimen/unit_m"
+                android:paddingBottom="@dimen/unit_m">
 
                 <com.ae.apps.lib.custom.views.RoundedImageView
                     android:id="@+id/contactImage"
@@ -36,6 +36,8 @@
                     android:layout_height="72dp"
                     android:maxWidth="72dp"
                     android:maxHeight="72dp"
+                    android:layout_marginTop="@dimen/unit_l"
+                    android:layout_marginBottom="@dimen/unit_l"
                     android:src="@drawable/profile_icon_3"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -74,15 +76,16 @@
                     android:id="@+id/btnAddressBook"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/unit_m"
+                    android:layout_marginTop="@dimen/unit_s"
                     android:background="?android:selectableItemBackground"
                     android:contentDescription="@string/empty_text"
                     android:padding="@dimen/unit_m"
+                    android:layout_marginRight="@dimen/unit_m"
                     android:tint="?attr/colorOnSurface"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/btnRefresh"
-                    app:srcCompat="@drawable/ic_address_book" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/btnRefresh"
+                    app:srcCompat="@drawable/ic_address_book"
+                    android:layout_marginEnd="@dimen/unit_m" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.card.MaterialCardView>
