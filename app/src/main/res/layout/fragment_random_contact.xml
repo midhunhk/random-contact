@@ -26,9 +26,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/unit_m"
-                android:paddingBottom="@dimen/unit_m">
+                android:layout_height="wrap_content">
 
                 <com.ae.apps.lib.custom.views.RoundedImageView
                     android:id="@+id/contactImage"
@@ -37,7 +35,7 @@
                     android:maxWidth="72dp"
                     android:maxHeight="72dp"
                     android:layout_marginTop="@dimen/unit_xl"
-                    android:layout_marginBottom="@dimen/unit_l"
+                    android:layout_marginBottom="@dimen/unit_xl"
                     android:src="@drawable/profile_icon_3"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
