@@ -52,7 +52,7 @@ class MainActivity : AbstractPermissionsAwareActivity(), PermissionsAwareCompone
         bottomNavigationView = binding.bottomNavigation
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.action_manage_group -> showFragment(ManageGroupsFragment.newInstance())
+                R.id.action_manage_group -> showFragment(ManageGroupsFragment.getInstance())
                 R.id.action_random_contact -> showFragment(RandomContactFragment.getInstance(this))
                 R.id.action_about -> showFragment(AboutFragment.newInstance())
             }
