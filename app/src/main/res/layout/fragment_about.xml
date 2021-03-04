@@ -86,7 +86,7 @@
             android:text="@string/action_source"
             android:textAllCaps="false"
             android:textColor="?attr/colorOnSurface"
-            app:icon="@drawable/icon_github"
+            app:icon="@drawable/ic_github"
             app:iconTint="?attr/colorOnSurface" />
 
         <Button
@@ -107,7 +107,7 @@
             android:text="@string/action_license"
             android:textAllCaps="false"
             android:textColor="?attr/colorOnSurface"
-            app:icon="@drawable/icon_text"
+            app:icon="@drawable/ic_file_text"
             app:iconTint="?attr/colorOnSurface" />
 
         <Button
@@ -128,7 +128,7 @@
             android:text="@string/str_privacy_policy"
             android:textAllCaps="false"
             android:textColor="?attr/colorOnSurface"
-            app:icon="@drawable/icon_text"
+            app:icon="@drawable/ic_file_text"
             app:iconTint="?attr/colorOnSurface" />
 
     </LinearLayout>
