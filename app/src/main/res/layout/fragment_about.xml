@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.AboutFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/unit_m">
+
+            <ImageView
+                android:id="@+id/appIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_gravity="start"
+                android:contentDescription="@string/empty_text"
+                android:paddingTop="@dimen/unit_m"
+                android:src="@drawable/ic_app_icon" />
+
+            <TextView
+                android:id="@+id/appVersion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="start"
+                android:layout_marginTop="@dimen/unit_l"
+                android:layout_toEndOf="@+id/appIcon"
+                android:layout_toRightOf="@+id/appIcon"
+                android:padding="@dimen/unit_s"
+                android:text="@string/app_version" />
+
+            <TextView
+                android:id="@+id/appReleaseDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/appVersion"
+                android:layout_gravity="start"
+                android:layout_toEndOf="@+id/appIcon"
+                android:layout_toRightOf="@+id/appIcon"
+                android:padding="@dimen/unit_s"
+                android:text="@string/app_release_date" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/appReleaseDate"
+                android:layout_gravity="start"
+                android:layout_toEndOf="@+id/appIcon"
+                android:layout_toRightOf="@+id/appIcon"
+                android:padding="@dimen/unit_s"
+                android:text="@string/app_developer_info" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/unit_l"
+            android:text="@string/app_disclaimer"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/viewSourceCode"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/unit_l"
+            android:layout_marginLeft="@dimen/unit_l"
+            android:layout_marginEnd="@dimen/unit_l"
+            android:layout_marginRight="@dimen/unit_l"
+            android:drawablePadding="@dimen/unit_m"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/unit_l"
+            android:paddingLeft="@dimen/unit_l"
+            android:paddingEnd="@dimen/unit_l"
+            android:paddingRight="@dimen/unit_l"
+            android:text="@string/action_source"
+            android:textAllCaps="false"
+            android:textColor="?attr/colorOnSurface"
+            app:icon="@drawable/icon_github"
+            app:iconTint="?attr/colorOnSurface" />
+
+        <Button
+            android:id="@+id/viewLicense"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/unit_l"
+            android:layout_marginLeft="@dimen/unit_l"
+            android:layout_marginEnd="@dimen/unit_l"
+            android:layout_marginRight="@dimen/unit_l"
+            android:drawablePadding="@dimen/unit_m"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/unit_l"
+            android:paddingLeft="@dimen/unit_l"
+            android:paddingEnd="@dimen/unit_l"
+            android:paddingRight="@dimen/unit_l"
+            android:text="@string/action_license"
+            android:textAllCaps="false"
+            android:textColor="?attr/colorOnSurface"
+            app:icon="@drawable/icon_text"
+            app:iconTint="?attr/colorOnSurface" />
+
+        <Button
+            android:id="@+id/viewPrivacyPolicy"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/unit_l"
+            android:layout_marginLeft="@dimen/unit_l"
+            android:layout_marginEnd="@dimen/unit_l"
+            android:layout_marginRight="@dimen/unit_l"
+            android:drawablePadding="@dimen/unit_m"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/unit_l"
+            android:paddingLeft="@dimen/unit_l"
+            android:paddingEnd="@dimen/unit_l"
+            android:paddingRight="@dimen/unit_l"
+            android:text="@string/str_privacy_policy"
+            android:textAllCaps="false"
+            android:textColor="?attr/colorOnSurface"
+            app:icon="@drawable/icon_text"
+            app:iconTint="?attr/colorOnSurface" />
+
+    </LinearLayout>
+</ScrollView>

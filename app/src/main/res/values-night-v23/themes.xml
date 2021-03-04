@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.RandomContact" parent="Theme.RandomContact.Base">
+        <!-- Status bar color. -->
+        <item name="android:windowLightStatusBar">false</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/color_charcoal</item>
+    </style>
+
+    <style name="outlineButtonStyle" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:backgroundTint">?attr/colorSurface</item>
+    </style>
+
+</resources>

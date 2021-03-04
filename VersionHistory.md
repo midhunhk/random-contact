@@ -1,5 +1,13 @@
 ## Random Contact Version History
 
+### Version 4.0 (Nova)
+**RandomContact 4.0.0[Mar 2021]**
+ - Redesign and rewrite the app #22
+ - Improve Contact Picker flow #21
+ - Migrate to latest version of lib-aeapps #19
+ - Include In-App Reviews
+ - Include In-App Update
+
 ### Version 3.2 (Blackbird)
 **RandomContact 3.2.0[Jul 2018]**
  - Target the latest API

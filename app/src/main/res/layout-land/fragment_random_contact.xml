@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.RandomContactFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/contactsCard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/unit_l"
+            app:cardCornerRadius="@dimen/unit_m"
+            app:cardElevation="2dp"
+            app:cardMaxElevation="1dp"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="@dimen/unit_l"
+            app:layout_constraintEnd_toStartOf="@+id/containerRight"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/unit_l"
+                android:paddingBottom="@dimen/unit_l">
+
+                <com.ae.apps.lib.custom.views.RoundedImageView
+                    android:id="@+id/contactImage"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:layout_marginLeft="@dimen/unit_xl"
+                    android:maxWidth="72dp"
+                    android:maxHeight="72dp"
+                    android:src="@drawable/profile_icon_3"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/contactName"
+                    style="@style/TextAppearance.MaterialComponents.Headline5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:padding="@dimen/unit_m"
+                    android:text="@string/empty_text"
+
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/contactImage" />
+
+                <ImageButton
+                    android:id="@+id/btnRefresh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?android:selectableItemBackground"
+                    android:contentDescription="@string/empty_text"
+                    android:padding="@dimen/unit_m"
+                    android:tint="?attr/colorOnSurface"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_refresh" />
+
+                <ImageButton
+                    android:id="@+id/btnAddressBook"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/unit_s"
+                    android:background="?android:selectableItemBackground"
+                    android:contentDescription="@string/empty_text"
+                    android:padding="@dimen/unit_m"
+                    android:tint="?attr/colorOnSurface"
+                    app:layout_constraintEnd_toStartOf="@+id/btnRefresh"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_address_book" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <LinearLayout
+            android:id="@+id/containerRight"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/unit_m"
+            android:paddingRight="@dimen/unit_m"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/contactsCard"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/textContactNow"
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/unit_l"
+                android:gravity="start"
+                android:text="@string/str_contact_now"
+                android:textAlignment="viewStart"
+                android:textAllCaps="true"
+                android:textColor="?attr/colorSecondary" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@android:id/list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/contact_info_item" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

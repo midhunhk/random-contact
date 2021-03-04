@@ -1,1 +1,2 @@
-include ':randomContact'
+include ':app'
+rootProject.name = "Random Contact"

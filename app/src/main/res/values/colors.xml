@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="color_random_blue">#3d639c</color>
+    <color name="color_random_blue_500">#5792cd</color>
+    <color name="color_random_blue_700">#4573ae</color>
+    <color name="color_random_blue_900">#2f477c</color>
+
+    <color name="color_radical_red">#ff3366</color>
+    <color name="color_radical_red_300">#ff6c95</color>
+    <color name="color_radical_red_900">#9e1956</color>
+
+    <color name="color_matterhorn_brown">#535353</color>
+    <color name="color_alabaster_white">#f9f9f9</color>
+    <color name="color_charcoal">#222222</color>
+
+    <color name="app_white_50_alpha_060">#99ffffff</color>
+    <color name="app_blue_50_alpha_060">#80d6f3ff</color>
+    <color name="app_black_900_alpha_020">#33000000</color>
+    <color name="app_black_900_alpha_085">#D9000000</color>
+    <color name="app_black_900_alpha_060">#99000000</color>
+</resources>
