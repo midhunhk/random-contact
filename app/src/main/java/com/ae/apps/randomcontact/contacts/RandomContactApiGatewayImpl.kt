@@ -44,7 +44,7 @@ class RandomContactApiGatewayImpl(
     }
 
     override fun initialize(options: ContactInfoFilterOptions?) {
-        initializeAsync(ContactInfoFilterOptions.of(true), this)
+        initialize(ContactInfoFilterOptions.of(true))
     }
 
     override fun initializeAsync(

@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.ae.apps.randomcontact.room.entities.ContactGroup
 
-class ContactGroupTestRepository(private val contactGroups: ArrayList<ContactGroup>) : ContactGroupRepository {
+class ContactGroupTestRepository(private val contactGroups: List<ContactGroup>) : ContactGroupRepository {
 
     override fun getAllContactGroups(): LiveData<List<ContactGroup>> = MutableLiveData(contactGroups)
 
