@@ -1,6 +1,10 @@
 ## Random Contact Version History
 
 ### Version 4.0 (Nova)
+**RandomContact 4.0.1[Mar 2021]**
+ - Rename database to use with Room
+ - Fix issue of EmptyView not displaying from 2nd time onwards
+ 
 **RandomContact 4.0.0[Mar 2021]**
  - Redesign and rewrite the app #22
  - Improve Contact Picker flow #21

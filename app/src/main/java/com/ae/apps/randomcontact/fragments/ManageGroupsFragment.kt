@@ -28,7 +28,6 @@ class ManageGroupsFragment : Fragment(R.layout.fragment_manage_groups),
     ContactGroupInteractionListener {
 
     private var viewAdapter: ContactGroupRecyclerAdapter? = null
-    private var contactsDataLoaded = false
     private lateinit var appPreferences: AppPreferences
     private lateinit var viewModel: ContactGroupViewModel
     private lateinit var binding: FragmentManageGroupsBinding
@@ -75,10 +74,7 @@ class ManageGroupsFragment : Fragment(R.layout.fragment_manage_groups),
                     checkIfDefaultContactGroupSelected(selectedContactGroup)
 
                     // Set the empty view only after loading the contactGroups data for the first time
-                    if(!contactsDataLoaded){
-                        binding.list.setEmptyView(binding.emptyView)
-                        contactsDataLoaded = true
-                    }
+                    binding.list.setEmptyView(binding.emptyView)
                 }
             })
         return binding.root

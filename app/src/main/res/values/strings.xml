@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Random Contact</string>
-    <string name="app_version">Version 4.0.0 (Nova)</string>
+    <string name="app_version">Version 4.0.1 (Nova)</string>
     <string name="app_release_date">March 2021</string>
     <string name="app_desc">This app displays a "Random Contact" from your contacts list. Contact an old friend today!</string>
     <string name="app_disclaimer">This is an open source project designed and developed in my free time. \nAll the contact data shown are retrieved from the device and not processed, stored or shared by the app.</string>
@@ -33,28 +33,6 @@
     <string name="str_last_contacted_on">Last contacted</string>
     <string name="str_contact_now">Contact Now</string>
     <string name="str_top_contacted">Top frequently contacted</string>
-
-    <string name="str_license">Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at\n\n
-http://www.apache.org/licenses/LICENSE-2.0\n\n
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-\n\n
-Copyright 2019 Dionysios Karatzas\n\n
-Licensed under the Apache License, Version 2.0 (the "License");\n
-you may not use this file except in compliance with the License.\n
-You may obtain a copy of the License at\n\n
-   http://www.apache.org/licenses/LICENSE-2.0\n\n
-Unless required by applicable law or agreed to in writing, software\n
-distributed under the License is distributed on an "AS IS" BASIS,\n
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n
-See the License for the specific language governing permissions and\n
-limitations under the License.
-    </string>
 
     <string name="str_all_contacts">All Contacts</string>
     <string name="str_create_group">Create Group</string>
@@ -90,7 +68,7 @@ limitations under the License.
         <li>Edit groups feature added</li>\n
         <li>Improved performance and stability</li>\n
         <li>Removed Contacted details as they were made obsolete by Google</li>\n
-        <li>Thank you for your support</li>
+        <li>New app database implementation</li>
     </string>
 
     <string name="str_permission_required_title">Permission Required</string>

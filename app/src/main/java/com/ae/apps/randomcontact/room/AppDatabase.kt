@@ -26,7 +26,7 @@ abstract class AppDatabase : RoomDatabase() {
             return Room.databaseBuilder(
                 context.applicationContext,
                 AppDatabase::class.java,
-                "db_random_contact"
+                "random_contact_db"
             ).build()
         }
     }
