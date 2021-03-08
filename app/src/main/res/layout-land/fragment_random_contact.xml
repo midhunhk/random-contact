@@ -48,8 +48,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="start"
                     android:padding="@dimen/unit_m"
-                    android:text="@string/empty_text"
-
+                    android:text="@string/str_contact_name_placeholder"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/contactImage" />
 
@@ -59,7 +58,7 @@
                     android:layout_height="wrap_content"
                     android:background="?android:selectableItemBackground"
                     android:contentDescription="@string/str_content_desc_btn_refresh"
-                    android:padding="@dimen/unit_m"
+                    android:padding="@dimen/unit_l"
                     android:tint="?attr/colorOnSurface"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -72,7 +71,7 @@
                     android:layout_marginTop="@dimen/unit_s"
                     android:background="?android:selectableItemBackground"
                     android:contentDescription="@string/str_content_desc_btn_view_address_book"
-                    android:padding="@dimen/unit_m"
+                    android:padding="@dimen/unit_l"
                     android:tint="?attr/colorOnSurface"
                     app:layout_constraintEnd_toStartOf="@+id/btnRefresh"
                     app:layout_constraintTop_toTopOf="parent"

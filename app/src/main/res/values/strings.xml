@@ -81,4 +81,5 @@
     <string name="str_content_desc_btn_refresh">Refresh</string>
     <string name="str_content_desc_btn_view_address_book">View in Address book</string>
     <string name="str_content_desc_btn_back">Back</string>
+    <string name="str_contact_name_placeholder">Contact Name</string>
 </resources>

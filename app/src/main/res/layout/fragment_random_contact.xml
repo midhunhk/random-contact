@@ -52,7 +52,7 @@
                     android:layout_marginRight="@dimen/unit_m"
                     android:gravity="start"
                     android:padding="@dimen/unit_m"
-                    android:text="@string/empty_text"
+                    android:text="@string/str_contact_name_placeholder"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/btnRefresh"
                     app:layout_constraintStart_toEndOf="@+id/contactImage"
