@@ -108,19 +108,18 @@ class RandomContactFragment : Fragment(R.layout.fragment_random_contact), Contac
     }
 
     private fun showRandomContact() {
-        // Running the getRandomNumber() method in a background thread
-        // as we may need to access the database if a custom group is selected
+        // Running the getRandomNumber() method in a background thread as we need to access the database
         doAsync {
             val randomContact: ContactInfo? = contactsApi.randomContact
-            if (null == randomContact) {
-                uiThread {
+
+            // Run the validation on the UI Thread
+            uiThread {
+                if (null == randomContact) {
                     Toast.makeText(
                         context, resources.getString(R.string.str_empty_contact_list),
                         Toast.LENGTH_LONG
                     ).show()
-                }
-            } else {
-                uiThread {
+                } else {
                     displayContact(randomContact)
                 }
             }

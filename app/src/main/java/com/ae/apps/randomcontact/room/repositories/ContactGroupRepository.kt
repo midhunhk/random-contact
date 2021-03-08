@@ -9,6 +9,8 @@ interface ContactGroupRepository {
 
     fun findContactGroupById(contactId:String): ContactGroup
 
+    fun getContactGroupCount(): Int
+
     suspend fun createContactGroup(contactGroup: ContactGroup)
 
     suspend fun updateContactGroup(contactGroup: ContactGroup)

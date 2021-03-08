@@ -13,6 +13,9 @@ interface ContactGroupDao {
     @Query("SELECT * from custom_contact_group where _id = :groupId")
     fun getContactGroupById(groupId: Int): ContactGroup
 
+    @Query("SELECT count(*) from custom_contact_group")
+    fun getContactGroupCount(): Int
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(contactGroup: ContactGroup)
 
