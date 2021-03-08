@@ -58,7 +58,7 @@
             android:paddingEnd="@dimen/unit_l"
             android:paddingRight="@dimen/unit_l"
             android:text="@string/str_select_contact_group"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <RadioButton
             android:id="@+id/radioAllContacts"
