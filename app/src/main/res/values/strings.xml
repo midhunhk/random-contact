@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Random Contact</string>
-    <string name="app_version">Version 4.0.1 (Nova)</string>
+    <string name="app_version">Version 4.0.2 (Nova)</string>
     <string name="app_release_date">March 2021</string>
     <string name="app_desc">This app displays a "Random Contact" from your contacts list. Contact an old friend today!</string>
     <string name="app_disclaimer">This is an open source project designed and developed in my free time. \nAll the contact data shown are retrieved from the device and not processed, stored or shared by the app.</string>

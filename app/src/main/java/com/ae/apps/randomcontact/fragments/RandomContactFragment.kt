@@ -1,7 +1,5 @@
 package com.ae.apps.randomcontact.fragments
 
-import android.content.Context
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -13,6 +11,7 @@ import com.ae.apps.lib.api.contacts.ContactsApiGateway
 import com.ae.apps.lib.api.contacts.types.ContactInfoFilterOptions
 import com.ae.apps.lib.api.contacts.types.ContactsDataConsumer
 import com.ae.apps.lib.common.models.ContactInfo
+import com.ae.apps.lib.common.utils.CommonUtils
 import com.ae.apps.lib.common.utils.ContactUtils.showContactInAddressBook
 import com.ae.apps.randomcontact.R
 import com.ae.apps.randomcontact.adapters.ContactDetailsRecyclerAdapter
@@ -32,22 +31,16 @@ import org.jetbrains.anko.uiThread
 class RandomContactFragment : Fragment(R.layout.fragment_random_contact), ContactsDataConsumer {
 
     companion object {
-        private lateinit var contactsApi: ContactsApiGateway
         @Volatile
         private var INSTANCE: RandomContactFragment? = null
 
-        fun getInstance(context: Context): RandomContactFragment =
+        fun getInstance(): RandomContactFragment =
             INSTANCE ?: synchronized(this) {
-                val repo = ContactGroupRepositoryImpl.getInstance(
-                    AppDatabase.getInstance(context).contactGroupDao()
-                )
-                val factory = RandomContactsApiGatewayFactory()
-                val appPreferences = AppPreferences.getInstance(context)
-                contactsApi = RandomContactApiGatewayImpl.getInstance(context, repo, factory, appPreferences)
                 INSTANCE ?: RandomContactFragment().also { INSTANCE = it }
             }
     }
 
+    private lateinit var contactsApi: ContactsApiGateway
     private var currentContact: ContactInfo? = null
     private lateinit var binding: FragmentRandomContactBinding
     private lateinit var recyclerAdapter: ContactDetailsRecyclerAdapter
@@ -59,6 +52,22 @@ class RandomContactFragment : Fragment(R.layout.fragment_random_contact), Contac
         setupRecyclerView()
 
         setupViews()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setUpContactsApi()
+    }
+
+    private fun setUpContactsApi() {
+        val context = requireActivity()
+        val repo = ContactGroupRepositoryImpl.getInstance(
+            AppDatabase.getInstance(context).contactGroupDao()
+        )
+        val factory = RandomContactsApiGatewayFactory()
+        val appPreferences = AppPreferences.getInstance(context)
+        contactsApi = RandomContactApiGatewayImpl.getInstance(context, repo, factory, appPreferences)
 
         // Initialize the random contact api
         contactsApi.initializeAsync(ContactInfoFilterOptions.of(true), this)
@@ -81,9 +90,7 @@ class RandomContactFragment : Fragment(R.layout.fragment_random_contact), Contac
     private fun setupRecyclerView() {
         var whatsAppInstalled = false
         if (null != requireActivity().packageManager) {
-            // whatsAppInstalled = CommonUtils.isPackageInstalled(PACKAGE_NAME_WHATSAPP, context)
-            // TODO Use CommonUtils.checkIfPackageIsInstalled()
-            whatsAppInstalled = appInstalledOrNot(PACKAGE_NAME_WHATSAPP)
+            whatsAppInstalled = CommonUtils.checkIfPackageIsInstalled(requireContext(), PACKAGE_NAME_WHATSAPP)
         }
 
         recyclerAdapter = ContactDetailsRecyclerAdapter(
@@ -96,19 +103,8 @@ class RandomContactFragment : Fragment(R.layout.fragment_random_contact), Contac
         val recyclerView: RecyclerView = binding.list
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = recyclerAdapter
-        val linearLayoutManager = LinearLayoutManager(requireContext())
-        recyclerView.layoutManager = linearLayoutManager
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.itemAnimator = DefaultItemAnimator()
-    }
-
-    private fun appInstalledOrNot(uri: String): Boolean {
-        val pm: PackageManager = requireActivity().packageManager
-        try {
-            pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES)
-            return true
-        } catch (e: PackageManager.NameNotFoundException) {
-        }
-        return false
     }
 
     private fun showRandomContact() {
