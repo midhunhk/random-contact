@@ -116,6 +116,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/unit_l"
                 android:layout_marginRight="@dimen/unit_l"
+                android:contentDescription="@string/str_content_desc_list_members"
                 app:layoutManager="LinearLayoutManager"
                 tools:listitem="@layout/group_member_item" />
 

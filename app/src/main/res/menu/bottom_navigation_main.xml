@@ -6,17 +6,20 @@
         android:enabled="true"
         android:icon="@drawable/ic_group"
         android:title="@string/action_manage"
+        android:contentDescription="@string/action_manage"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_random_contact"
         android:enabled="true"
         android:icon="@drawable/ic_home"
         android:title="@string/action_random"
+        android:contentDescription="@string/action_random"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_about"
         android:enabled="true"
         android:icon="@drawable/ic_info"
         android:title="@string/action_about"
+        android:contentDescription="@string/action_about"
         app:showAsAction="ifRoom" />
 </menu>

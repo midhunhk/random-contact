@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="?attr/actionBarSize"
+    app:navigationContentDescription="@string/str_content_desc_btn_back"
     app:contentInsetStart="0dp">
 
 <RelativeLayout

@@ -75,4 +75,10 @@
     <string name="str_permission_required_desc">Random Contact requires the permission to read contacts to function as designed.</string>
     <string name="str_btn_provide_access">Provide Access</string>
     <string name="str_in_app_update_error">An error occurred during In-App Update</string>
+    
+    <string name="str_content_desc_list_members">List of members in the group</string>
+    <string name="str_content_desc_btn_add_group">Add a contact group</string>
+    <string name="str_content_desc_btn_refresh">Refresh</string>
+    <string name="str_content_desc_btn_view_address_book">View in Address book</string>
+    <string name="str_content_desc_btn_back">Back</string>
 </resources>
