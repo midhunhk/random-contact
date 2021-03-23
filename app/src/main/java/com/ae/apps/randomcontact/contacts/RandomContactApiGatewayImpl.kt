@@ -88,9 +88,20 @@ class RandomContactApiGatewayImpl(
         if (allContacts.isEmpty()) {
             return null
         }
-        val randomContactId: String
 
-        val selectedGroup = appPreferences.selectedContactGroup()
+        // If there are no custom contact groups, default to all contacts
+        // The database is the source of truth, override the values in appPreference
+        val customContactGroups = contactGroupRepository.getContactGroupCount()
+        val selectedGroup = if(customContactGroups > 0){
+            appPreferences.selectedContactGroup()
+        } else {
+            // Update the Selected Contact Group so that it correctly selects the
+            // All Contacts option in Manage Contact Groups Fragment
+            appPreferences.setSelectedContactGroup(DEFAULT_CONTACT_GROUP)
+            DEFAULT_CONTACT_GROUP
+        }
+
+        val randomContactId: String
         if (DEFAULT_CONTACT_GROUP == selectedGroup) {
             index = ((index + 1) % readContactsCount.toInt())
             randomContactId = allContacts[index].id

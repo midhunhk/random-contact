@@ -53,7 +53,7 @@ class MainActivity : AbstractPermissionsAwareActivity(), PermissionsAwareCompone
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.action_manage_group -> showFragment(ManageGroupsFragment.getInstance())
-                R.id.action_random_contact -> showFragment(RandomContactFragment.getInstance(this))
+                R.id.action_random_contact -> showFragment(RandomContactFragment.getInstance())
                 R.id.action_about -> showFragment(AboutFragment.newInstance())
             }
             true
@@ -67,7 +67,7 @@ class MainActivity : AbstractPermissionsAwareActivity(), PermissionsAwareCompone
         bottomNavigationView.show()
         bottomNavigationView.selectedItemId = R.id.action_random_contact
 
-        showFragment(RandomContactFragment.getInstance(baseContext))
+        showFragment(RandomContactFragment.getInstance())
         showMessageAsBottomSheet()
 
         initInAppUpdate()

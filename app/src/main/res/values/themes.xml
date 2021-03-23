@@ -9,7 +9,7 @@
         <item name="colorPrimaryVariant">@color/color_random_blue_900</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/color_radical_red_300</item>
+        <item name="colorSecondary">@color/color_radical_red</item>
         <item name="colorSecondaryVariant">@color/color_radical_red_900</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->

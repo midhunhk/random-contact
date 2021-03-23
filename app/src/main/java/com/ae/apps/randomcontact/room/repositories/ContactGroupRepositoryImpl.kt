@@ -18,6 +18,8 @@ class ContactGroupRepositoryImpl private constructor(private val dao:ContactGrou
 
     override fun getAllContactGroups(): LiveData<List<ContactGroup>> = dao.getAll()
 
+    override fun getContactGroupCount(): Int = dao.getContactGroupCount()
+
     // Id is stored in the database as an Integer inorder to apply AutoIncrement
     // But it is stored in Preferences as a String, so inorder to maintain backwards compatibility,
     // we are converting to an int here

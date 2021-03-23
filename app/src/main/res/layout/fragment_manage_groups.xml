@@ -43,7 +43,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:background="?android:selectableItemBackground"
-                android:contentDescription="@string/empty_text"
+                android:contentDescription="@string/str_content_desc_btn_add_group"
                 android:padding="@dimen/unit_m"
                 app:srcCompat="@drawable/ic_add_group"
                 app:tint="?attr/colorSecondary" />
@@ -58,7 +58,7 @@
             android:paddingEnd="@dimen/unit_l"
             android:paddingRight="@dimen/unit_l"
             android:text="@string/str_select_contact_group"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <RadioButton
             android:id="@+id/radioAllContacts"
