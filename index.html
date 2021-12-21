@@ -11,20 +11,21 @@
 <meta property="og:url" content="http://midhunhk.github.io/random-contact/index.html">
 <meta property="og:site_name" content="Random  Contact App">
 <meta property="og:description" content="app page for random contact">
-<meta property="og:locale" content="english">
+<meta property="og:locale">
+<meta property="article:author" content="midhunhk">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Random  Contact App">
-<meta name="twitter:description" content="app page for random contact">
   
     <link rel="alternative" href="/atom.xml" title="Random  Contact App" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
   
-  <link rel="stylesheet" href="/random-contact/css/style.css">
+  
+<link rel="stylesheet" href="/random-contact/css/style.css">
+
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
   
-</head>
+<meta name="generator" content="Hexo 5.4.0"></head>
 <body>
   <div id="container">
     <div class="mobile-nav-panel">
@@ -47,6 +48,65 @@
 </header>
     <div id="main">
       
+  
+    <article id="post-Version-3-2" class="post">
+	<footer class="entry-meta-header">
+		<span class="meta-elements date">
+			<a href="/random-contact/2018/07/07/Version-3-2/" class="article-date">
+  <time datetime="2018-07-07T10:55:51.000Z" itemprop="datePublished">2018-07-07</time>
+</a>
+		</span>
+		<span class="meta-elements author">midhunhk</span>
+		<div class="commentscount">
+			
+		</div>
+	</footer>
+	
+	<header class="entry-header">
+		
+  
+    <h1 itemprop="name" class="entry-title">
+      <a class="article-title" href="/random-contact/2018/07/07/Version-3-2/">Version-3.2</a>
+    </h1>
+  
+
+	</header>
+	<div class="entry-content">
+		
+    	<img alt="Random Contact" src="/random-contact/images/feature_graphic_v2.png"/>
+Version 3.2 codenamed 'blackbird' is complete and available for download.
+
+<p>The changelog for this release are below.</p>
+<ul>
+<li>Target latest Android Version</li>
+<li>Respect Runtime Permissions</li>
+<li>Handle No Contacts Case</li>
+</ul>
+<h3 id="Runtime-Permissions"><a href="#Runtime-Permissions" class="headerlink" title="Runtime Permissions"></a>Runtime Permissions</h3><p>The reason for not using the latest Android API version for compiling this app was Runtime Permissions introduced with<br>Android M. Finally I found some time to put in the effort to implement this change. Most of the examples for making this<br>change are simple use cases or basics, so it took some trial and effort to make it work for this app.</p>
+<p>A new reusable Fragment for checking the permission which contains some boilerplate code is created and would be<br>soon available with the next version of libAeApps.</p>
+<h3 id="No-Contacts-View"><a href="#No-Contacts-View" class="headerlink" title="No Contacts View"></a>No Contacts View</h3><p>The results of Alpha testing done by Google Play used to fail as the emulators ddidn’t contain any contacts. In practice,<br>this edge scenario should only come when the app is installed on a new device. Neverthless, all tests in Google Play<br>pre release are passing now.</p>
+<p>Download from the <a target="_blank" rel="noopener" href="https://play.google.com/store/apps/details?id=com.ae.apps.randomcontact">Play Store</a> now.</p>
+
+    
+	</div>
+	<footer class="entry-footer">
+		<div class="entry-meta-footer">
+			<span class="category">
+				
+			</span>
+			<span class="tags">
+				
+			</span>
+		</div>
+	</footer>
+	
+</article>
+
+
+	<hr class="article-devider">
+
+
+
   
     <article id="post-Version-3-1-Released" class="post">
 	<footer class="entry-meta-header">
@@ -72,17 +132,19 @@
 	</header>
 	<div class="entry-content">
 		
-    	<p><img alt="Random Contact" src="/random-contact/images/feature_graphic_v2.png"><br>Version 3.1 codenamed ‘telephone’ is complete and available for download.</p>
+    	<img alt="Random Contact" src="/random-contact/images/feature_graphic_v2.png"/>
+Version 3.1 codenamed 'telephone' is complete and available for download.
+
 <p>The changelog for this release are below.</p>
 <ul>
 <li>Friendlier last contacted date</li>
 <li>WhatsApp integration from contact method options</li>
 <li>Landscape orientation for Random Contact screen</li>
 </ul>
-<h3 id="Friendlier-last-contact-date"><a href="#Friendlier-last-contact-date" class="headerlink" title="Friendlier last contact date"></a>Friendlier last contact date</h3><p>For showing the last contacted date in a better readable format, we have used the <a href="https://developer.android.com/reference/android/text/format/DateUtils.html#getRelativeDateTimeString(android.content.Context,%20long,%20long,%20long,%20int)" target="_blank" rel="noopener">DateUtils.getRelativeDateTimeString()</a> utility method from Android itself.</p>
+<h3 id="Friendlier-last-contact-date"><a href="#Friendlier-last-contact-date" class="headerlink" title="Friendlier last contact date"></a>Friendlier last contact date</h3><p>For showing the last contacted date in a better readable format, we have used the <a target="_blank" rel="noopener" href="https://developer.android.com/reference/android/text/format/DateUtils.html#getRelativeDateTimeString(android.content.Context,%20long,%20long,%20long,%20int)">DateUtils.getRelativeDateTimeString()</a> utility method from Android itself.</p>
 <h3 id="WhatsApp-integration"><a href="#WhatsApp-integration" class="headerlink" title="WhatsApp integration"></a>WhatsApp integration</h3><p>This was a tough feature for implementing as many of the attempts didn’t work as well as some methods not supported by the WhatsApp app itself. Still some code cleanup and moving some code to <code>lib-ae-apps</code> is pending.</p>
 <h3 id="Landscape-orientation"><a href="#Landscape-orientation" class="headerlink" title="Landscape orientation"></a>Landscape orientation</h3><p>Random Contact did support a different layout for Landscape in the past, but was disregarded while doing the redesign. This release provides a better and accessible Landscape layout</p>
-<p>Download from the <a href="https://play.google.com/store/apps/details?id=com.ae.apps.randomcontact" target="_blank" rel="noopener">Play Store</a> now.</p>
+<p>Download from the <a target="_blank" rel="noopener" href="https://play.google.com/store/apps/details?id=com.ae.apps.randomcontact">Play Store</a> now.</p>
 
     
 	</div>
@@ -129,14 +191,18 @@
 	</header>
 	<div class="entry-content">
 		
-    	<p><img alt="Random Contact" src="/random-contact/images/feature_graphic_v2.png"><br>Version 3.0 codenamed ‘hypercube’ is available in the Google Play Store now.</p>
+    	<img alt="Random Contact" src="/random-contact/images/feature_graphic_v2.png"/>
+Version 3.0 codenamed 'hypercube' is available in the Google Play Store now.
+
 <p>Hypercube is a random word used as code name for this release.<br>The following changes are part of this release.</p>
 <ul>
 <li>Migration to Android Studio and Gradle based project</li>
 <li>Custom groups for generating random contacts.</li>
 <li>New App Icon and Image Resources</li>
 </ul>
-<p><img alt="Random Contact" src="/random-contact/images/random-contact.png" width="300"><br><img alt="Random Contact" src="/images/contact-groups.png" width="300"></p>
+<img alt="Random Contact" src="/random-contact/images/random-contact.png" width="300" />
+<img alt="Random Contact" src="/images/contact-groups.png" width="300" />
+
 <p>Custom Groups for generating Random Contact is a frequently requested feature, but since the AeAppsLib<br>was migrated to Android Studio, this project also needed to be updated to Gradle Android build system.<br>This was causing the delay for this release.</p>
 <p>A minor coat of paint is applied as we have a new icon.</p>
 
@@ -149,7 +215,7 @@
 			</span>
 			<span class="tags">
 				
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/random-contact/tags/release/">release</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/random-contact/tags/release/" rel="tag">release</a></li></ul>
 
 			</span>
 		</div>
@@ -198,7 +264,7 @@
 			</span>
 			<span class="tags">
 				
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/random-contact/tags/post/">post</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/random-contact/tags/post/" rel="tag">post</a></li></ul>
 
 			</span>
 		</div>
@@ -226,7 +292,7 @@
 		<a href="/random-contact/">Random  Contact App</a>
 	</h1>
 	<span class="copyright">
-		&copy; 2018 midhunhk<br>
+		&copy; 2021 midhunhk<br>
 		Modify from <a href="http://sanographix.github.io/tumblr/apollo/" target="_blank">Apollo</a> theme, designed by <a href="http://www.sanographix.net/" target="_blank">SANOGRAPHIX.NET</a><br>
 		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
 	</span>
@@ -240,7 +306,9 @@
 <script src="/random-contact/fancybox/jquery.fancybox.pack.js"></script>
 
 
+
 <script src="/random-contact/js/script.js"></script>
+
   </div>
 </body>
 </html>
