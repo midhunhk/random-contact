@@ -32,7 +32,6 @@ import com.ae.apps.randomcontact.utils.CONTACT_ID_SEPARATOR
 import com.google.android.material.snackbar.Snackbar
 
 /**
- * A simple [Fragment] subclass.
  * Use the [AddContactGroupDialogFragment.newInstance] factory method to
  * create an instance of this fragment.
  */

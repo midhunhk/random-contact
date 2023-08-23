@@ -9,7 +9,7 @@ import com.ae.apps.randomcontact.R
 import com.ae.apps.randomcontact.databinding.FragmentAboutBinding
 
 /**
- * A simple [Fragment] subclass.
+ * A About [Fragment] which displays meta information.
  */
 class AboutFragment : Fragment(R.layout.fragment_about) {
 

@@ -13,6 +13,10 @@ import com.ae.apps.randomcontact.utils.CONTACT_ID_SEPARATOR
 import com.ae.apps.randomcontact.utils.DEFAULT_CONTACT_GROUP
 import java.util.*
 
+/**
+ * An instance of the ContactsApiGateway which provides a custom implementation
+ * for the random contact operation
+ */
 class RandomContactApiGatewayImpl(
     private val contactGroupRepository: ContactGroupRepository,
     private val contactsApi: ContactsApiGateway,
@@ -21,6 +25,8 @@ class RandomContactApiGatewayImpl(
     private var index: Int = 0
     private var dataConsumer: ContactsDataConsumer? = null
     private var isContactsRead = false
+    private var contactsShuffled = false
+    private lateinit var shuffledContacts: List<ContactInfo>
 
     companion object {
 
@@ -44,7 +50,7 @@ class RandomContactApiGatewayImpl(
     }
 
     override fun initialize(options: ContactInfoFilterOptions?) {
-        initialize(ContactInfoFilterOptions.of(true))
+        contactsApi.initialize(ContactInfoFilterOptions.of(true))
     }
 
     override fun initializeAsync(
@@ -52,6 +58,7 @@ class RandomContactApiGatewayImpl(
         consumer: ContactsDataConsumer?
     ) {
         // Store the consumer and invoke the onContactsRead on it after our own initialization
+        // If data is already initialized, immediately callback to the consumer
         dataConsumer = consumer
         if (isContactsRead) {
             dataConsumer?.onContactsRead()
@@ -89,6 +96,17 @@ class RandomContactApiGatewayImpl(
             return null
         }
 
+        // Introducing more randomness by using a shuffled list of contacts using standard api
+        // All permutations occur with approximately equal likelihood.
+        if(!contactsShuffled){
+            // Shuffle needs to be done on a mutable set
+            val temp = allContacts.toMutableList()
+            temp.shuffle()
+            // Store an immutable version once initialized
+            shuffledContacts = Collections.unmodifiableList(temp)
+            contactsShuffled = true
+        }
+
         // If there are no custom contact groups, default to all contacts
         // The database is the source of truth, override the values in appPreference
         val customContactGroups = contactGroupRepository.getContactGroupCount()
@@ -104,7 +122,7 @@ class RandomContactApiGatewayImpl(
         val randomContactId: String
         if (DEFAULT_CONTACT_GROUP == selectedGroup) {
             index = ((index + 1) % readContactsCount.toInt())
-            randomContactId = allContacts[index].id
+            randomContactId = shuffledContacts[index].id
         } else {
             val contactGroup = contactGroupRepository.findContactGroupById(selectedGroup)
             val subList: List<String> = contactGroup.selectedContacts.split(CONTACT_ID_SEPARATOR)
@@ -114,7 +132,7 @@ class RandomContactApiGatewayImpl(
         val options = ContactInfoOptions.Builder()
             .includePhoneDetails(true)
             .includeContactPicture(true)
-            .defaultContactPicture(com.ae.apps.lib.R.drawable.profile_icon_3)
+            .defaultContactPicture(com.ae.apps.lib.core.R.drawable.profile_icon_3)
             .filterDuplicatePhoneNumbers(true)
             .build()
 

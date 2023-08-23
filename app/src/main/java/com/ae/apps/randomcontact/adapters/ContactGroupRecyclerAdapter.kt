@@ -1,5 +1,6 @@
 package com.ae.apps.randomcontact.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ public class ContactGroupRecyclerAdapter(
     private var selectedGroupId: String? = null
     private var lastChecked: RadioButton? = null
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setList(items: List<ContactGroup>) {
         this.items = items
         notifyDataSetChanged()

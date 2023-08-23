@@ -50,7 +50,7 @@ class MainActivity : AbstractPermissionsAwareActivity(), PermissionsAwareCompone
 
     private fun setupBottomNavigation() {
         bottomNavigationView = binding.bottomNavigation
-        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+        bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.action_manage_group -> showFragment(ManageGroupsFragment.getInstance())
                 R.id.action_random_contact -> showFragment(RandomContactFragment.getInstance())
@@ -102,7 +102,6 @@ class MainActivity : AbstractPermissionsAwareActivity(), PermissionsAwareCompone
 
     private fun initInAppUpdate() {
         val inAppUpdateManager = InAppUpdateManager.Builder(this)
-            //.mode(Constants.UpdateMode.FLEXIBLE)
             .mode(Constants.UpdateMode.IMMEDIATE)
             .snackBarMessage("An update has just been downloaded.")
             .snackBarAction("RESTART")
