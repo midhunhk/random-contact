@@ -1,15 +1,17 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'kotlin-kapt'
     id 'com.google.devtools.ksp'
+    id 'org.jetbrains.kotlin.android'
 }
 
 android {
+    namespace 'com.ae.apps.randomcontact'
 
     defaultConfig {
         applicationId "com.ae.apps.randomcontact"
-        minSdkVersion 16
+        minSdkVersion 21
+        //noinspection OldTargetApi
         targetSdkVersion 33
         compileSdk 33
         versionCode 135
@@ -35,14 +37,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
 
     applicationVariants.configureEach { variant ->
         variant.outputs.configureEach { output ->
@@ -53,11 +52,19 @@ android {
     buildFeatures {
         viewBinding true
     }
-    namespace 'com.ae.apps.randomcontact'
+
     lint {
         abortOnError false
     }
 
+}
+
+kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+
+    jvmToolchain(17)
 }
 
 dependencies {
@@ -92,7 +99,7 @@ dependencies {
     implementation 'com.github.ae-app-labs:lib-anko-async:v0.10.8-rc.02'
 
     // other libs
-    implementation 'eu.dkaratzas:android-inapp-update:1.0.5'
+    implementation 'com.github.dnKaratzas:android-inapp-update:1.0.2'
 
     // Testing dependencies
     testImplementation 'junit:junit:4.13.2'

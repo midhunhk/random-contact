@@ -1,5 +1,6 @@
 package com.ae.apps.randomcontact.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ class GroupMemberRecyclerAdapter(
     private var items: List<ContactInfo>
 ) : RecyclerView.Adapter<GroupMemberRecyclerAdapter.ViewHolder>() {
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setList(items: List<ContactInfo>) {
         this.items = items;
         notifyDataSetChanged()

@@ -1,5 +1,6 @@
 package com.ae.apps.randomcontact.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,7 +23,7 @@ import com.ae.apps.randomcontact.utils.DEFAULT_CONTACT_GROUP
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 /**
- * A simple [Fragment] subclass.
+ * Manage Groups Fragment
  */
 class ManageGroupsFragment : Fragment(R.layout.fragment_manage_groups),
     ContactGroupInteractionListener {
@@ -66,7 +67,7 @@ class ManageGroupsFragment : Fragment(R.layout.fragment_manage_groups),
         viewModel = ViewModelProvider(this, viewModelFactory)
             .get(ContactGroupViewModel::class.java)
         viewModel.getAllContactGroups()
-            .observe(viewLifecycleOwner, { contactGroups ->
+            .observe(viewLifecycleOwner) { contactGroups ->
                 kotlin.run {
                     viewAdapter?.setList(contactGroups)
                     val selectedContactGroup = appPreferences.selectedContactGroup()
@@ -76,10 +77,11 @@ class ManageGroupsFragment : Fragment(R.layout.fragment_manage_groups),
                     // Set the empty view only after loading the contactGroups data for the first time
                     binding.list.setEmptyView(binding.emptyView)
                 }
-            })
+            }
         return binding.root
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun initViews(selectedContactGroup: String) {
         binding.radioAllContacts.setOnClickListener {
             viewAdapter?.setSelectedGroupId(DEFAULT_CONTACT_GROUP)
