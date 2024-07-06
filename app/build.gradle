@@ -1,8 +1,12 @@
 plugins {
     id 'com.android.application'
-    id 'kotlin-android'
     id 'com.google.devtools.ksp'
     id 'org.jetbrains.kotlin.android'
+    id 'androidx.room'
+}
+
+room {
+    schemaDirectory "$projectDir/schemas"
 }
 
 android {
@@ -11,20 +15,13 @@ android {
     defaultConfig {
         applicationId "com.ae.apps.randomcontact"
         minSdkVersion 21
-        //noinspection OldTargetApi
-        targetSdkVersion 33
-        compileSdk 33
-        versionCode 135
-        versionName "5.0.0"
+        targetSdkVersion 34
+        compileSdk 34
+        versionCode 136
+        versionName "5.1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
-            }
-        }
     }
 
     buildTypes {
@@ -39,8 +36,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     applicationVariants.configureEach { variant ->
@@ -70,27 +67,22 @@ kotlin {
 dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.10.1'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.9.0'
-    implementation 'androidx.core:core-ktx:1.10.1'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.activity:activity-ktx:1.7.2'
-    implementation 'androidx.fragment:fragment-ktx:1.6.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'com.google.android.material:material:1.9.0'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation "androidx.preference:preference-ktx:1.2.1"
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
+    //implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1'
+    implementation 'com.google.android.material:material:1.12.0'
     implementation 'android.arch.lifecycle:extensions:1.1.1'
-    implementation 'com.google.android.play:core:1.10.3'
+    //implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.activity:activity-ktx:1.9.0'
+    implementation 'androidx.fragment:fragment-ktx:1.8.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    //implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation "androidx.preference:preference-ktx:1.2.1"
 
-    def room_version = "2.5.2"
+    def room_version = '2.6.1'
     implementation "androidx.room:room-runtime:$room_version"
     ksp "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
 
-    def libAeAppsVersion = 'v5.0.0-alpha.14'
+    def libAeAppsVersion = 'v5.0.0-alpha.21'
     implementation "com.github.midhunhk.lib-aeapps:core:$libAeAppsVersion"
     implementation "com.github.midhunhk.lib-aeapps:runtime-permissions:$libAeAppsVersion"
     implementation "com.github.midhunhk.lib-aeapps:contacts-api:$libAeAppsVersion"
@@ -98,19 +90,24 @@ dependencies {
     implementation "com.github.midhunhk.lib-aeapps:utilities:$libAeAppsVersion"
     implementation 'com.github.ae-app-labs:lib-anko-async:v0.10.8-rc.02'
 
-    // other libs
-    implementation 'com.github.dnKaratzas:android-inapp-update:1.0.2'
+    // third party libs
+    /*
+    implementation ('com.github.dnKaratzas:android-inapp-update:1.0.2'){
+        exclude group: 'com.google.android.play', module: 'core'
+        exclude group: 'com.google.android.play', module: 'core-common'
+    }*/
 
     // Testing dependencies
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'androidx.test.ext:junit:1.1.5'
-    testImplementation 'org.mockito:mockito-inline:2.23.0'
+    testImplementation 'androidx.test.ext:junit:1.2.1'
+    testImplementation 'org.mockito:mockito-inline:5.2.0'
     testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
     testImplementation "androidx.room:room-testing:$room_version"
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.1'
 
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.5.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.5.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+    def espressoVersion = '3.6.1'
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoVersion"
 }

@@ -18,15 +18,12 @@ import com.ae.apps.randomcontact.utils.show
 import com.ae.apps.randomcontact.utils.showShortToast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import eu.dkaratzas.android.inapp.update.Constants
-import eu.dkaratzas.android.inapp.update.InAppUpdateManager
-import eu.dkaratzas.android.inapp.update.InAppUpdateStatus
 
 /**
  * Entry point to the application
  */
 class MainActivity : AbstractPermissionsAwareActivity(), PermissionsAwareComponent,
-    AppRequestPermission, InAppUpdateManager.InAppUpdateHandler {
+    AppRequestPermission {
 
     companion object {
         private val PERMISSIONS: Array<String> = arrayOf(Manifest.permission.READ_CONTACTS)
@@ -70,7 +67,6 @@ class MainActivity : AbstractPermissionsAwareActivity(), PermissionsAwareCompone
         showFragment(RandomContactFragment.getInstance())
         showMessageAsBottomSheet()
 
-        initInAppUpdate()
     }
 
     @SuppressLint("InflateParams")
@@ -98,24 +94,6 @@ class MainActivity : AbstractPermissionsAwareActivity(), PermissionsAwareCompone
             .beginTransaction()
             .replace(R.id.fragmentContainer, fragment)
             .commitAllowingStateLoss()
-    }
-
-    private fun initInAppUpdate() {
-        val inAppUpdateManager = InAppUpdateManager.Builder(this)
-            .mode(Constants.UpdateMode.IMMEDIATE)
-            .snackBarMessage("An update has just been downloaded.")
-            .snackBarAction("RESTART")
-            .handler(this)
-
-        inAppUpdateManager.checkForAppUpdate()
-    }
-
-    override fun onInAppUpdateError(code: Int, error: Throwable?) {
-        showShortToast(R.string.str_in_app_update_error)
-    }
-
-    override fun onInAppUpdateStatus(status: InAppUpdateStatus?) {
-
     }
 
 }

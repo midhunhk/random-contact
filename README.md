@@ -5,8 +5,6 @@
 Random Contact is an Android app that shows the details of a random contact from your contacts list. 
 This is an experimental, fun and personal project which has been made open source.
 
-<img src="https://raw.githubusercontent.com/midhunhk/random-contact/nova/resources/v4/artwork/nova_logo.png" alt="Codename Nova" /> codename nova
-
 ## Features
  - Designed based on material design principles
  - Create custom Contact Groups for Random Contact Generation
