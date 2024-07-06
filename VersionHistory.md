@@ -1,6 +1,9 @@
 ## Random Contact Version History
 
 ### Version 5.0 (Nebulawave)
+**Random Contact 5.1.0[Jul 2024]**
+- Target API 34
+
 **Random Contact 5.0.0[Aug 2023]**
  - Target API 33
  - Upgrade to lib-aeapps v5
