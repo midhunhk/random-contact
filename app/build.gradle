@@ -90,11 +90,12 @@ dependencies {
     implementation "com.github.midhunhk.lib-aeapps:utilities:$libAeAppsVersion"
     implementation 'com.github.ae-app-labs:lib-anko-async:v0.10.8-rc.02'
 
-    // other libs
+    // third party libs
+    /*
     implementation ('com.github.dnKaratzas:android-inapp-update:1.0.2'){
         exclude group: 'com.google.android.play', module: 'core'
         exclude group: 'com.google.android.play', module: 'core-common'
-    }
+    }*/
 
     // Testing dependencies
     testImplementation 'junit:junit:4.13.2'
