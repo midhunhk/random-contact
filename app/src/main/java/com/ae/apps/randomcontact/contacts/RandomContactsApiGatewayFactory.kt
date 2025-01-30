@@ -7,7 +7,15 @@ import com.ae.apps.lib.api.contacts.types.ContactsApiGatewayFactory
 
 class RandomContactsApiGatewayFactory : ContactsApiGatewayFactory {
 
+    companion object {
+        @Volatile
+        private var INSTANCE: ContactsApiGateway? = null
+    }
+
     override fun getContactsApiGateway(context: Context): ContactsApiGateway {
-        return ContactsApiGatewayImpl.Builder(context).build()
+        return INSTANCE ?: synchronized(this) {
+            INSTANCE ?: ContactsApiGatewayImpl.Builder(context).build()
+                .also { INSTANCE = it }
+        }
     }
 }
