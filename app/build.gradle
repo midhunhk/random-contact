@@ -15,10 +15,10 @@ android {
     defaultConfig {
         applicationId "com.ae.apps.randomcontact"
         minSdkVersion 21
-        targetSdkVersion 35
-        compileSdk 35
-        versionCode 137
-        versionName "5.1.1"
+        targetSdkVersion 36
+        compileSdk 36
+        versionCode 138
+        versionName "5.1.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -69,17 +69,17 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'com.google.android.material:material:1.12.0'
     implementation 'android.arch.lifecycle:extensions:1.1.1'
-    implementation 'androidx.activity:activity-ktx:1.10.0'
-    implementation 'androidx.fragment:fragment-ktx:1.8.6'
-    implementation 'androidx.constraintlayout:constraintlayout:2.2.0'
+    implementation 'androidx.activity:activity-ktx:1.10.1'
+    implementation 'androidx.fragment:fragment-ktx:1.8.8'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
     implementation "androidx.preference:preference-ktx:1.2.1"
 
-    def room_version = '2.6.1'
+    def room_version = '2.7.2'
     implementation "androidx.room:room-runtime:$room_version"
     ksp "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
 
-    def libAeAppsVersion = 'v5.0.0-alpha.21'
+    def libAeAppsVersion = 'v5.0.0-beta.02'
     implementation "com.github.midhunhk.lib-aeapps:core:$libAeAppsVersion"
     implementation "com.github.midhunhk.lib-aeapps:runtime-permissions:$libAeAppsVersion"
     implementation "com.github.midhunhk.lib-aeapps:contacts-api:$libAeAppsVersion"
