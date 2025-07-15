@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Random Contact</string>
-    <string name="app_version">Version 5.1.1 (Nebulawave)</string>
-    <string name="app_release_date">Jan 2025</string>
+    <string name="app_version">Version 5.1.2 (Nebulawave)</string>
+    <string name="app_release_date">Jul 2025</string>
     <string name="app_desc">This app displays a "Random Contact" from your contacts list. Contact an old friend today!</string>
     <string name="app_disclaimer">This is an open source project designed and developed in my free time. \nAll the contact data shown are retrieved from the device and not processed, stored or shared by the app.</string>
     <string name="app_developer_info">Designed and developed: ae app labs</string>
