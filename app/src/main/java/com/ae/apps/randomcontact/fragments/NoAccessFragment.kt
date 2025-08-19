@@ -9,7 +9,8 @@ import com.ae.apps.randomcontact.AppRequestPermission
 import com.ae.apps.randomcontact.databinding.FragmentNoAccessBinding
 
 /**
- * A simple [Fragment] subclass.
+ * NoAccessFragment
+ * This fragment will display the screen explaining the need to request permissions for accessing the system contacts
  */
 class NoAccessFragment : Fragment() {
 
@@ -21,6 +22,11 @@ class NoAccessFragment : Fragment() {
 
     private lateinit var permissionsAwareContext: AppRequestPermission
     private lateinit var binding: FragmentNoAccessBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // This is called when the Fragment is created and before UI elements are created
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

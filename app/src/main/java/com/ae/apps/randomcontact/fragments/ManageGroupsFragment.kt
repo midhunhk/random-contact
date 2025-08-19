@@ -35,10 +35,6 @@ class ManageGroupsFragment : Fragment(),
     private var viewAdapter: ContactGroupRecyclerAdapter? = null
 
     companion object {
-        /**
-         * Factory method to create a new instance of this fragment.
-         * @return A new instance of fragment ManageGroupsFragment.
-         */
         @JvmStatic
         fun newInstance(): ManageGroupsFragment {
             return ManageGroupsFragment()
@@ -47,20 +43,21 @@ class ManageGroupsFragment : Fragment(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        viewAdapter = ContactGroupRecyclerAdapter(listener = this)
+        // Initialize non-visual components and variables.
         appPreferences = AppPreferences.getInstance(context = requireContext())
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentManageGroupsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         initViews(appPreferences.selectedContactGroup())
 
-        setUpRecyclerView()
-
         loadDataIntoView()
-
-        return binding.root
     }
 
     private fun loadDataIntoView() {
@@ -84,6 +81,13 @@ class ManageGroupsFragment : Fragment(),
 
     @SuppressLint("NotifyDataSetChanged")
     private fun initViews(selectedContactGroup: String) {
+        viewAdapter = ContactGroupRecyclerAdapter(listener = this)
+
+        val recyclerView = binding.list
+        recyclerView.adapter = viewAdapter
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.itemAnimator = DefaultItemAnimator()
+
         binding.radioAllContacts.setOnClickListener {
             viewAdapter?.setSelectedGroupId(DEFAULT_CONTACT_GROUP)
             viewAdapter?.notifyDataSetChanged()
@@ -99,13 +103,6 @@ class ManageGroupsFragment : Fragment(),
         binding.btnAddGroupEmptyView.setOnClickListener {
             launchContactGroupDialog()
         }
-    }
-
-    private fun setUpRecyclerView() {
-        val recyclerView = binding.list
-        recyclerView.adapter = viewAdapter
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.itemAnimator = DefaultItemAnimator()
     }
 
     private fun checkIfDefaultContactGroupSelected(selectedContactGroup: String) {

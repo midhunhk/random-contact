@@ -50,7 +50,6 @@ class RandomContactFragment : Fragment(), ContactsDataConsumer {
         binding = FragmentRandomContactBinding.inflate(inflater, container, false)
 
         setupRecyclerView()
-
         setupViews()
 
         return binding.root
@@ -71,7 +70,7 @@ class RandomContactFragment : Fragment(), ContactsDataConsumer {
         val appPreferences = AppPreferences.getInstance(context)
         contactsApi = RandomContactApiGatewayImpl.getInstance(context, repo, factory, appPreferences)
 
-        // Initialize the random contact api
+        // Initialize the random contact api, we will get a callback to onContactsRead() once contacts api is initialized
         contactsApi.initializeAsync(ContactInfoFilterOptions.of(true), this)
     }
 
@@ -102,6 +101,7 @@ class RandomContactFragment : Fragment(), ContactsDataConsumer {
             enableWhatsAppIntegration = whatsAppInstalled
         )
 
+        // We don't need the EmptyRecyclerView because we filter out any contacts that don't have any contact method
         val recyclerView: RecyclerView = binding.list
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = recyclerAdapter
@@ -122,7 +122,7 @@ class RandomContactFragment : Fragment(), ContactsDataConsumer {
                         Toast.LENGTH_LONG
                     ).show()
                 } else {
-                    displayContact(randomContact)
+                    displayContact(contactInfo = randomContact)
                 }
             }
         }
