@@ -1,6 +1,6 @@
 # Random Contact 
 [![Release](https://img.shields.io/github/release/midhunhk/random-contact.svg)](https://github.com/midhunhk/random-contact/releases)
-[![](https://img.shields.io/badge/codename-nebulawave-3d639c.svg)](https://github.com/midhunhk/random-contact/wiki/Codenames)
+[![](https://img.shields.io/badge/codename-nebulawave-ff3366.svg)](https://github.com/midhunhk/random-contact/wiki/Codenames)
 
 <img alt="Random Contact" src="https://raw.githubusercontent.com/midhunhk/random-contact/nova/resources/v4/artwork/feature_graphic_v4.0.png" width="820"/>  
 
