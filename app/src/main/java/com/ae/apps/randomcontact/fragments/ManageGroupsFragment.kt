@@ -24,51 +24,53 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 /**
  * Manage Groups Fragment
+ * This fragment is used to manage the contact groups.
  */
-class ManageGroupsFragment : Fragment(R.layout.fragment_manage_groups),
+class ManageGroupsFragment : Fragment(),
     ContactGroupInteractionListener {
 
-    private var viewAdapter: ContactGroupRecyclerAdapter? = null
     private lateinit var appPreferences: AppPreferences
     private lateinit var viewModel: ContactGroupViewModel
     private lateinit var binding: FragmentManageGroupsBinding
+    private var viewAdapter: ContactGroupRecyclerAdapter? = null
 
     companion object {
-
-        @Volatile
-        private var instance: ManageGroupsFragment? = null
-
         /**
+         * Factory method to create a new instance of this fragment.
          * @return A new instance of fragment ManageGroupsFragment.
          */
         @JvmStatic
-        fun getInstance() =
-            instance ?: synchronized(this) {
-                instance ?: ManageGroupsFragment().also { instance = it }
-            }
+        fun newInstance(): ManageGroupsFragment {
+            return ManageGroupsFragment()
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewAdapter = ContactGroupRecyclerAdapter(this)
-        appPreferences = AppPreferences.getInstance(requireContext())
+        viewAdapter = ContactGroupRecyclerAdapter(listener = this)
+        appPreferences = AppPreferences.getInstance(context = requireContext())
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentManageGroupsBinding.inflate(layoutInflater)
+        binding = FragmentManageGroupsBinding.inflate(inflater, container, false)
         initViews(appPreferences.selectedContactGroup())
 
         setUpRecyclerView()
 
-        val contactGroupDao = AppDatabase.getInstance(requireContext()).contactGroupDao()
+        loadDataIntoView()
+
+        return binding.root
+    }
+
+    private fun loadDataIntoView() {
+        val contactGroupDao = AppDatabase.getInstance(context = requireContext()).contactGroupDao()
         val repository = ContactGroupRepositoryImpl.getInstance(contactGroupDao)
         val viewModelFactory = ContactGroupViewModelFactory(repository)
-        viewModel = ViewModelProvider(this, viewModelFactory)
-            .get(ContactGroupViewModel::class.java)
+        viewModel = ViewModelProvider(owner = this, viewModelFactory)[ContactGroupViewModel::class.java]
         viewModel.getAllContactGroups()
             .observe(viewLifecycleOwner) { contactGroups ->
-                kotlin.run {
+                run {
                     viewAdapter?.setList(contactGroups)
                     val selectedContactGroup = appPreferences.selectedContactGroup()
                     viewAdapter?.setSelectedGroupId(selectedContactGroup)
@@ -78,7 +80,6 @@ class ManageGroupsFragment : Fragment(R.layout.fragment_manage_groups),
                     binding.list.setEmptyView(binding.emptyView)
                 }
             }
-        return binding.root
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -105,9 +106,6 @@ class ManageGroupsFragment : Fragment(R.layout.fragment_manage_groups),
         recyclerView.adapter = viewAdapter
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.itemAnimator = DefaultItemAnimator()
-        // Delay the attachment of emptyView to the EmptyRecyclerView until data is loaded
-        // To prevent a flicker of EmptyView whenever the fragment is loaded
-        // recyclerView.setEmptyView(binding.emptyView)
     }
 
     private fun checkIfDefaultContactGroupSelected(selectedContactGroup: String) {
@@ -123,7 +121,6 @@ class ManageGroupsFragment : Fragment(R.layout.fragment_manage_groups),
 
     override fun onContactGroupUpdated(originalItem: ContactGroup, updatedItem: ContactGroup) {
         viewModel.updateContactGroup(updatedItem)
-        //viewAdapter?.notifyDataSetChanged()
     }
 
     override fun selectContactGroup(contactGroup: ContactGroup) {
