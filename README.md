@@ -1,4 +1,6 @@
-# Random Contact
+# Random Contact 
+[![Release](https://img.shields.io/github/release/midhunhk/random-contact.svg)](https://github.com/midhunhk/random-contact/releases)
+[![](https://img.shields.io/badge/codename-nebulawave-ff3366.svg)](https://github.com/midhunhk/random-contact/wiki/Codenames)
 
 <img alt="Random Contact" src="https://raw.githubusercontent.com/midhunhk/random-contact/nova/resources/v4/artwork/feature_graphic_v4.0.png" width="820"/>  
 
@@ -26,7 +28,7 @@ Random Contact uses the below dependent libraries for functioning
 - lib-AeApps (https://github.com/midhunhk/lib-aeapps)
 
 # License
-Copyright 2013-2018, 2023 Midhun Harikumar
+Copyright 2013-2018, 2023-2025 Midhun Harikumar
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 

@@ -15,7 +15,6 @@ import com.ae.apps.randomcontact.fragments.RandomContactFragment
 import com.ae.apps.randomcontact.preferences.AppPreferences
 import com.ae.apps.randomcontact.utils.hide
 import com.ae.apps.randomcontact.utils.show
-import com.ae.apps.randomcontact.utils.showShortToast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
@@ -49,8 +48,8 @@ class MainActivity : AbstractPermissionsAwareActivity(), PermissionsAwareCompone
         bottomNavigationView = binding.bottomNavigation
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.action_manage_group -> showFragment(ManageGroupsFragment.getInstance())
-                R.id.action_random_contact -> showFragment(RandomContactFragment.getInstance())
+                R.id.action_manage_group -> showFragment(ManageGroupsFragment.newInstance())
+                R.id.action_random_contact -> showFragment(RandomContactFragment.newInstance())
                 R.id.action_about -> showFragment(AboutFragment.newInstance())
             }
             true
@@ -64,9 +63,8 @@ class MainActivity : AbstractPermissionsAwareActivity(), PermissionsAwareCompone
         bottomNavigationView.show()
         bottomNavigationView.selectedItemId = R.id.action_random_contact
 
-        showFragment(RandomContactFragment.getInstance())
+        showFragment(RandomContactFragment.newInstance())
         showMessageAsBottomSheet()
-
     }
 
     @SuppressLint("InflateParams")

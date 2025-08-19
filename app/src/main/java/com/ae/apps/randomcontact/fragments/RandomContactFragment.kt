@@ -1,7 +1,9 @@
 package com.ae.apps.randomcontact.fragments
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -26,50 +28,49 @@ import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
 /**
- * A simple [Fragment] subclass.
+ * RandomContactFragment
+ * This fragment is responsible for showing the random contact details
  */
-class RandomContactFragment : Fragment(R.layout.fragment_random_contact), ContactsDataConsumer {
-
-    companion object {
-        @Volatile
-        private var INSTANCE: RandomContactFragment? = null
-
-        fun getInstance(): RandomContactFragment =
-            INSTANCE ?: synchronized(this) {
-                INSTANCE ?: RandomContactFragment().also { INSTANCE = it }
-            }
-    }
+class RandomContactFragment : Fragment(), ContactsDataConsumer {
 
     private lateinit var contactsApi: ContactsApiGateway
-    private var currentContact: ContactInfo? = null
     private lateinit var binding: FragmentRandomContactBinding
     private lateinit var recyclerAdapter: ContactDetailsRecyclerAdapter
+    private var currentContact: ContactInfo? = null
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding = FragmentRandomContactBinding.bind(view)
+    companion object {
+
+        @JvmStatic
+        fun newInstance(): RandomContactFragment {
+            return RandomContactFragment()
+        }
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = FragmentRandomContactBinding.inflate(inflater, container, false)
 
         setupRecyclerView()
-
         setupViews()
+
+        return binding.root
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setUpContactsApi()
     }
 
     private fun setUpContactsApi() {
         val context = requireActivity()
         val repo = ContactGroupRepositoryImpl.getInstance(
-            AppDatabase.getInstance(context).contactGroupDao()
+            dao = AppDatabase.getInstance(context).contactGroupDao()
         )
         val factory = RandomContactsApiGatewayFactory()
         val appPreferences = AppPreferences.getInstance(context)
         contactsApi = RandomContactApiGatewayImpl.getInstance(context, repo, factory, appPreferences)
 
-        // Initialize the random contact api
+        // Initialize the random contact api, we will get a callback to onContactsRead() once contacts api is initialized
         contactsApi.initializeAsync(ContactInfoFilterOptions.of(true), this)
     }
 
@@ -94,12 +95,13 @@ class RandomContactFragment : Fragment(R.layout.fragment_random_contact), Contac
         }
 
         recyclerAdapter = ContactDetailsRecyclerAdapter(
-            emptyList(),
-            requireContext(),
-            R.layout.contact_info_item,
-            whatsAppInstalled
+            items = emptyList(),
+            context = requireContext(),
+            layoutResourceId = R.layout.contact_info_item,
+            enableWhatsAppIntegration = whatsAppInstalled
         )
 
+        // We don't need the EmptyRecyclerView because we filter out any contacts that don't have any contact method
         val recyclerView: RecyclerView = binding.list
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = recyclerAdapter
@@ -108,7 +110,7 @@ class RandomContactFragment : Fragment(R.layout.fragment_random_contact), Contac
     }
 
     private fun showRandomContact() {
-        // Running the getRandomNumber() method in a background thread as we need to access the database
+        // Invoke the randomContact method in a background thread as we need to access the database
         doAsync {
             val randomContact: ContactInfo? = contactsApi.randomContact
 
@@ -120,7 +122,7 @@ class RandomContactFragment : Fragment(R.layout.fragment_random_contact), Contac
                         Toast.LENGTH_LONG
                     ).show()
                 } else {
-                    displayContact(randomContact)
+                    displayContact(contactInfo = randomContact)
                 }
             }
         }

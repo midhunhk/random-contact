@@ -10,10 +10,11 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDialogFragment
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ae.apps.lib.api.contacts.ContactsApiGateway
+import com.ae.apps.lib.api.contacts.types.ContactInfoFilterOptions
+import com.ae.apps.lib.api.contacts.types.ContactsDataConsumer
 import com.ae.apps.lib.common.models.ContactInfo
 import com.ae.apps.lib.multicontact.MultiContactPickerConstants
 import com.ae.apps.randomcontact.R
@@ -29,17 +30,18 @@ import com.ae.apps.randomcontact.room.AppDatabase
 import com.ae.apps.randomcontact.room.entities.ContactGroup
 import com.ae.apps.randomcontact.room.repositories.ContactGroupRepositoryImpl
 import com.ae.apps.randomcontact.utils.CONTACT_ID_SEPARATOR
+import com.ae.apps.randomcontact.utils.showShortToast
 import com.google.android.material.snackbar.Snackbar
 
 /**
- * Use the [AddContactGroupDialogFragment.newInstance] factory method to
- * create an instance of this fragment.
+ * AddContactGroupDialogFragment
+ * A dialog fragment used to add a new contact group or edit an existing one.
  */
 class AddContactGroupDialogFragment(
     private val interactionListener: ContactGroupInteractionListener,
     private val contactGroupToUpdate: ContactGroup? = null
 ) :
-    AppCompatDialogFragment(), GroupMemberInteractionListener {
+    AppCompatDialogFragment(), GroupMemberInteractionListener, ContactsDataConsumer {
 
     private lateinit var contactsApi: ContactsApiGateway
     private lateinit var startForResult:ActivityResultLauncher<Intent>
@@ -47,6 +49,7 @@ class AddContactGroupDialogFragment(
     private var selectedContactIdStr: String = ""
     private var selectedContactInfoList: MutableList<ContactInfo> = mutableListOf()
     private var viewAdapter: GroupMemberRecyclerAdapter? = null
+    private var contactsApiInitialized = false
 
     companion object {
 
@@ -59,6 +62,7 @@ class AddContactGroupDialogFragment(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         startForResult =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 if (it.resultCode == Activity.RESULT_OK) {
@@ -71,71 +75,18 @@ class AddContactGroupDialogFragment(
                     }
                 }
             }
+
+        setupContactsApi()
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val context = requireContext()
-        val repo = ContactGroupRepositoryImpl.getInstance(
-            AppDatabase.getInstance(context).contactGroupDao()
-        )
-        val factory = RandomContactsApiGatewayFactory()
-        val appPreferences = AppPreferences.getInstance(context)
-        contactsApi = RandomContactApiGatewayImpl.getInstance(context, repo, factory, appPreferences)
-        binding = FragmentAddContactGroupDialogBinding.inflate(layoutInflater)
-
-        initViews()
-        setupRecyclerView()
-
+        binding = FragmentAddContactGroupDialogBinding.inflate(inflater, container, false)
         return binding.root
     }
-
-    private fun initViews() {
-        contactGroupToUpdate?.let { it ->
-            // If there is a contactGroupId to edit
-            binding.btnSave.setText(R.string.str_contact_group_update)
-
-            // Populate the details on the UI
-            binding.txtGroupName.setText(it.name)
-            selectedContactIdStr = it.selectedContacts
-            selectedContactInfoList = populateContactInfo()
-        }
-    }
-
-    private fun populateContactInfo(): MutableList<ContactInfo> {
-        val selectedContactIds = selectedContactIdStr.split(CONTACT_ID_SEPARATOR)
-        val tempList: MutableList<ContactInfo> = mutableListOf()
-        selectedContactIds.forEach {
-            tempList.add(contactsApi.getContactInfo(it))
-        }
-        return tempList
-    }
-
-    private fun setupRecyclerView() {
-        val recyclerView = binding.list
-        viewAdapter = GroupMemberRecyclerAdapter(this, selectedContactInfoList)
-        recyclerView.adapter = viewAdapter
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.itemAnimator = DefaultItemAnimator()
-    }
-
-    private fun startMultiContactPicker() {
-        val multiContactPickerIntent = Intent(
-            requireContext(),
-            MultiContactPickerActivity::class.java
-        )
-        if (selectedContactIdStr.isNotEmpty()) {
-            multiContactPickerIntent.putExtra(
-                MultiContactPickerConstants.PRESELECTED_CONTACT_IDS,
-                selectedContactIdStr
-            )
-        }
-        startForResult.launch(multiContactPickerIntent)
-    }
-
-    override fun getTheme(): Int = R.style.DialogTheme
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -169,6 +120,81 @@ class AddContactGroupDialogFragment(
                 ).show()
             }
         }
+
+        // Prepopulate the UI with an existing contact group details if this is an update flow
+        initContactGroupViewForUpdate()
+
+        setupRecyclerView()
+    }
+
+    private fun initContactGroupViewForUpdate() {
+        if(contactsApiInitialized) {
+            contactGroupToUpdate?.let { it ->
+                // If there is a contactGroupId to edit then we need to change the button text
+                binding.btnSave.setText(R.string.str_contact_group_update)
+
+                // Populate the contact group details
+                binding.txtGroupName.setText(it.name)
+                selectedContactIdStr = it.selectedContacts
+                selectedContactInfoList = populateContactInfo()
+            }
+        }
+    }
+
+    private fun populateContactInfo(): MutableList<ContactInfo> {
+        val selectedContactIds = selectedContactIdStr.split(CONTACT_ID_SEPARATOR)
+            .filter { it.isNotEmpty() }
+        val tempList: MutableList<ContactInfo> = mutableListOf()
+        selectedContactIds.forEach { contactId ->
+            val contactInfo = contactsApi.getContactInfo(contactId)
+            if (contactInfo != null){
+                tempList.add(contactInfo)
+            } else {
+                requireContext().showShortToast("Contact not found")
+            }
+        }
+        return tempList
+    }
+
+    private fun setupRecyclerView() {
+        val recyclerView = binding.list
+        viewAdapter = GroupMemberRecyclerAdapter(this, selectedContactInfoList)
+        recyclerView.adapter = viewAdapter
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.itemAnimator = DefaultItemAnimator()
+    }
+
+    private fun startMultiContactPicker() {
+        val multiContactPickerIntent = Intent(
+            requireContext(),
+            MultiContactPickerActivity::class.java
+        )
+        if (selectedContactIdStr.isNotEmpty()) {
+            multiContactPickerIntent.putExtra(
+                MultiContactPickerConstants.PRESELECTED_CONTACT_IDS,
+                selectedContactIdStr
+            )
+        }
+        startForResult.launch(multiContactPickerIntent)
+    }
+
+    override fun getTheme(): Int = R.style.DialogTheme
+
+    private fun setupContactsApi() {
+        val context = requireContext()
+        val repo = ContactGroupRepositoryImpl.getInstance(
+            dao = AppDatabase.getInstance(context).contactGroupDao()
+        )
+        val factory = RandomContactsApiGatewayFactory()
+        val appPreferences = AppPreferences.getInstance(context)
+
+        contactsApi = RandomContactApiGatewayImpl.getInstance(context, repo, factory, appPreferences)
+        // This will call onContactsRead() once contacts data is ready
+        contactsApi.initializeAsync(ContactInfoFilterOptions.of(true), this)
+    }
+
+    override fun onContactsRead() {
+        contactsApiInitialized = true
     }
 
     private fun validateContactGroup(): ContactGroup {

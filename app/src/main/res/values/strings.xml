@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Random Contact</string>
-    <string name="app_version">Version 5.1.2 (Nebulawave)</string>
-    <string name="app_release_date">Jul 2025</string>
+    <string name="app_version">Version 5.1.3 (Nebulawave)</string>
+    <string name="app_release_date">Aug 2025</string>
     <string name="app_desc">This app displays a "Random Contact" from your contacts list. Contact an old friend today!</string>
     <string name="app_disclaimer">This is an open source project designed and developed in my free time. \nAll the contact data shown are retrieved from the device and not processed, stored or shared by the app.</string>
     <string name="app_developer_info">Designed and developed: ae app labs</string>
@@ -63,9 +63,10 @@
     <string name="str_bottom_message_title">Major Update</string>
 
     <string name="str_bottom_message_content">
-        <li>Version 5.0 (Nebulawave)</li>\n
+        <li>Version 5.1 (Nebulawave)</li>\n
         <li>Upgrade Target Android API</li>\n
         <li>Upgrade dependent libraries</li>\n
+        <li>Bug Fixes and Performance improvements</li>\n
     </string>
 
     <string name="str_permission_required_title">Permission Required</string>
