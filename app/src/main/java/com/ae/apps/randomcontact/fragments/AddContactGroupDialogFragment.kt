@@ -10,10 +10,11 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDialogFragment
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ae.apps.lib.api.contacts.ContactsApiGateway
+import com.ae.apps.lib.api.contacts.types.ContactInfoFilterOptions
+import com.ae.apps.lib.api.contacts.types.ContactsDataConsumer
 import com.ae.apps.lib.common.models.ContactInfo
 import com.ae.apps.lib.multicontact.MultiContactPickerConstants
 import com.ae.apps.randomcontact.R
@@ -29,6 +30,7 @@ import com.ae.apps.randomcontact.room.AppDatabase
 import com.ae.apps.randomcontact.room.entities.ContactGroup
 import com.ae.apps.randomcontact.room.repositories.ContactGroupRepositoryImpl
 import com.ae.apps.randomcontact.utils.CONTACT_ID_SEPARATOR
+import com.ae.apps.randomcontact.utils.showShortToast
 import com.google.android.material.snackbar.Snackbar
 
 /**
@@ -39,7 +41,7 @@ class AddContactGroupDialogFragment(
     private val interactionListener: ContactGroupInteractionListener,
     private val contactGroupToUpdate: ContactGroup? = null
 ) :
-    AppCompatDialogFragment(), GroupMemberInteractionListener {
+    AppCompatDialogFragment(), GroupMemberInteractionListener, ContactsDataConsumer {
 
     private lateinit var contactsApi: ContactsApiGateway
     private lateinit var startForResult:ActivityResultLauncher<Intent>
@@ -74,25 +76,15 @@ class AddContactGroupDialogFragment(
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val context = requireContext()
-        val repo = ContactGroupRepositoryImpl.getInstance(
-            AppDatabase.getInstance(context).contactGroupDao()
-        )
-        val factory = RandomContactsApiGatewayFactory()
-        val appPreferences = AppPreferences.getInstance(context)
-        contactsApi = RandomContactApiGatewayImpl.getInstance(context, repo, factory, appPreferences)
-        binding = FragmentAddContactGroupDialogBinding.inflate(layoutInflater)
-
-        initViews()
-        setupRecyclerView()
-
+        binding = FragmentAddContactGroupDialogBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    private fun initViews() {
+    private fun initContactGroupViewForUpdate() {
         contactGroupToUpdate?.let { it ->
             // If there is a contactGroupId to edit
             binding.btnSave.setText(R.string.str_contact_group_update)
@@ -106,9 +98,15 @@ class AddContactGroupDialogFragment(
 
     private fun populateContactInfo(): MutableList<ContactInfo> {
         val selectedContactIds = selectedContactIdStr.split(CONTACT_ID_SEPARATOR)
+            .filter { it.isNotEmpty() }
         val tempList: MutableList<ContactInfo> = mutableListOf()
-        selectedContactIds.forEach {
-            tempList.add(contactsApi.getContactInfo(it))
+        selectedContactIds.forEach { contactId ->
+            val contactInfo = contactsApi.getContactInfo(contactId)
+            if (contactInfo != null){
+                tempList.add(contactInfo)
+            } else {
+                requireContext().showShortToast("Contact not found")
+            }
         }
         return tempList
     }
@@ -140,6 +138,10 @@ class AddContactGroupDialogFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupContactsApi()
+
+        setupRecyclerView()
+
         binding.btnSelectMembers.setOnClickListener {
             startMultiContactPicker()
         }
@@ -169,6 +171,23 @@ class AddContactGroupDialogFragment(
                 ).show()
             }
         }
+    }
+
+    private fun setupContactsApi() {
+        val context = requireContext()
+        val repo = ContactGroupRepositoryImpl.getInstance(
+            AppDatabase.getInstance(context).contactGroupDao()
+        )
+        val factory = RandomContactsApiGatewayFactory()
+        val appPreferences = AppPreferences.getInstance(context)
+
+        contactsApi = RandomContactApiGatewayImpl.getInstance(context, repo, factory, appPreferences)
+        // This will call onContactsRead() once contacts data is ready
+        contactsApi.initializeAsync(ContactInfoFilterOptions.of(true), this)
+    }
+
+    override fun onContactsRead() {
+        initContactGroupViewForUpdate()
     }
 
     private fun validateContactGroup(): ContactGroup {

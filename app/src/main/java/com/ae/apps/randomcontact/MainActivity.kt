@@ -65,7 +65,6 @@ class MainActivity : AbstractPermissionsAwareActivity(), PermissionsAwareCompone
 
         showFragment(RandomContactFragment.newInstance())
         showMessageAsBottomSheet()
-
     }
 
     @SuppressLint("InflateParams")
