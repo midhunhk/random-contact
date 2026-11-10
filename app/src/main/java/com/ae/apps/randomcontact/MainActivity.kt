@@ -59,11 +59,12 @@ class MainActivity : AbstractPermissionsAwareActivity(), PermissionsAwareCompone
     override fun requiredPermissions() = PERMISSIONS
 
     override fun onPermissionsGranted() {
-        // Show bottom navigation bar and load the Random contact fragment
+        // Show bottom navigation bar and load the Random contact fragment.
+        // Selecting the item invokes the item selected listener, which shows the fragment;
+        // showing it again here would create a second fragment and read the contacts twice.
         bottomNavigationView.show()
         bottomNavigationView.selectedItemId = R.id.action_random_contact
 
-        showFragment(RandomContactFragment.newInstance())
         showMessageAsBottomSheet()
     }
 
