@@ -3,7 +3,8 @@ activityKtx = "1.13.0"
 agp = "9.5.1"
 constraintlayout = "2.2.2"
 espresso = "3.7.0"
-extensions = "1.1.1"
+kotlinStdlibVersion = "2.4.0"
+lifecycleExtVersion = "1.1.1"
 fragmentKtx = "1.9.1"
 googleDevtoolsKsp = "2.3.13"
 gradle = "9.5.1"
@@ -34,7 +35,8 @@ androidx-room-runtime = { group = "androidx.room", name = "room-runtime", versio
 androidx-room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
 contacts-api = { group = "com.github.midhunhk.lib-aeapps", name = "contacts-api", version.ref = "libAeapps" }
 core = { group = "com.github.midhunhk.lib-aeapps", name = "core", version.ref = "libAeapps" }
-extensions = { group = "android.arch.lifecycle", name = "extensions", version.ref = "extensions" }
+kotlin-stdlib-v240 = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlinStdlibVersion" }
+lifecycleExt = { group = "android.arch.lifecycle", name = "extensions", version.ref = "lifecycleExtVersion" }
 gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "gradle" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlinStdlib" }
