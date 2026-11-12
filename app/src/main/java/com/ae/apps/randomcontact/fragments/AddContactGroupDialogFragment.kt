@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,32 +37,69 @@ import com.google.android.material.snackbar.Snackbar
 /**
  * AddContactGroupDialogFragment
  * A dialog fragment used to add a new contact group or edit an existing one.
+ *
+ * The parent fragment (or else the activity) must implement [ContactGroupInteractionListener].
+ * The group to edit is passed through the fragment arguments, so that Android can recreate this
+ * dialog after a configuration change or process death.
  */
-class AddContactGroupDialogFragment(
-    private val interactionListener: ContactGroupInteractionListener,
-    private val contactGroupToUpdate: ContactGroup? = null
-) :
+class AddContactGroupDialogFragment :
     AppCompatDialogFragment(), GroupMemberInteractionListener, ContactsDataConsumer {
 
     private lateinit var contactsApi: ContactsApiGateway
     private lateinit var startForResult:ActivityResultLauncher<Intent>
     private lateinit var binding:FragmentAddContactGroupDialogBinding
-    private var selectedContactIdStr: String = ""
+    /** Comma separated ids of the members picked so far */
+    @VisibleForTesting
+    internal var selectedContactIdStr: String = ""
     private var selectedContactInfoList: MutableList<ContactInfo> = mutableListOf()
     private var viewAdapter: GroupMemberRecyclerAdapter? = null
     private var contactsApiInitialized = false
 
     companion object {
+        private const val ARG_GROUP_ID = "contact_group_id"
+        private const val ARG_GROUP_NAME = "contact_group_name"
+        private const val ARG_GROUP_CONTACTS = "contact_group_contacts"
+        private const val STATE_SELECTED_CONTACT_IDS = "selected_contact_ids"
 
+        /**
+         * @param contactGroup the group to edit, or null to add a new group
+         */
         @JvmStatic
-        fun newInstance(
-            interactionListener: ContactGroupInteractionListener,
-            contactGroup: ContactGroup? = null
-        ) = AddContactGroupDialogFragment(interactionListener, contactGroup)
+        fun newInstance(contactGroup: ContactGroup? = null) = AddContactGroupDialogFragment().apply {
+            if (null != contactGroup) {
+                arguments = Bundle().apply {
+                    contactGroup.id?.let { putInt(ARG_GROUP_ID, it) }
+                    putString(ARG_GROUP_NAME, contactGroup.name)
+                    putString(ARG_GROUP_CONTACTS, contactGroup.selectedContacts)
+                }
+            }
+        }
     }
+
+    /** The group being edited, or null when adding a new group. */
+    private val contactGroupToUpdate: ContactGroup? by lazy {
+        val args = arguments ?: return@lazy null
+        val name = args.getString(ARG_GROUP_NAME) ?: return@lazy null
+        ContactGroup(
+            id = if (args.containsKey(ARG_GROUP_ID)) args.getInt(ARG_GROUP_ID) else null,
+            name = name,
+            selectedContacts = args.getString(ARG_GROUP_CONTACTS).orEmpty()
+        )
+    }
+
+    private val interactionListener: ContactGroupInteractionListener
+        get() = (parentFragment ?: activity) as? ContactGroupInteractionListener
+            ?: throw IllegalStateException(
+                "Parent of AddContactGroupDialogFragment must implement ContactGroupInteractionListener"
+            )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Keep the members picked so far when the dialog is recreated; otherwise start from the
+        // group being edited, if any
+        selectedContactIdStr = savedInstanceState?.getString(STATE_SELECTED_CONTACT_IDS)
+            ?: contactGroupToUpdate?.selectedContacts.orEmpty()
 
         startForResult =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -70,8 +108,7 @@ class AddContactGroupDialogFragment(
                         val selectedContactIds =
                             it.data!!.getStringExtra(MultiContactPickerConstants.RESULT_CONTACT_IDS)!!
                         selectedContactIdStr = selectedContactIds
-                        selectedContactInfoList = populateContactInfo()
-                        viewAdapter?.setList(selectedContactInfoList)
+                        showSelectedMembers()
                     }
                 }
             }
@@ -102,11 +139,12 @@ class AddContactGroupDialogFragment(
         binding.btnSave.setOnClickListener {
             try {
                 val contactGroup = validateContactGroup()
-                if (contactGroupToUpdate != null) {
+                val originalGroup = contactGroupToUpdate
+                if (originalGroup != null) {
                     // Update the validated contact group with the existing contactGroup id
                     // if this is the update flow
-                    contactGroup.id = contactGroupToUpdate.id
-                    interactionListener.onContactGroupUpdated(contactGroupToUpdate, contactGroup)
+                    contactGroup.id = originalGroup.id
+                    interactionListener.onContactGroupUpdated(originalGroup, contactGroup)
                 } else {
                     interactionListener.onContactGroupAdded(contactGroup)
                 }
@@ -122,23 +160,31 @@ class AddContactGroupDialogFragment(
         }
 
         // Prepopulate the UI with an existing contact group details if this is an update flow
-        initContactGroupViewForUpdate()
-
-        setupRecyclerView()
-    }
-
-    private fun initContactGroupViewForUpdate() {
-        if(contactsApiInitialized) {
-            contactGroupToUpdate?.let { it ->
-                // If there is a contactGroupId to edit then we need to change the button text
-                binding.btnSave.setText(R.string.str_contact_group_update)
-
-                // Populate the contact group details
+        contactGroupToUpdate?.let {
+            binding.btnSave.setText(R.string.str_contact_group_update)
+            // When recreated, the EditText restores whatever the user had typed
+            if (null == savedInstanceState) {
                 binding.txtGroupName.setText(it.name)
-                selectedContactIdStr = it.selectedContacts
-                selectedContactInfoList = populateContactInfo()
             }
         }
+
+        setupRecyclerView()
+
+        // The members can only be shown once the contacts are read; if they are not ready yet,
+        // onContactsRead() shows them
+        if (contactsApiInitialized) {
+            showSelectedMembers()
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(STATE_SELECTED_CONTACT_IDS, selectedContactIdStr)
+    }
+
+    private fun showSelectedMembers() {
+        selectedContactInfoList = populateContactInfo()
+        viewAdapter?.setList(selectedContactInfoList)
     }
 
     private fun populateContactInfo(): MutableList<ContactInfo> {
@@ -195,6 +241,10 @@ class AddContactGroupDialogFragment(
 
     override fun onContactsRead() {
         contactsApiInitialized = true
+        // Delivered after onViewCreated() when the contacts had not been read yet
+        if (null != view) {
+            showSelectedMembers()
+        }
     }
 
     private fun validateContactGroup(): ContactGroup {

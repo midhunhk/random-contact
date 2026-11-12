@@ -14,7 +14,7 @@ class ContactGroupViewModel(private val repository: ContactGroupRepository) : Vi
 
     fun getAllContactGroups() = contactGroups
 
-    fun findContactGroupById(groupId: String): ContactGroup {
+    fun findContactGroupById(groupId: String): ContactGroup? {
         return repository.findContactGroupById(groupId)
     }
 

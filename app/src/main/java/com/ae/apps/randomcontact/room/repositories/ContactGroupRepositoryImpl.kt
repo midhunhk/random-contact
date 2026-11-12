@@ -23,7 +23,8 @@ class ContactGroupRepositoryImpl private constructor(private val dao:ContactGrou
     // Id is stored in the database as an Integer inorder to apply AutoIncrement
     // But it is stored in Preferences as a String, so inorder to maintain backwards compatibility,
     // we are converting to an int here
-    override fun findContactGroupById(contactId:String):ContactGroup = dao.getContactGroupById(contactId.toInt())
+    override fun findContactGroupById(contactId:String): ContactGroup? =
+        contactId.toIntOrNull()?.let { dao.getContactGroupById(it) }
 
     override suspend fun createContactGroup(contactGroup:ContactGroup) = dao.insert(contactGroup)
 

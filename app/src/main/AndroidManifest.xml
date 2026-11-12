@@ -3,6 +3,12 @@
 
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
 
+    <!-- Android 11+ hides other apps unless declared here; needed to detect WhatsApp
+         and to resolve the intent that opens a WhatsApp chat -->
+    <queries>
+        <package android:name="com.whatsapp" />
+    </queries>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -15,7 +21,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.ACTION-VIEW" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

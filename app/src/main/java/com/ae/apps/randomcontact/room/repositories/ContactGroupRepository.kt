@@ -7,7 +7,7 @@ interface ContactGroupRepository {
 
     fun getAllContactGroups(): LiveData<List<ContactGroup>>
 
-    fun findContactGroupById(contactId:String): ContactGroup
+    fun findContactGroupById(contactId:String): ContactGroup?
 
     fun getContactGroupCount(): Int
 

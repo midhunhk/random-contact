@@ -63,7 +63,13 @@ class MainActivity : AbstractPermissionsAwareActivity(), PermissionsAwareCompone
         // Selecting the item invokes the item selected listener, which shows the fragment;
         // showing it again here would create a second fragment and read the contacts twice.
         bottomNavigationView.show()
-        bottomNavigationView.selectedItemId = R.id.action_random_contact
+        // After a rotation or process death the FragmentManager has already restored the tab the
+        // user was on (and any dialog it showed); only pick the default tab on a fresh start or
+        // when coming from the permissions screen
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
+        if (null == currentFragment || currentFragment is NoAccessFragment) {
+            bottomNavigationView.selectedItemId = R.id.action_random_contact
+        }
 
         showMessageAsBottomSheet()
     }

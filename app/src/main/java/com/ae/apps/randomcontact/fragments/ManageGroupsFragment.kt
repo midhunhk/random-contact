@@ -131,7 +131,7 @@ class ManageGroupsFragment : Fragment(),
     }
 
     private fun launchContactGroupDialog(contactGroup: ContactGroup? = null) {
-        val dialogFragment = AddContactGroupDialogFragment.newInstance(this, contactGroup)
+        val dialogFragment = AddContactGroupDialogFragment.newInstance(contactGroup)
         dialogFragment.show(childFragmentManager, "addContactGroupDialog")
     }
 
