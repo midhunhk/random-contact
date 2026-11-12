@@ -75,7 +75,10 @@ class RandomContactFragment : Fragment(), ContactsDataConsumer {
     }
 
     override fun onContactsRead() {
-        showRandomContact()
+        // The callback can arrive after this fragment was replaced by another tab
+        if (isAdded && null != view) {
+            showRandomContact()
+        }
     }
 
     private fun setupViews() {
@@ -116,11 +119,16 @@ class RandomContactFragment : Fragment(), ContactsDataConsumer {
 
             // Run the validation on the UI Thread
             uiThread {
+                // The user may have switched to another tab while the contact was loading
+                if (!isAdded || null == view) return@uiThread
+
                 if (null == randomContact) {
-                    Toast.makeText(
-                        context, resources.getString(R.string.str_empty_contact_list),
-                        Toast.LENGTH_LONG
-                    ).show()
+                    val message = if (contactsApi.allContacts.isEmpty()) {
+                        R.string.str_empty_contact_list
+                    } else {
+                        R.string.str_group_contacts_not_found
+                    }
+                    Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
                 } else {
                     displayContact(contactInfo = randomContact)
                 }

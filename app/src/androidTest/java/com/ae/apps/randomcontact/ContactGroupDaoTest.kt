@@ -47,6 +47,25 @@ class ContactGroupDaoTest {
     }
 
     @Test
+    fun getContactGroupById_returnsTheGroup() = runBlocking {
+        contactGroupDao.insert(ContactGroup(id = 4, name = "Family", selectedContacts = "1,2"))
+
+        val group = contactGroupDao.getContactGroupById(4)
+
+        Assert.assertEquals("Family", group?.name)
+        Assert.assertEquals("1,2", group?.selectedContacts)
+    }
+
+    @Test
+    fun getContactGroupById_returnsNullForAGroupThatDoesNotExist() = runBlocking {
+        contactGroupDao.insert(ContactGroup(id = 4, name = "Family", selectedContacts = "1,2"))
+        contactGroupDao.delete(ContactGroup(id = 4, name = "Family", selectedContacts = "1,2"))
+
+        Assert.assertNull(contactGroupDao.getContactGroupById(4))
+        Assert.assertNull(contactGroupDao.getContactGroupById(12345))
+    }
+
+    @Test
     fun getAllGroups() = runBlocking {
         var contactGroup = ContactGroup(name = "Test Group", selectedContacts = "3,4,6")
         contactGroupDao.insert(contactGroup)

@@ -3,6 +3,7 @@ package com.ae.apps.randomcontact.activities
 import android.os.Bundle
 import android.os.PersistableBundle
 import com.ae.apps.lib.api.contacts.ContactsApiGateway
+import com.ae.apps.lib.api.contacts.types.ContactInfoFilterOptions
 import com.ae.apps.lib.common.models.ContactInfo
 import com.ae.apps.lib.multicontact.MultiContactBaseActivity
 import com.ae.apps.randomcontact.R
@@ -30,6 +31,10 @@ class MultiContactPickerActivity : MultiContactBaseActivity() {
             val appPreferences = AppPreferences.getInstance(this)
             contactsApiGateway = RandomContactApiGatewayImpl.getInstance(this, repo, factory, appPreferences)
         }
+        // If the process was killed while this screen was open, Android restores this activity
+        // into a new process where the shared gateway has not read the contacts yet.
+        // initialize() returns immediately when the contacts are already loaded.
+        contactsApiGateway!!.initialize(ContactInfoFilterOptions.of(true))
         val list = contactsApiGateway!!.allContacts
         // Sort the contacts based on name
         Collections.sort(list, object : Comparator<ContactInfo?> {

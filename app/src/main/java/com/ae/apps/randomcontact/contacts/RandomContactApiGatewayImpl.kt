@@ -8,6 +8,7 @@ import com.ae.apps.lib.api.contacts.types.ContactsApiGatewayFactory
 import com.ae.apps.lib.api.contacts.types.ContactsDataConsumer
 import com.ae.apps.lib.common.models.ContactInfo
 import com.ae.apps.randomcontact.preferences.AppPreferences
+import com.ae.apps.randomcontact.room.entities.ContactGroup
 import com.ae.apps.randomcontact.room.repositories.ContactGroupRepository
 import com.ae.apps.randomcontact.utils.CONTACT_ID_SEPARATOR
 import com.ae.apps.randomcontact.utils.DEFAULT_CONTACT_GROUP
@@ -107,28 +108,6 @@ class RandomContactApiGatewayImpl(
             contactsShuffled = true
         }
 
-        // If there are no custom contact groups, default to all contacts
-        // The database is the source of truth, override the values in appPreference
-        val customContactGroups = contactGroupRepository.getContactGroupCount()
-        val selectedGroup = if(customContactGroups > 0){
-            appPreferences.selectedContactGroup()
-        } else {
-            // Update the Selected Contact Group so that it correctly selects the
-            // All Contacts option in Manage Contact Groups Fragment
-            appPreferences.setSelectedContactGroup(DEFAULT_CONTACT_GROUP)
-            DEFAULT_CONTACT_GROUP
-        }
-
-        val randomContactId: String
-        if (DEFAULT_CONTACT_GROUP == selectedGroup) {
-            index = ((index + 1) % readContactsCount.toInt())
-            randomContactId = shuffledContacts[index].id
-        } else {
-            val contactGroup = contactGroupRepository.findContactGroupById(selectedGroup)
-            val subList: List<String> = contactGroup.selectedContacts.split(CONTACT_ID_SEPARATOR)
-            randomContactId = subList[Random().nextInt(subList.size)]
-        }
-
         val options = ContactInfoOptions.Builder()
             .includePhoneDetails(true)
             .includeContactPicture(true)
@@ -136,12 +115,52 @@ class RandomContactApiGatewayImpl(
             .filterDuplicatePhoneNumbers(true)
             .build()
 
-        return getContactInfo(randomContactId, options)
+        val contactGroup = selectedContactGroup()
+        if (null == contactGroup) {
+            index = (index + 1) % shuffledContacts.size
+            return getContactInfo(shuffledContacts[index].id, options)
+        }
+
+        // Members of a group may have been deleted from the address book after the group was
+        // saved. Try the members in random order and return the first one that still exists.
+        val memberIds = contactGroup.selectedContacts
+            .split(CONTACT_ID_SEPARATOR)
+            .filter { it.isNotEmpty() }
+            .shuffled()
+        for (memberId in memberIds) {
+            val contactInfo = getContactInfo(memberId, options)
+            if (null != contactInfo) {
+                return contactInfo
+            }
+        }
+        return null
     }
 
-    override fun getContactInfo(contactId: String): ContactInfo = contactsApi.getContactInfo(contactId)
+    /**
+     * Returns the custom contact group the user selected, or null when random contacts should be
+     * picked from all contacts. The database is the source of truth: if the selected group no
+     * longer exists, the preference is reset so that Manage Groups shows All Contacts as selected.
+     */
+    private fun selectedContactGroup(): ContactGroup? {
+        val selectedGroupId = appPreferences.selectedContactGroup()
+        val contactGroup = if (DEFAULT_CONTACT_GROUP == selectedGroupId
+            || contactGroupRepository.getContactGroupCount() == 0
+        ) {
+            null
+        } else {
+            contactGroupRepository.findContactGroupById(selectedGroupId)
+        }
+        if (null == contactGroup && DEFAULT_CONTACT_GROUP != selectedGroupId) {
+            appPreferences.setSelectedContactGroup(DEFAULT_CONTACT_GROUP)
+        }
+        return contactGroup
+    }
 
-    override fun getContactInfo(contactId: String?, options: ContactInfoOptions?): ContactInfo =
+    /** Returns null if the contact was not read by the gateway, for example because it was deleted. */
+    override fun getContactInfo(contactId: String): ContactInfo? = contactsApi.getContactInfo(contactId)
+
+    /** Returns null if the contact was not read by the gateway, for example because it was deleted. */
+    override fun getContactInfo(contactId: String?, options: ContactInfoOptions?): ContactInfo? =
         contactsApi.getContactInfo(
             contactId,
             options

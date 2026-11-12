@@ -11,7 +11,7 @@ interface ContactGroupDao {
     fun getAll(): LiveData<List<ContactGroup>>
 
     @Query("SELECT * from custom_contact_group where _id = :groupId")
-    fun getContactGroupById(groupId: Int): ContactGroup
+    fun getContactGroupById(groupId: Int): ContactGroup?
 
     @Query("SELECT count(*) from custom_contact_group")
     fun getContactGroupCount(): Int
