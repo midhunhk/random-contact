@@ -2,7 +2,7 @@
 
 ### Version 5.2 (Pulsar)
 
-#### Random Contact 5.2.0 [Jul 2026]
+#### Random Contact 5.2.0 [Nov 2026]
 - Fixes duplicate call to Fragment creation
 - Fixes #50 Crash when a saved contact was deleted
 - Fixes #51 WhatsApp button visibility
