@@ -4,6 +4,10 @@
 
 #### Random Contact 5.2.0 [Jul 2026]
 - Fixes duplicate call to Fragment creation
+- Fixes #50 Crash when a saved contact was deleted
+- Fixes #51 WhatsApp button visibility
+- Fixes #52 Crash when switching apps
+- Fixes #53 App Crash on rotation
 - AGP Upgrade to 9.4.0
 - Upgrade Dependencies
 
