@@ -1,5 +1,12 @@
 ## Random Contact Version History
 
+### Version 5.2 (Pulsar)
+
+#### Random Contact 5.2.0 [Jul 2026]
+- Fixes duplicate call to Fragment creation
+- AGP Upgrade to 9.4.0
+- Upgrade Dependencies
+
 ### Version 5.1 (Nebulawave)
 
 #### Random Contact 5.1.3 [Aug 2025]

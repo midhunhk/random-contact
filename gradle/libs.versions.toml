@@ -1,0 +1,53 @@
+[versions]
+activityKtx = "1.13.0"
+agp = "9.5.1"
+constraintlayout = "2.2.2"
+espresso = "3.7.0"
+extensions = "1.1.1"
+fragmentKtx = "1.9.1"
+googleDevtoolsKsp = "2.3.13"
+gradle = "9.5.1"
+junit = "4.13.2"
+junitVersion = "1.3.0"
+kotlinStdlib = "2.4.21"
+kotlinxCoroutinesTest = "1.11.0"
+libAeapps = "v5.0.0-beta.04"
+libAnkoAsync = "v0.10.8-rc.02"
+material = "1.14.0"
+mockitoInline = "5.2.0"
+mockitoKotlin = "2.2.0"
+preferenceKtx = "1.2.1"
+room = "2.8.5"
+
+[libraries]
+androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activityKtx" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+androidx-espresso-contrib = { group = "androidx.test.espresso", name = "espresso-contrib", version.ref = "espresso" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
+androidx-espresso-intents = { group = "androidx.test.espresso", name = "espresso-intents", version.ref = "espresso" }
+androidx-fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragmentKtx" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-preference-ktx = { group = "androidx.preference", name = "preference-ktx", version.ref = "preferenceKtx" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+androidx-room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
+contacts-api = { group = "com.github.midhunhk.lib-aeapps", name = "contacts-api", version.ref = "libAeapps" }
+core = { group = "com.github.midhunhk.lib-aeapps", name = "core", version.ref = "libAeapps" }
+extensions = { group = "android.arch.lifecycle", name = "extensions", version.ref = "extensions" }
+gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "gradle" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlinStdlib" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
+lib-anko-async = { group = "com.github.ae-app-labs", name = "lib-anko-async", version.ref = "libAnkoAsync" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+mockito-inline = { group = "org.mockito", name = "mockito-inline", version.ref = "mockitoInline" }
+mockito-kotlin = { group = "com.nhaarman.mockitokotlin2", name = "mockito-kotlin", version.ref = "mockitoKotlin" }
+multi-contact = { group = "com.github.midhunhk.lib-aeapps", name = "multi-contact", version.ref = "libAeapps" }
+runtime-permissions = { group = "com.github.midhunhk.lib-aeapps", name = "runtime-permissions", version.ref = "libAeapps" }
+utilities = { group = "com.github.midhunhk.lib-aeapps", name = "utilities", version.ref = "libAeapps" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "googleDevtoolsKsp" }
+room = { id = "androidx.room", version.ref = "room" }
